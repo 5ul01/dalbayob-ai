@@ -16,7 +16,7 @@ export default async function handler(req, res) {
         "X-Title": "Dalbayob AI"
       },
       body: JSON.stringify({
-        model: "poolside/laguna-xs-2.1:free",
+        model: "openrouter/free",
         temperature: 1.0,
         max_tokens: 2000,
         messages: [
