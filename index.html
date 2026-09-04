@@ -1,4 +1,508 @@
 <!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dalbayob AI</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  font-family: Inter, Arial, sans-serif;
+  color: #fff;
+  background: #070914;
+  overflow: hidden;
+}
+
+/* ANIME BACKGROUND */
+body {
+  background-image:
+    linear-gradient(rgba(5, 7, 18, 0.62), rgba(5, 7, 18, 0.78)),
+    url("https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=2400&q=90");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* Dark glass layer */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(3px);
+  background: rgba(5, 7, 18, 0.25);
+  pointer-events: none;
+}
+
+/* APP */
+.app {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 270px;
+  height: 100%;
+  background: rgba(8, 10, 22, 0.78);
+  backdrop-filter: blur(18px);
+  border-right: 1px solid rgba(255,255,255,0.08);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo {
+  font-size: 21px;
+  font-weight: 800;
+  margin-bottom: 25px;
+}
+
+.logo span {
+  opacity: .55;
+}
+
+.new-chat {
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  color: white;
+  border-radius: 12px;
+  padding: 13px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 14px;
+}
+
+.new-chat:hover {
+  background: rgba(255,255,255,.11);
+}
+
+.sidebar-title {
+  margin-top: 28px;
+  margin-bottom: 10px;
+  color: #888da5;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* MAIN */
+.main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* HEADER */
+.header {
+  height: 68px;
+  display: flex;
+  align-items: center;
+  padding: 0 25px;
+  background: rgba(8, 10, 22, 0.48);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(255,255,255,.07);
+}
+
+.header-title {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.status {
+  margin-left: 10px;
+  font-size: 12px;
+  color: #8d93aa;
+}
+
+.status::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 6px;
+  border-radius: 50%;
+  background: #65e6a5;
+  box-shadow: 0 0 10px #65e6a5;
+}
+
+/* CHAT */
+#chat {
+  flex: 1;
+  overflow-y: auto;
+  padding: 45px 20px 140px;
+  scroll-behavior: smooth;
+}
+
+.chat-inner {
+  width: min(900px, 100%);
+  margin: auto;
+}
+
+.welcome {
+  text-align: center;
+  margin: 12vh auto 50px;
+}
+
+.welcome-icon {
+  width: 70px;
+  height: 70px;
+  margin: auto auto 20px;
+  border-radius: 22px;
+  display: grid;
+  place-items: center;
+  font-size: 32px;
+  background: rgba(255,255,255,.09);
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 15px 50px rgba(0,0,0,.3);
+}
+
+.welcome h1 {
+  margin: 0 0 10px;
+  font-size: 34px;
+}
+
+.welcome p {
+  margin: 0;
+  color: #aeb3c7;
+}
+
+/* MESSAGES */
+.message-row {
+  display: flex;
+  margin: 20px 0;
+  animation: appear .2s ease-out;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message-row.user {
+  justify-content: flex-end;
+}
+
+.message {
+  max-width: min(760px, 85%);
+  padding: 14px 17px;
+  border-radius: 17px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  font-size: 15px;
+}
+
+.message.user {
+  background: rgba(255,255,255,.11);
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.message.assistant {
+  background: rgba(9, 11, 25, .72);
+  border: 1px solid rgba(255,255,255,.07);
+  backdrop-filter: blur(12px);
+}
+
+/* COMPOSER */
+.composer-area {
+  position: absolute;
+  left: 270px;
+  right: 0;
+  bottom: 0;
+  padding: 18px 20px 22px;
+  background: linear-gradient(
+    transparent,
+    rgba(5,7,18,.82) 35%
+  );
+}
+
+.composer {
+  width: min(900px, 100%);
+  margin: auto;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 18px;
+  background: rgba(15,17,32,.78);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 15px 50px rgba(0,0,0,.35);
+}
+
+textarea {
+  flex: 1;
+  min-height: 48px;
+  max-height: 160px;
+  resize: none;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: white;
+  padding: 13px 8px;
+  font-size: 15px;
+  font-family: inherit;
+}
+
+textarea::placeholder {
+  color: #747a92;
+}
+
+.action {
+  width: 43px;
+  height: 43px;
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 12px;
+  background: rgba(255,255,255,.07);
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.action:hover {
+  background: rgba(255,255,255,.14);
+}
+
+.send {
+  background: white;
+  color: black;
+}
+
+.send:hover {
+  background: #ddd;
+}
+
+.footer-note {
+  width: min(900px, 100%);
+  margin: 8px auto 0;
+  text-align: center;
+  color: #686e84;
+  font-size: 11px;
+}
+
+/* MOBILE */
+@media (max-width: 700px) {
+  .sidebar {
+    display: none;
+  }
+
+  .composer-area {
+    left: 0;
+  }
+
+  .header {
+    padding: 0 17px;
+  }
+
+  #chat {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .welcome h1 {
+    font-size: 27px;
+  }
+
+  .message {
+    max-width: 92%;
+  }
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="logo">🤖 Dalbayob <span>AI</span></div>
+
+```
+<button class="new-chat" onclick="newChat()">
+  ＋ New chat
+</button>
+
+<div class="sidebar-title">
+  Conversations
+</div>
+```
+
+  </aside>
+
+  <main class="main">
+
+```
+<header class="header">
+  <div class="header-title">Dalbayob AI</div>
+  <div class="status">Online</div>
+</header>
+
+<section id="chat">
+  <div class="chat-inner" id="chat-inner">
+
+    <div class="welcome" id="welcome">
+      <div class="welcome-icon">🤖</div>
+      <h1>What can I help you with?</h1>
+      <p>Ask Dalbayob AI anything.</p>
+    </div>
+
+  </div>
+</section>
+
+<div class="composer-area">
+
+  <div class="composer">
+
+    <button class="action" title="Attach file">
+      📎
+    </button>
+
+    <textarea
+      id="input"
+      rows="1"
+      placeholder="Message Dalbayob AI..."
+    ></textarea>
+
+    <button class="action" title="Image generation">
+      ✨
+    </button>
+
+    <button class="action send" onclick="sendMessage()" title="Send">
+      ↑
+    </button>
+
+  </div>
+
+  <div class="footer-note">
+    Dalbayob AI can make mistakes. Check important information.
+  </div>
+
+</div>
+```
+
+  </main>
+
+</div>
+
+<script>
+
+const input = document.getElementById("input");
+const chatInner = document.getElementById("chat-inner");
+const welcome = document.getElementById("welcome");
+
+input.addEventListener("input", () => {
+  input.style.height = "auto";
+  input.style.height = Math.min(input.scrollHeight, 160) + "px";
+});
+
+input.addEventListener("keydown", function(event) {
+
+  if (event.key === "Enter" && !event.shiftKey) {
+    event.preventDefault();
+    sendMessage();
+  }
+
+});
+
+function addMessage(text, type) {
+
+  if (welcome) {
+    welcome.style.display = "none";
+  }
+
+  const row = document.createElement("div");
+  row.className = "message-row " + type;
+
+  const message = document.createElement("div");
+  message.className = "message " + type;
+  message.textContent = text;
+
+  row.appendChild(message);
+  chatInner.appendChild(row);
+
+  document.getElementById("chat").scrollTop =
+    document.getElementById("chat").scrollHeight;
+
+  return message;
+}
+
+async function sendMessage() {
+
+  const text = input.value.trim();
+
+  if (!text) return;
+
+  addMessage(text, "user");
+
+  input.value = "";
+  input.style.height = "auto";
+
+  const reply = addMessage("Thinking...", "assistant");
+
+  try {
+
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: text
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "AI request failed.");
+    }
+
+    reply.textContent = data.reply;
+
+  } catch (error) {
+
+    reply.textContent =
+      "⚠️ " + error.message;
+
+  }
+}
+
+function newChat() {
+
+  chatInner.innerHTML = `
+    <div class="welcome" id="welcome">
+      <div class="welcome-icon">🤖</div>
+      <h1>What can I help you with?</h1>
+      <p>Ask Dalbayob AI anything.</p>
+    </div>
+  `;
+
+}
+
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
