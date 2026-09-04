@@ -16,7 +16,7 @@ export default async function handler(req, res) {
         "X-Title": "Dalbayob AI"
       },
       body: JSON.stringify({
-        model: "openrouter/free",
+        model: "google/gemma-4-31b-it:free",
         temperature: 1.0,
         max_tokens: 2000,
         messages: [
