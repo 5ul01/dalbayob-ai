@@ -7,188 +7,487 @@
 <title>Dalbayob AI</title>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 * {
   box-sizing: border-box;
+}
+
+:root {
+  --bg: #080811;
+  --panel: rgba(12, 13, 25, .72);
+  --panel2: rgba(20, 21, 38, .76);
+  --border: rgba(255,255,255,.09);
+  --text: #f7f7fb;
+  --muted: #9295aa;
+  --accent: #a978ff;
+  --accent2: #ff76c8;
 }
 
 html, body {
   margin: 0;
   width: 100%;
   height: 100%;
-  font-family: Inter, Arial, sans-serif;
-  color: #fff;
-  background: #070914;
   overflow: hidden;
+  font-family: Inter, Arial, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 75% 35%, rgba(167, 91, 255, .18), transparent 30%),
+    radial-gradient(circle at 90% 80%, rgba(255, 80, 190, .12), transparent 30%),
+    var(--bg);
 }
 
-/* ANIME BACKGROUND */
-body {
-  background-image:
-    linear-gradient(rgba(5, 7, 18, 0.62), rgba(5, 7, 18, 0.78)),
-    url("https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=2400&q=90");
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-}
+/* ================= BACKGROUND ================= */
 
-/* Dark glass layer */
-body::before {
-  content: "";
+.background {
   position: fixed;
   inset: 0;
-  backdrop-filter: blur(3px);
-  background: rgba(5, 7, 18, 0.25);
+  overflow: hidden;
   pointer-events: none;
 }
 
-/* APP */
-.app {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  height: 100vh;
-  display: flex;
+.grid {
+  position: absolute;
+  inset: 0;
+  opacity: .08;
+  background-image:
+    linear-gradient(rgba(255,255,255,.25) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.25) 1px, transparent 1px);
+  background-size: 55px 55px;
+  transform: perspective(500px) rotateX(55deg) scale(1.5);
+  transform-origin: bottom;
 }
 
-/* SIDEBAR */
-.sidebar {
+/* neon moon */
+
+.moon {
+  position: absolute;
   width: 270px;
-  height: 100%;
-  background: rgba(8, 10, 22, 0.78);
-  backdrop-filter: blur(18px);
-  border-right: 1px solid rgba(255,255,255,0.08);
-  padding: 18px;
-  display: flex;
-  flex-direction: column;
+  height: 270px;
+  border-radius: 50%;
+  right: 17%;
+  top: 12%;
+  background: radial-gradient(circle at 35% 30%, #f3eaff, #c38aff 45%, #7936bb);
+  box-shadow:
+    0 0 45px rgba(174,105,255,.55),
+    0 0 120px rgba(174,105,255,.25);
+  opacity: .32;
 }
 
-.logo {
-  font-size: 21px;
-  font-weight: 800;
-  margin-bottom: 25px;
+/* ================= ANIME GIRL ================= */
+
+.character {
+  position: absolute;
+  right: 3%;
+  bottom: -30px;
+  width: 520px;
+  height: 820px;
+  filter:
+    drop-shadow(0 0 25px rgba(174,105,255,.25))
+    drop-shadow(0 25px 50px rgba(0,0,0,.7));
+  opacity: .88;
 }
 
-.logo span {
+/* hair */
+
+.hair {
+  position: absolute;
+  width: 300px;
+  height: 390px;
+  right: 110px;
+  top: 80px;
+  background: linear-gradient(145deg, #39265d, #17152b 65%, #090912);
+  border-radius: 48% 48% 42% 45%;
+  transform: rotate(4deg);
+  box-shadow: inset -30px -20px 50px rgba(0,0,0,.5);
+}
+
+.hair:before,
+.hair:after {
+  content: "";
+  position: absolute;
+  background: inherit;
+  width: 130px;
+  height: 310px;
+  top: 150px;
+  border-radius: 50%;
+}
+
+.hair:before {
+  left: -48px;
+  transform: rotate(18deg);
+}
+
+.hair:after {
+  right: -35px;
+  transform: rotate(-16deg);
+}
+
+/* ears */
+
+.ear {
+  position: absolute;
+  width: 105px;
+  height: 145px;
+  top: 45px;
+  background: #2d1e49;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  z-index: 2;
+}
+
+.ear.left {
+  left: 125px;
+  transform: rotate(-20deg);
+}
+
+.ear.right {
+  right: 105px;
+  transform: rotate(20deg);
+}
+
+.ear:after {
+  content: "";
+  position: absolute;
+  inset: 20px 25px 20px;
+  background: #bd6aaf;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
   opacity: .55;
 }
 
-.new-chat {
-  border: 1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.06);
-  color: white;
+/* face */
+
+.face {
+  position: absolute;
+  width: 245px;
+  height: 285px;
+  right: 140px;
+  top: 145px;
+  background: linear-gradient(145deg, #f8d5c9, #eab4b7);
+  border-radius: 46% 46% 48% 48%;
+  z-index: 3;
+  box-shadow: inset -15px -10px 30px rgba(130,60,100,.15);
+}
+
+/* fringe */
+
+.fringe {
+  position: absolute;
+  z-index: 5;
+  width: 250px;
+  height: 120px;
+  right: 137px;
+  top: 135px;
+  background: #312047;
+  clip-path: polygon(
+    0 0, 100% 0, 90% 65%,
+    72% 30%, 62% 95%,
+    47% 40%, 30% 88%,
+    22% 35%, 5% 70%
+  );
+}
+
+/* eyes */
+
+.eye {
+  position: absolute;
+  z-index: 6;
+  width: 52px;
+  height: 70px;
+  top: 255px;
+  background: #fff;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.eye.left {
+  right: 275px;
+}
+
+.eye.right {
+  right: 165px;
+}
+
+.eye:after {
+  content: "";
+  position: absolute;
+  width: 30px;
+  height: 42px;
+  left: 11px;
+  bottom: 5px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 30%, #fff 0 4px, transparent 5px),
+    linear-gradient(#8c55dc, #321d67);
+}
+
+.eye:before {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+  z-index: 2;
+  top: 34px;
+  left: 22px;
+}
+
+/* nose + mouth */
+
+.nose {
+  position: absolute;
+  z-index: 6;
+  right: 228px;
+  top: 325px;
+  width: 8px;
+  height: 12px;
+  border-left: 2px solid rgba(120,70,90,.4);
+  transform: rotate(-20deg);
+}
+
+.mouth {
+  position: absolute;
+  z-index: 6;
+  right: 205px;
+  top: 350px;
+  width: 35px;
+  height: 16px;
+  border-bottom: 3px solid #9c5274;
+  border-radius: 0 0 50% 50%;
+}
+
+/* body */
+
+.neck {
+  position: absolute;
+  z-index: 2;
+  right: 220px;
+  top: 405px;
+  width: 80px;
+  height: 100px;
+  background: #eab9b5;
+}
+
+.body {
+  position: absolute;
+  right: 85px;
+  top: 450px;
+  width: 340px;
+  height: 390px;
+  border-radius: 48% 48% 20% 20%;
+  background:
+    linear-gradient(130deg, #24183a, #101020 70%);
+  box-shadow: inset 20px 0 50px rgba(184,99,255,.13);
+}
+
+/* clothing */
+
+.collar {
+  position: absolute;
+  z-index: 4;
+  right: 185px;
+  top: 435px;
+  width: 150px;
+  height: 105px;
+  border-left: 8px solid #e7d9f7;
+  border-right: 8px solid #e7d9f7;
+  transform: rotate(45deg);
+  opacity: .8;
+}
+
+.ribbon {
+  position: absolute;
+  z-index: 5;
+  right: 220px;
+  top: 505px;
+  width: 70px;
+  height: 80px;
+  background: linear-gradient(135deg, #ff75c8, #8e55ff);
+  clip-path: polygon(50% 0, 100% 30%, 72% 100%, 50% 65%, 28% 100%, 0 30%);
+}
+
+/* tail */
+
+.tail {
+  position: absolute;
+  z-index: 0;
+  right: -15px;
+  bottom: 100px;
+  width: 230px;
+  height: 470px;
+  border: 55px solid #3c2759;
+  border-left-color: transparent;
+  border-radius: 50%;
+  transform: rotate(-25deg);
+  opacity: .7;
+}
+
+/* ================= APP ================= */
+
+.app {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+  width: 255px;
+  flex-shrink: 0;
+  padding: 18px;
+  background: rgba(7,8,17,.74);
+  backdrop-filter: blur(25px);
+  border-right: 1px solid var(--border);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 20px;
+  margin-bottom: 25px;
+}
+
+.logo-icon {
+  width: 37px;
+  height: 37px;
   border-radius: 12px;
-  padding: 13px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #9a63ff, #ff70c8);
+  box-shadow: 0 0 25px rgba(161,93,255,.35);
+}
+
+.new-chat {
+  width: 100%;
+  padding: 13px 15px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: white;
+  background: rgba(255,255,255,.055);
   cursor: pointer;
   text-align: left;
   font-size: 14px;
 }
 
 .new-chat:hover {
-  background: rgba(255,255,255,.11);
+  background: rgba(255,255,255,.1);
 }
 
-.sidebar-title {
-  margin-top: 28px;
-  margin-bottom: 10px;
-  color: #888da5;
-  font-size: 12px;
+.section {
+  margin-top: 30px;
+  color: #777b91;
+  font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.3px;
 }
 
 /* MAIN */
+
 .main {
-  flex: 1;
   min-width: 0;
+  flex: 1;
   display: flex;
   flex-direction: column;
 }
 
 /* HEADER */
+
 .header {
-  height: 68px;
+  height: 65px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   padding: 0 25px;
-  background: rgba(8, 10, 22, 0.48);
+  background: rgba(7,8,17,.45);
   backdrop-filter: blur(18px);
-  border-bottom: 1px solid rgba(255,255,255,.07);
+  border-bottom: 1px solid var(--border);
 }
 
-.header-title {
+.header-name {
+  font-size: 15px;
   font-weight: 700;
-  font-size: 16px;
 }
 
-.status {
-  margin-left: 10px;
+.online {
+  margin-left: 12px;
+  color: #72e8aa;
   font-size: 12px;
-  color: #8d93aa;
 }
 
-.status::before {
+.online:before {
   content: "";
   display: inline-block;
   width: 7px;
   height: 7px;
-  margin-right: 6px;
   border-radius: 50%;
-  background: #65e6a5;
-  box-shadow: 0 0 10px #65e6a5;
+  background: #72e8aa;
+  box-shadow: 0 0 10px #72e8aa;
+  margin-right: 6px;
 }
 
 /* CHAT */
+
 #chat {
   flex: 1;
   overflow-y: auto;
-  padding: 45px 20px 140px;
-  scroll-behavior: smooth;
+  padding: 40px 20px 145px;
 }
 
 .chat-inner {
-  width: min(900px, 100%);
+  width: min(850px, 100%);
   margin: auto;
 }
 
 .welcome {
+  margin-top: 12vh;
   text-align: center;
-  margin: 12vh auto 50px;
-}
-
-.welcome-icon {
-  width: 70px;
-  height: 70px;
-  margin: auto auto 20px;
-  border-radius: 22px;
-  display: grid;
-  place-items: center;
-  font-size: 32px;
-  background: rgba(255,255,255,.09);
-  border: 1px solid rgba(255,255,255,.12);
-  box-shadow: 0 15px 50px rgba(0,0,0,.3);
 }
 
 .welcome h1 {
+  font-size: 37px;
   margin: 0 0 10px;
-  font-size: 34px;
+  letter-spacing: -1.5px;
 }
 
 .welcome p {
+  color: var(--muted);
   margin: 0;
-  color: #aeb3c7;
+}
+
+.spark {
+  display: inline-grid;
+  place-items: center;
+  width: 62px;
+  height: 62px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  font-size: 28px;
+  background: linear-gradient(
+    135deg,
+    rgba(157,92,255,.25),
+    rgba(255,91,195,.18)
+  );
+  border: 1px solid rgba(255,255,255,.1);
+  box-shadow: 0 0 40px rgba(155,91,255,.15);
 }
 
 /* MESSAGES */
+
 .message-row {
   display: flex;
-  margin: 20px 0;
-  animation: appear .2s ease-out;
+  margin: 22px 0;
+  animation: slide .22s ease;
 }
 
-@keyframes appear {
+@keyframes slide {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(7px);
   }
   to {
     opacity: 1;
@@ -201,105 +500,115 @@ body::before {
 }
 
 .message {
-  max-width: min(760px, 85%);
+  max-width: 78%;
   padding: 14px 17px;
-  border-radius: 17px;
-  line-height: 1.6;
-  white-space: pre-wrap;
+  border-radius: 18px;
   font-size: 15px;
+  line-height: 1.65;
+  white-space: pre-wrap;
 }
 
 .message.user {
-  background: rgba(255,255,255,.11);
-  border: 1px solid rgba(255,255,255,.08);
+  background: linear-gradient(
+    135deg,
+    rgba(142,84,230,.48),
+    rgba(203,79,166,.32)
+  );
+  border: 1px solid rgba(255,255,255,.1);
 }
 
 .message.assistant {
-  background: rgba(9, 11, 25, .72);
-  border: 1px solid rgba(255,255,255,.07);
-  backdrop-filter: blur(12px);
+  background: rgba(10,11,22,.72);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(15px);
 }
 
 /* COMPOSER */
+
 .composer-area {
   position: absolute;
-  left: 270px;
-  right: 0;
+  z-index: 20;
   bottom: 0;
-  padding: 18px 20px 22px;
+  left: 255px;
+  right: 0;
+  padding: 20px;
   background: linear-gradient(
     transparent,
-    rgba(5,7,18,.82) 35%
+    rgba(7,8,17,.9) 45%
   );
 }
 
 .composer {
-  width: min(900px, 100%);
+  width: min(850px, 100%);
   margin: auto;
   display: flex;
   align-items: flex-end;
-  gap: 10px;
-  padding: 10px;
-  border-radius: 18px;
-  background: rgba(15,17,32,.78);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,.12);
-  box-shadow: 0 15px 50px rgba(0,0,0,.35);
+  gap: 7px;
+  padding: 8px;
+  border: 1px solid rgba(255,255,255,.11);
+  border-radius: 19px;
+  background: rgba(11,12,24,.82);
+  backdrop-filter: blur(25px);
+  box-shadow:
+    0 15px 50px rgba(0,0,0,.35),
+    0 0 40px rgba(130,75,255,.05);
 }
 
 textarea {
   flex: 1;
   min-height: 48px;
-  max-height: 160px;
+  max-height: 150px;
   resize: none;
   border: 0;
   outline: 0;
-  background: transparent;
-  color: white;
   padding: 13px 8px;
-  font-size: 15px;
-  font-family: inherit;
+  color: white;
+  background: transparent;
+  font: inherit;
 }
 
 textarea::placeholder {
-  color: #747a92;
+  color: #686c80;
 }
 
-.action {
+.tool {
   width: 43px;
   height: 43px;
-  flex-shrink: 0;
   border: 0;
-  border-radius: 12px;
-  background: rgba(255,255,255,.07);
-  color: white;
+  border-radius: 13px;
+  background: rgba(255,255,255,.055);
+  color: #bbbfd0;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 17px;
 }
 
-.action:hover {
-  background: rgba(255,255,255,.14);
+.tool:hover {
+  background: rgba(255,255,255,.11);
+  color: white;
 }
 
 .send {
+  color: #111;
   background: white;
-  color: black;
+  font-size: 20px;
+  font-weight: 700;
 }
 
 .send:hover {
-  background: #ddd;
+  background: #e8e8e8;
 }
 
-.footer-note {
-  width: min(900px, 100%);
+.note {
+  width: min(850px, 100%);
   margin: 8px auto 0;
   text-align: center;
-  color: #686e84;
-  font-size: 11px;
+  color: #555a70;
+  font-size: 10px;
 }
 
 /* MOBILE */
-@media (max-width: 700px) {
+
+@media(max-width: 700px) {
   .sidebar {
     display: none;
   }
@@ -308,21 +617,23 @@ textarea::placeholder {
     left: 0;
   }
 
-  .header {
-    padding: 0 17px;
+  .character {
+    right: -190px;
+    opacity: .22;
+    transform: scale(.85);
+    transform-origin: bottom right;
   }
 
-  #chat {
-    padding-left: 12px;
-    padding-right: 12px;
+  .moon {
+    right: -50px;
   }
 
   .welcome h1 {
-    font-size: 27px;
+    font-size: 28px;
   }
 
   .message {
-    max-width: 92%;
+    max-width: 90%;
   }
 }
 </style>
@@ -331,17 +642,43 @@ textarea::placeholder {
 
 <body>
 
+<div class="background">
+  <div class="grid"></div>
+  <div class="moon"></div>
+
+  <div class="character">
+    <div class="tail"></div>
+    <div class="ear left"></div>
+    <div class="ear right"></div>
+    <div class="hair"></div>
+    <div class="face"></div>
+    <div class="fringe"></div>
+    <div class="eye left"></div>
+    <div class="eye right"></div>
+    <div class="nose"></div>
+    <div class="mouth"></div>
+    <div class="neck"></div>
+    <div class="body"></div>
+    <div class="collar"></div>
+    <div class="ribbon"></div>
+  </div>
+</div>
+
 <div class="app">
 
   <aside class="sidebar">
-    <div class="logo">🤖 Dalbayob <span>AI</span></div>
 
 ```
+<div class="logo">
+  <div class="logo-icon">✦</div>
+  Dalbayob AI
+</div>
+
 <button class="new-chat" onclick="newChat()">
-  ＋ New chat
+  ＋ &nbsp; New conversation
 </button>
 
-<div class="sidebar-title">
+<div class="section">
   Conversations
 </div>
 ```
@@ -352,16 +689,16 @@ textarea::placeholder {
 
 ```
 <header class="header">
-  <div class="header-title">Dalbayob AI</div>
-  <div class="status">Online</div>
+  <div class="header-name">Dalbayob AI</div>
+  <div class="online">Online</div>
 </header>
 
 <section id="chat">
   <div class="chat-inner" id="chat-inner">
 
     <div class="welcome" id="welcome">
-      <div class="welcome-icon">🤖</div>
-      <h1>What can I help you with?</h1>
+      <div class="spark">✦</div>
+      <h1>What are we doing today?</h1>
       <p>Ask Dalbayob AI anything.</p>
     </div>
 
@@ -372,8 +709,8 @@ textarea::placeholder {
 
   <div class="composer">
 
-    <button class="action" title="Attach file">
-      📎
+    <button class="tool" title="Attach file">
+      ＋
     </button>
 
     <textarea
@@ -382,18 +719,22 @@ textarea::placeholder {
       placeholder="Message Dalbayob AI..."
     ></textarea>
 
-    <button class="action" title="Image generation">
-      ✨
+    <button class="tool" title="Generate image">
+      ◈
     </button>
 
-    <button class="action send" onclick="sendMessage()" title="Send">
+    <button
+      class="tool send"
+      onclick="sendMessage()"
+      title="Send"
+    >
       ↑
     </button>
 
   </div>
 
-  <div class="footer-note">
-    Dalbayob AI can make mistakes. Check important information.
+  <div class="note">
+    Dalbayob AI may make mistakes. Check important information.
   </div>
 
 </div>
@@ -406,15 +747,16 @@ textarea::placeholder {
 <script>
 
 const input = document.getElementById("input");
+const chat = document.getElementById("chat");
 const chatInner = document.getElementById("chat-inner");
-const welcome = document.getElementById("welcome");
 
 input.addEventListener("input", () => {
   input.style.height = "auto";
-  input.style.height = Math.min(input.scrollHeight, 160) + "px";
+  input.style.height =
+    Math.min(input.scrollHeight, 150) + "px";
 });
 
-input.addEventListener("keydown", function(event) {
+input.addEventListener("keydown", event => {
 
   if (event.key === "Enter" && !event.shiftKey) {
     event.preventDefault();
@@ -424,6 +766,8 @@ input.addEventListener("keydown", function(event) {
 });
 
 function addMessage(text, type) {
+
+  const welcome = document.getElementById("welcome");
 
   if (welcome) {
     welcome.style.display = "none";
@@ -439,8 +783,7 @@ function addMessage(text, type) {
   row.appendChild(message);
   chatInner.appendChild(row);
 
-  document.getElementById("chat").scrollTop =
-    document.getElementById("chat").scrollHeight;
+  chat.scrollTop = chat.scrollHeight;
 
   return message;
 }
@@ -473,7 +816,9 @@ async function sendMessage() {
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.error || "AI request failed.");
+      throw new Error(
+        data.error || "AI request failed."
+      );
     }
 
     reply.textContent = data.reply;
@@ -490,8 +835,8 @@ function newChat() {
 
   chatInner.innerHTML = `
     <div class="welcome" id="welcome">
-      <div class="welcome-icon">🤖</div>
-      <h1>What can I help you with?</h1>
+      <div class="spark">✦</div>
+      <h1>What are we doing today?</h1>
       <p>Ask Dalbayob AI anything.</p>
     </div>
   `;
@@ -499,175 +844,6 @@ function newChat() {
 }
 
 </script>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dalbayob AI</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f0f0f;
-      color: white;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    header {
-      padding: 18px 24px;
-      border-bottom: 1px solid #292929;
-      font-size: 22px;
-      font-weight: bold;
-    }
-
-    #chat {
-      flex: 1;
-      overflow-y: auto;
-      padding: 30px;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
-
-    .message {
-      max-width: 800px;
-      padding: 14px 18px;
-      border-radius: 14px;
-      line-height: 1.5;
-      white-space: pre-wrap;
-    }
-
-    .user {
-      align-self: flex-end;
-      background: #303030;
-    }
-
-    .assistant {
-      align-self: flex-start;
-      background: #181818;
-    }
-
-    .input-area {
-      padding: 18px;
-      border-top: 1px solid #292929;
-      display: flex;
-      gap: 10px;
-      max-width: 1000px;
-      width: 100%;
-      margin: auto;
-    }
-
-    textarea {
-      flex: 1;
-      resize: none;
-      min-height: 50px;
-      max-height: 160px;
-      padding: 14px;
-      border-radius: 12px;
-      border: 1px solid #383838;
-      background: #191919;
-      color: white;
-      outline: none;
-      font-size: 15px;
-    }
-
-    button {
-      border: none;
-      border-radius: 12px;
-      padding: 0 22px;
-      background: white;
-      color: black;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #ddd;
-    }
-  </style>
-</head>
-
-<body>
-
-  <header>🤖 Dalbayob AI</header>
-
-  <main id="chat">
-    <div class="message assistant">
-      Yo 👋 I'm Dalbayob AI. Ask me anything.
-    </div>
-  </main>
-
-  <div class="input-area">
-    <textarea id="input" placeholder="Message Dalbayob AI..."></textarea>
-    <button onclick="sendMessage()">Send</button>
-  </div>
-
-  <script>
-    const input = document.getElementById("input");
-    const chat = document.getElementById("chat");
-
-    input.addEventListener("keydown", function(event) {
-      if (event.key === "Enter" && !event.shiftKey) {
-        event.preventDefault();
-        sendMessage();
-      }
-    });
-
-    function addMessage(text, type) {
-      const message = document.createElement("div");
-      message.className = "message " + type;
-      message.textContent = text;
-      chat.appendChild(message);
-      chat.scrollTop = chat.scrollHeight;
-      return message;
-    }
-
-    async function sendMessage() {
-      const text = input.value.trim();
-
-      if (!text) return;
-
-      addMessage(text, "user");
-      input.value = "";
-
-      const responseMessage = addMessage("Thinking...", "assistant");
-
-      try {
-        const response = await fetch("/api/chat", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            message: text
-          })
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.error || "Something went wrong.");
-        }
-
-        responseMessage.textContent = data.reply;
-
-      } catch (error) {
-        responseMessage.textContent =
-          "Error: " + error.message;
-      }
-    }
-  </script>
 
 </body>
 </html>
