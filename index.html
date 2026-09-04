@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dalbayob AI</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f0f0f;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 18px 24px;
+      border-bottom: 1px solid #292929;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    #chat {
+      flex: 1;
+      overflow-y: auto;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .message {
+      max-width: 800px;
+      padding: 14px 18px;
+      border-radius: 14px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+
+    .user {
+      align-self: flex-end;
+      background: #303030;
+    }
+
+    .assistant {
+      align-self: flex-start;
+      background: #181818;
+    }
+
+    .input-area {
+      padding: 18px;
+      border-top: 1px solid #292929;
+      display: flex;
+      gap: 10px;
+      max-width: 1000px;
+      width: 100%;
+      margin: auto;
+    }
+
+    textarea {
+      flex: 1;
+      resize: none;
+      min-height: 50px;
+      max-height: 160px;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid #383838;
+      background: #191919;
+      color: white;
+      outline: none;
+      font-size: 15px;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 0 22px;
+      background: white;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #ddd;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>🤖 Dalbayob AI</header>
+
+  <main id="chat">
+    <div class="message assistant">
+      Yo 👋 I'm Dalbayob AI. Ask me anything.
+    </div>
+  </main>
+
+  <div class="input-area">
+    <textarea id="input" placeholder="Message Dalbayob AI..."></textarea>
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <script>
+    const input = document.getElementById("input");
+    const chat = document.getElementById("chat");
+
+    input.addEventListener("keydown", function(event) {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        sendMessage();
+      }
+    });
+
+    function addMessage(text, type) {
+      const message = document.createElement("div");
+      message.className = "message " + type;
+      message.textContent = text;
+      chat.appendChild(message);
+      chat.scrollTop = chat.scrollHeight;
+      return message;
+    }
+
+    async function sendMessage() {
+      const text = input.value.trim();
+
+      if (!text) return;
+
+      addMessage(text, "user");
+      input.value = "";
+
+      const responseMessage = addMessage("Thinking...", "assistant");
+
+      try {
+        const response = await fetch("/api/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            message: text
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "Something went wrong.");
+        }
+
+        responseMessage.textContent = data.reply;
+
+      } catch (error) {
+        responseMessage.textContent =
+          "Error: " + error.message;
+      }
+    }
+  </script>
+
+</body>
+</html>
