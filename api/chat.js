@@ -19,7 +19,7 @@ export default async function handler(req, res) {
         "X-Title": "Dalbayob AI"
       },
       body: JSON.stringify({
-        model: "openrouter/free",
+        model: "poolside/laguna-xs-2.1:free",
         messages: [
           {
             role: "system",
