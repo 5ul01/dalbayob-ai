@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,10 +51,6 @@ body {
         var(--black);
 }
 
-/* =========================================================
-   BACKGROUND
-========================================================= */
-
 body::before {
     content: "";
     position: fixed;
@@ -93,7 +90,6 @@ body::after {
     width: 190px;
     height: 190px;
     pointer-events: none;
-
     z-index: 50;
 
     filter:
@@ -109,8 +105,6 @@ body::after {
     object-fit: contain;
 }
 
-/* Giant top crawler */
-
 .rr1 {
     left: -240px;
     top: 8%;
@@ -118,8 +112,6 @@ body::after {
     height: 210px;
     animation: crawlAcross 25s linear infinite;
 }
-
-/* Large reverse crawler */
 
 .rr2 {
     right: -250px;
@@ -130,8 +122,6 @@ body::after {
     animation: crawlReverse 30s linear infinite;
 }
 
-/* Vertical crawler */
-
 .rr3 {
     left: 12%;
     top: -230px;
@@ -140,8 +130,6 @@ body::after {
     transform: rotate(82deg);
     animation: crawlDown 22s linear infinite;
 }
-
-/* Bottom monster */
 
 .rr4 {
     right: 4%;
@@ -152,8 +140,6 @@ body::after {
     animation: crawlUp 27s linear infinite;
 }
 
-/* Fast little bastard */
-
 .rr5 {
     left: -180px;
     top: 75%;
@@ -161,8 +147,6 @@ body::after {
     height: 150px;
     animation: crawlFast 18s linear infinite;
 }
-
-/* Header crawler */
 
 .rr6 {
     right: -230px;
@@ -173,8 +157,6 @@ body::after {
     animation: crawlHeader 34s linear infinite;
 }
 
-/* Falling crawler */
-
 .rr7 {
     left: 53%;
     top: -210px;
@@ -183,8 +165,6 @@ body::after {
     transform: rotate(110deg);
     animation: crawlDrop 36s linear infinite;
 }
-
-/* Another side crawler */
 
 .rr8 {
     left: -210px;
@@ -199,7 +179,6 @@ body::after {
 ========================================================= */
 
 @keyframes crawlAcross {
-
     0% {
         left: -250px;
         top: 8%;
@@ -233,7 +212,6 @@ body::after {
 }
 
 @keyframes crawlReverse {
-
     0% {
         right: -260px;
         top: 30%;
@@ -260,7 +238,6 @@ body::after {
 }
 
 @keyframes crawlDown {
-
     0% {
         top: -230px;
         left: 12%;
@@ -285,7 +262,6 @@ body::after {
 }
 
 @keyframes crawlUp {
-
     0% {
         bottom: -290px;
         right: 4%;
@@ -310,7 +286,6 @@ body::after {
 }
 
 @keyframes crawlFast {
-
     0% {
         left: -190px;
         top: 75%;
@@ -339,7 +314,6 @@ body::after {
 }
 
 @keyframes crawlHeader {
-
     0% {
         right: -240px;
         top: 11%;
@@ -366,7 +340,6 @@ body::after {
 }
 
 @keyframes crawlDrop {
-
     0% {
         top: -220px;
         left: 53%;
@@ -387,7 +360,6 @@ body::after {
 }
 
 @keyframes crawlSide {
-
     0% {
         left: -220px;
         top: 45%;
@@ -1106,9 +1078,7 @@ textarea::placeholder {
 
 <body>
 
-<!-- =========================================================
-     REAL COCKROACHES
-========================================================= -->
+<!-- REAL COCKROACHES -->
 
 <div class="real-roach rr1">
     <img
@@ -1166,14 +1136,7 @@ textarea::placeholder {
     >
 </div>
 
-
-<!-- =========================================================
-     APPLICATION
-========================================================= -->
-
 <div class="app">
-
-    <!-- SIDEBAR -->
 
     <aside class="sidebar">
 
@@ -1211,12 +1174,7 @@ textarea::placeholder {
 
     </aside>
 
-
-    <!-- MAIN -->
-
     <main class="main">
-
-        <!-- HEADER -->
 
         <header class="header">
 
@@ -1250,9 +1208,6 @@ textarea::placeholder {
 
         </header>
 
-
-        <!-- CHAT -->
-
         <section id="chat">
 
             <div
@@ -1277,9 +1232,6 @@ textarea::placeholder {
                         Intelligence with a slightly questionable pest problem.
                     </p>
 
-
-                    <!-- USER PROVIDED IMAGE -->
-
                     <div class="roach-gallery">
 
                         <img
@@ -1292,9 +1244,6 @@ textarea::placeholder {
                         </div>
 
                     </div>
-
-
-                    <!-- SUGGESTIONS -->
 
                     <div class="suggestions">
 
@@ -1333,9 +1282,6 @@ textarea::placeholder {
             </div>
 
         </section>
-
-
-        <!-- COMPOSER -->
 
         <div class="composer-area">
 
@@ -1381,8 +1327,6 @@ textarea::placeholder {
 
 </div>
 
-
-```html
 <script>
 
 /* =========================================================
@@ -1393,24 +1337,37 @@ const input = document.getElementById("input");
 const chat = document.getElementById("chat");
 const chatInner = document.getElementById("chat-inner");
 
+
+/* =========================================================
+   MEMORY
+========================================================= */
+
 /*
+   Stores the current conversation.
+
+   This allows Dalbayob to understand things
+   mentioned earlier in the same chat.
+*/
+
+let conversationHistory = [];
+
+
+/* =========================================================
    IMAGE MEMORY
+========================================================= */
 
-   This stores the latest image generated by Dalbayob.
+/*
+   Stores the latest generated image.
 
-   Example:
-
-   First prompt:
+   First:
    "Create a fox driving a Mercedes"
 
-   currentImage becomes that image.
-
-   Next prompt:
+   Then:
    "Make the Mercedes black"
 
-   The previous image is sent to /api/image
-   together with the new instruction.
+   The newest image becomes the new currentImage.
 */
+
 let currentImage = null;
 
 
@@ -1495,54 +1452,111 @@ function addMessage(text, type) {
    CHAT
 ========================================================= */
 
-   async function sendMessage() {
+async function sendMessage() {
 
-    const text = input.value.trim();
+    const text =
+        input.value.trim();
 
-    if (!text) return;
+    if (!text)
+        return;
 
-    addMessage(text, "user");
+
+    /* Show user's message */
+
+    addMessage(
+        text,
+        "user"
+    );
+
+
+    /* Clear input */
 
     input.value = "";
-    input.style.height = "auto";
 
-    const reply = addMessage("Thinking...", "assistant");
+    input.style.height =
+        "auto";
+
+
+    /* Show thinking message */
+
+    const reply =
+        addMessage(
+            "Thinking...",
+            "assistant"
+        );
+
 
     try {
 
-        const response = await fetch("/api/chat", {
-            method: "POST",
+        const response =
+            await fetch(
+                "/api/chat",
+                {
+                    method: "POST",
 
-            headers: {
-                "Content-Type": "application/json"
-            },
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
 
-            body: JSON.stringify({
-                message: text,
-                history: conversationHistory
-            })
-        });
+                    body: JSON.stringify({
 
-        const data = await response.json();
+                        message: text,
+
+                        history:
+                            conversationHistory
+
+                    })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
 
         if (!response.ok) {
+
             throw new Error(
-                data.error || "AI request failed."
+                data.error ||
+                "AI request failed."
             );
+
         }
 
-        reply.textContent = data.reply;
 
-        // Save this conversation
+        /*
+           Display response
+        */
+
+        reply.textContent =
+            data.reply;
+
+
+        /*
+           Save conversation
+
+           This is what gives Dalbayob
+           context from previous messages.
+        */
+
         conversationHistory.push({
+
             role: "user",
+
             content: text
+
         });
 
+
         conversationHistory.push({
+
             role: "assistant",
+
             content: data.reply
+
         });
+
 
     } catch (error) {
 
@@ -1551,7 +1565,9 @@ function addMessage(text, type) {
 
     }
 
-    chat.scrollTop = chat.scrollHeight;
+
+    chat.scrollTop =
+        chat.scrollHeight;
 }
 
 
@@ -1564,16 +1580,19 @@ async function generateImage() {
     const prompt =
         input.value.trim();
 
+
     if (!prompt) {
 
         input.focus();
 
         return;
+
     }
 
 
     /*
-       Add user's instruction to chat.
+       Add user's image instruction
+       to the visible chat.
     */
 
     addMessage(
@@ -1589,10 +1608,8 @@ async function generateImage() {
 
 
     /*
-       If an image already exists,
-       Dalbayob is editing it.
-
-       Otherwise it generates a new image.
+       Decide whether this is a new
+       image or an edit.
     */
 
     const statusText =
@@ -1623,22 +1640,10 @@ async function generateImage() {
 
                     body: JSON.stringify({
 
-                        /*
-                           New instruction
-                        */
                         prompt: prompt,
 
-
-                        /*
-                           Latest generated image
-
-                           If this is null:
-                           Generate a new image.
-
-                           If this contains an image:
-                           Edit that image.
-                        */
-                        image: currentImage
+                        image:
+                            currentImage
 
                     })
                 }
@@ -1660,12 +1665,7 @@ async function generateImage() {
 
 
         /*
-           IMPORTANT:
-
-           Save the newly generated/edited image.
-
-           This means the NEXT edit uses
-           this newest version.
+           Save newest image.
         */
 
         currentImage =
@@ -1676,11 +1676,12 @@ async function generateImage() {
            Remove loading text.
         */
 
-        message.textContent = "";
+        message.textContent =
+            "";
 
 
         /*
-           Create image element.
+           Create image.
         */
 
         const image =
@@ -1695,11 +1696,38 @@ async function generateImage() {
             prompt;
 
 
+        message.appendChild(
+            image
+        );
+
+
         /*
-           Add image to chat.
+           Save image interaction
+           to conversation history.
+
+           This gives the text AI some
+           awareness that an image was made.
         */
 
-        message.appendChild(image);
+        conversationHistory.push({
+
+            role: "user",
+
+            content:
+                "[Image request] " +
+                prompt
+
+        });
+
+
+        conversationHistory.push({
+
+            role: "assistant",
+
+            content:
+                "[Generated an image based on the user's request]"
+
+        });
 
 
     } catch (error) {
@@ -1722,14 +1750,22 @@ async function generateImage() {
 function newChat() {
 
     /*
-       IMPORTANT:
+       Clear all conversation memory.
+    */
 
-       Clear image memory when
-       starting a completely new chat.
+    conversationHistory = [];
+
+
+    /*
+       Clear image memory.
     */
 
     currentImage = null;
-    conversationHistory = [];
+
+
+    /*
+       Restore welcome screen.
+    */
 
     chatInner.innerHTML = `
 
@@ -1854,8 +1890,7 @@ function focusImageMode() {
 }
 
 </script>
-```
-
 
 </body>
 </html>
+```
