@@ -6,38 +6,39 @@ export default async function handler(req, res) {
         });
     }
 
+    const message = req.body?.message;
+
+    if (!message) {
+        return res.status(400).json({
+            error: "No message provided"
+        });
+    }
+
+    const key = process.env.POLLINATIONS_API_KEY;
+
+    if (!key) {
+        return res.status(500).json({
+            error: "POLLINATIONS_API_KEY is missing."
+        });
+    }
+
     try {
-        const { message } = req.body || {};
-
-        if (!message) {
-            return res.status(400).json({
-                error: "No message provided"
-            });
-        }
-
-        const apiKey = process.env.POLLINATIONS_API_KEY;
-
-        if (!apiKey) {
-            return res.status(500).json({
-                error: "POLLINATIONS_API_KEY is missing in Vercel."
-            });
-        }
-
         const response = await fetch(
             "https://gen.pollinations.ai/v1/chat/completions",
             {
                 method: "POST",
+
                 headers: {
                     "Content-Type": "application/json",
-                    "Accept": "application/json",
-                    "Authorization": "Bearer " + apiKey
+                    "Authorization": "Bearer " + key
                 },
+
                 body: JSON.stringify({
                     model: "openai",
                     messages: [
                         {
                             role: "system",
-                            content: "You are Dalbayob AI. Be helpful, conversational and concise."
+                            content: "You are Dalbayob AI. Be helpful, friendly and conversational."
                         },
                         {
                             role: "user",
@@ -48,38 +49,32 @@ export default async function handler(req, res) {
             }
         );
 
-        const raw = await response.text();
+        const text = await response.text();
+
+        console.log("Pollinations status:", response.status);
+        console.log("Pollinations response:", text);
+
+        if (!response.ok) {
+            return res.status(response.status).json({
+                error: text
+            });
+        }
 
         let data;
 
         try {
-            data = JSON.parse(raw);
-        } catch {
-            console.error("Pollinations returned:", raw);
-
-            return res.status(502).json({
-                error: "Pollinations returned an invalid response."
+            data = JSON.parse(text);
+        } catch (e) {
+            return res.status(500).json({
+                error: "Pollinations returned non-JSON data."
             });
         }
 
-        if (!response.ok) {
-            console.error("Pollinations error:", data);
-
-            return res.status(response.status).json({
-                error:
-                    data?.error?.message ||
-                    data?.error ||
-                    "Pollinations request failed."
-            });
-        }
-
-        const reply = data?.choices?.[0]?.message?.content;
+        const reply = data.choices?.[0]?.message?.content;
 
         if (!reply) {
-            console.error("Unexpected response:", data);
-
             return res.status(500).json({
-                error: "Pollinations returned no response."
+                error: "No reply received from Pollinations."
             });
         }
 
@@ -88,12 +83,10 @@ export default async function handler(req, res) {
         });
 
     } catch (error) {
-        console.error("Chat error:", error);
+        console.error(error);
 
         return res.status(500).json({
-            error:
-                error?.message ||
-                "Something went wrong connecting to Pollinations."
+            error: error.message || "Chat request failed."
         });
     }
 }
