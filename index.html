@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 
 <html lang="en">
@@ -34,10 +35,6 @@ html, body {
     color: var(--text);
     font-family: Inter, system-ui, sans-serif;
 }
-
-/* =========================
-   AURORA BACKGROUND
-========================= */
 
 .aurora {
     position: fixed;
@@ -118,8 +115,6 @@ html, body {
     }
 }
 
-/* subtle stars */
-
 .stars {
     position: absolute;
     inset: 0;
@@ -131,10 +126,6 @@ html, body {
     background-position: 20px 30px, 80px 90px;
 }
 
-/* =========================
-   APPLICATION
-========================= */
-
 .app {
     position: relative;
     z-index: 2;
@@ -142,10 +133,6 @@ html, body {
     width: 100%;
     height: 100vh;
 }
-
-/* =========================
-   SIDEBAR
-========================= */
 
 .sidebar {
     width: 265px;
@@ -239,10 +226,6 @@ html, body {
     font-size: 10px;
 }
 
-/* =========================
-   MAIN
-========================= */
-
 .main {
     position: relative;
     min-width: 0;
@@ -250,10 +233,6 @@ html, body {
     display: flex;
     flex-direction: column;
 }
-
-/* =========================
-   HEADER
-========================= */
 
 .header {
     height: 64px;
@@ -294,10 +273,6 @@ html, body {
     box-shadow: 0 0 10px rgba(114,246,193,.8);
 }
 
-/* =========================
-   CHAT
-========================= */
-
 #chat {
     flex: 1;
     overflow-y: auto;
@@ -322,10 +297,6 @@ html, body {
     width: min(820px, 100%);
     margin: auto;
 }
-
-/* =========================
-   WELCOME
-========================= */
 
 .welcome {
     margin-top: 15vh;
@@ -374,10 +345,6 @@ html, body {
     font-size: 13px;
 }
 
-/* =========================
-   MESSAGES
-========================= */
-
 .message-row {
     display: flex;
     margin: 25px 0;
@@ -420,10 +387,6 @@ html, body {
     border: 1px solid rgba(255,255,255,.055);
     backdrop-filter: blur(15px);
 }
-
-/* =========================
-   COMPOSER
-========================= */
 
 .composer-area {
     position: absolute;
@@ -528,10 +491,6 @@ textarea::placeholder {
     font-size: 9px;
 }
 
-/* =========================
-   MOBILE
-========================= */
-
 @media (max-width: 720px) {
 
     .sidebar {
@@ -589,7 +548,6 @@ textarea::placeholder {
 
 <div class="app">
 
-```
 <aside class="sidebar">
 
     <div class="brand">
@@ -617,7 +575,6 @@ textarea::placeholder {
 <main class="main">
 
     <header class="header">
-
         <div class="header-info">
             <div class="header-name">
                 Dalbayob AI
@@ -628,7 +585,6 @@ textarea::placeholder {
                 Online
             </div>
         </div>
-
     </header>
 
     <section id="chat">
@@ -673,10 +629,12 @@ textarea::placeholder {
                 placeholder="Message Dalbayob AI..."
             ></textarea>
 
+            <!-- IMAGE GENERATION BUTTON -->
             <button
                 class="tool"
                 title="Generate image"
                 type="button"
+                onclick="generateImage()"
             >
                 ◇
             </button>
@@ -699,7 +657,6 @@ textarea::placeholder {
     </div>
 
 </main>
-```
 
 </div>
 
@@ -794,6 +751,74 @@ async function sendMessage() {
     chat.scrollTop = chat.scrollHeight;
 }
 
+
+/* =========================
+   IMAGE GENERATION
+========================= */
+
+async function generateImage() {
+
+    const prompt = input.value.trim();
+
+    if (!prompt) {
+        input.focus();
+        return;
+    }
+
+    addMessage(prompt, "user");
+
+    input.value = "";
+    input.style.height = "auto";
+
+    const message = addMessage(
+        "🎨 Generating image...",
+        "assistant"
+    );
+
+    try {
+
+        const response = await fetch("/api/image", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                prompt: prompt
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                data.error || "Image generation failed."
+            );
+        }
+
+        message.textContent = "";
+
+        const image = document.createElement("img");
+
+        image.src = data.image;
+        image.alt = prompt;
+
+        image.style.maxWidth = "100%";
+        image.style.borderRadius = "12px";
+        image.style.display = "block";
+
+        message.appendChild(image);
+
+    } catch (error) {
+
+        message.textContent =
+            "⚠️ " + error.message;
+
+    }
+
+    chat.scrollTop = chat.scrollHeight;
+}
+
+
 function newChat() {
 
     chatInner.innerHTML = `
@@ -811,3 +836,4 @@ function newChat() {
 
 </body>
 </html>
+```
