@@ -1,3 +1,4 @@
+```js
 export default async function handler(req, res) {
     if (req.method !== "POST") {
         return res.status(405).json({
@@ -8,6 +9,9 @@ export default async function handler(req, res) {
     try {
         const body = req.body || {};
         const message = body.message;
+        const history = Array.isArray(body.history)
+            ? body.history
+            : [];
 
         if (!message) {
             return res.status(400).json({
@@ -24,7 +28,6 @@ export default async function handler(req, res) {
         }
 
         const systemPrompt = `
-text
 You are Dalbayob AI, a modern conversational AI assistant.
 
 Your personality:
@@ -45,13 +48,13 @@ Your personality:
 - Be honest when you don't know something.
 
 Conversation behavior:
-- Remember information from earlier messages in the current conversation.
-- Use previous messages as context instead of treating every message as a completely new conversation.
-- When the user refers to "that", "it", "the previous one", "the image", etc., use the conversation context to determine what they mean.
-- If the user corrects you, adapt immediately instead of repeating the previous mistake.
-- If the user asks for a modification, preserve everything that doesn't need changing.
-- When the user asks a simple question, give a simple answer.
-- When the user needs detailed help, provide detailed help.
+- Use the conversation history provided to you.
+- Remember relevant information from earlier messages in the current conversation.
+- When the user says "that", "it", "the previous one", etc., use the conversation history to understand what they mean.
+- If the user corrects you, adapt immediately.
+- Do not pretend you remember something that isn't in the conversation history.
+- Keep answers concise when the question is simple.
+- Give more detail when the user needs it.
 
 For coding:
 - Give complete working code when requested.
@@ -61,32 +64,66 @@ For coding:
 - If something is uncertain, say so instead of inventing an API or feature.
 
 For image generation:
-- Understand that the user may want to iteratively modify the most recently generated image.
-- When an image is being edited, preserve the existing image and make only the requested changes.
-
-
+- Understand that the user may want to create an image or modify the latest generated image.
+- If the user is asking to modify an existing image, preserve everything that doesn't need changing.
 `;
+
+        /*
+         * Build the conversation that will be sent
+         * to Pollinations.
+         */
+
+        const messages = [
+            {
+                role: "system",
+                content: systemPrompt
+            }
+        ];
+
+        /*
+         * Add previous conversation messages.
+         *
+         * Only accept normal user/assistant messages.
+         * This prevents the frontend from injecting another
+         * system prompt.
+         */
+
+        for (const item of history) {
+            if (
+                item &&
+                (item.role === "user" || item.role === "assistant") &&
+                typeof item.content === "string" &&
+                item.content.trim()
+            ) {
+                messages.push({
+                    role: item.role,
+                    content: item.content
+                });
+            }
+        }
+
+        /*
+         * Add the current message last.
+         */
+
+        messages.push({
+            role: "user",
+            content: message
+        });
 
         const response = await fetch(
             "https://gen.pollinations.ai/v1/chat/completions",
             {
                 method: "POST",
+
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": "Bearer " + apiKey
                 },
+
                 body: JSON.stringify({
                     model: "gpt-5.6-luna",
-                    messages: [
-                        {
-                            role: "system",
-                            content: systemPrompt
-                        },
-                        {
-                            role: "user",
-                            content: message
-                        }
-                    ]
+                    messages: messages
                 })
             }
         );
@@ -117,6 +154,10 @@ For image generation:
             });
         }
 
+        /*
+         * Image generation request.
+         */
+
         if (reply.startsWith("[GENERATE_IMAGE]")) {
             const imagePrompt = reply
                 .replace("[GENERATE_IMAGE]", "")
@@ -142,3 +183,4 @@ For image generation:
         });
     }
 }
+```
