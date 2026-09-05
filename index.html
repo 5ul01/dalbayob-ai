@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -1321,6 +1322,7 @@ textarea::placeholder {
     }
 }
 </style>
+
 </head>
 
 <body>
@@ -1361,279 +1363,253 @@ textarea::placeholder {
     <img src="/assets/model.png" alt="">
 </div>
 
-
 <div class="app">
 
-    <!-- =====================================================
-         SIDEBAR
-    ====================================================== -->
+```
+<aside class="sidebar">
 
-    <aside class="sidebar">
+    <div class="brand-mark">
+        ✦
+    </div>
 
-        <div class="brand-mark">
-            ✦
+    <div class="nav">
+
+        <button
+            class="active"
+            title="Chat"
+            type="button">
+            ◈
+        </button>
+
+        <button
+            title="New chat"
+            type="button"
+            onclick="newChat()">
+            ☰
+        </button>
+
+        <button
+            title="Image generation"
+            type="button"
+            onclick="focusImageMode()">
+            ☪
+        </button>
+
+    </div>
+
+    <div class="sidebar-bottom">
+        DALBAYOB
+    </div>
+
+</aside>
+
+
+<main class="main">
+
+    <header class="header">
+
+        <div class="header-left">
+
+            <div class="header-symbol">
+                ☪
+            </div>
+
+            <div>
+
+                <div class="header-title">
+                    DALBAYOB AI
+                </div>
+
+                <div class="header-sub">
+                    INTELLIGENCE SYSTEM
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="nav">
+
+        <div class="status">
+
+            <div class="status-dot"></div>
+
+            SYSTEM ONLINE
+
+        </div>
+
+    </header>
+
+
+    <section id="chat">
+
+        <div
+            class="chat-inner"
+            id="chat-inner">
+
+            <div
+                class="welcome"
+                id="welcome">
+
+                <div class="welcome-emblem">
+
+                    <div class="crescent">
+                        ☪
+                    </div>
+
+                </div>
+
+                <h1>
+                    Welcome to Dalbayob.
+                </h1>
+
+                <p>
+                    Intelligence with a slightly questionable pest problem.
+                </p>
+
+
+                <div class="roach-gallery">
+
+                    <img
+                        src="https://avatars.fastly.steamstatic.com/b76a2e69616ae68a574fdc638ab82fdcc3f94161_full.jpg"
+                        alt="Dalbayob specimen"
+                    >
+
+                    <div class="roach-gallery-caption">
+                        DALBAYOB SPECIMEN ARCHIVE · ROACH DIVISION
+                    </div>
+
+                </div>
+
+
+                <div class="suggestions">
+
+                    <button
+                        class="suggestion"
+                        type="button"
+                        onclick="useSuggestion('What can you do?')">
+                        What can you do?
+                    </button>
+
+                    <button
+                        class="suggestion"
+                        type="button"
+                        onclick="useSuggestion('Explain something complicated')">
+                        Explain something complicated
+                    </button>
+
+                    <button
+                        class="suggestion"
+                        type="button"
+                        onclick="useSuggestion('Give me a creative idea')">
+                        Give me a creative idea
+                    </button>
+
+                    <button
+                        class="suggestion"
+                        type="button"
+                        onclick="useSuggestion('Generate an image of a giant cockroach')">
+                        🪳 Summon a roach
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <div class="composer-area">
+
+        <div
+            class="attachment-preview"
+            id="attachmentPreview">
+
+            <img
+                id="attachmentPreviewImage"
+                src=""
+                alt="Attached image"
+            >
+
+            <div class="attachment-info">
+
+                <div class="attachment-title">
+                    IMAGE ATTACHED
+                </div>
+
+                <div class="attachment-sub">
+                    Dalbayob can analyze this image.
+                </div>
+
+            </div>
 
             <button
-                class="active"
-                title="Chat"
-                type="button">
-                ◈
+                class="attachment-remove"
+                type="button"
+                title="Remove image"
+                onclick="clearAttachment()">
+                ×
             </button>
 
-            <button
-                title="New chat"
-                type="button"
-                onclick="newChat()">
-                ☰
-            </button>
+        </div>
+
+
+        <div class="composer">
+
+            <input
+                id="imageInput"
+                type="file"
+                accept="image/*"
+                onchange="handleImageUpload(event)"
+            >
+
 
             <button
-                title="Image generation"
+                class="tool"
+                title="Attach image"
                 type="button"
-                onclick="focusImageMode()">
+                onclick="openImagePicker()">
+                ✡
+            </button>
+
+
+            <textarea
+                id="input"
+                rows="1"
+                placeholder="Speak to Dalbayob..."></textarea>
+
+
+            <button
+                class="tool image"
+                title="Generate image"
+                type="button"
+                onclick="generateImage()">
                 ☪
             </button>
 
-        </div>
 
-        <div class="sidebar-bottom">
-            DALBAYOB
-        </div>
-
-    </aside>
-
-
-    <!-- =====================================================
-         MAIN
-    ====================================================== -->
-
-    <main class="main">
-
-        <!-- HEADER -->
-
-        <header class="header">
-
-            <div class="header-left">
-
-                <div class="header-symbol">
-                    ☪
-                </div>
-
-                <div>
-
-                    <div class="header-title">
-                        DALBAYOB AI
-                    </div>
-
-                    <div class="header-sub">
-                        INTELLIGENCE SYSTEM
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="status">
-
-                <div class="status-dot"></div>
-
-                SYSTEM ONLINE
-
-            </div>
-
-        </header>
-
-
-        <!-- CHAT -->
-
-        <section id="chat">
-
-            <div
-                class="chat-inner"
-                id="chat-inner">
-
-                <div
-                    class="welcome"
-                    id="welcome">
-
-                    <div class="welcome-emblem">
-
-                        <div class="crescent">
-                            ☪
-                        </div>
-
-                    </div>
-
-                    <h1>
-                        Welcome to Dalbayob.
-                    </h1>
-
-                    <p>
-                        Intelligence with a slightly questionable pest problem.
-                    </p>
-
-
-                    <div class="roach-gallery">
-
-                        <img
-                            src="https://avatars.fastly.steamstatic.com/b76a2e69616ae68a574fdc638ab82fdcc3f94161_full.jpg"
-                            alt="Dalbayob specimen"
-                        >
-
-                        <div class="roach-gallery-caption">
-                            DALBAYOB SPECIMEN ARCHIVE · ROACH DIVISION
-                        </div>
-
-                    </div>
-
-
-                    <div class="suggestions">
-
-                        <button
-                            class="suggestion"
-                            type="button"
-                            onclick="useSuggestion('What can you do?')">
-                            What can you do?
-                        </button>
-
-                        <button
-                            class="suggestion"
-                            type="button"
-                            onclick="useSuggestion('Explain something complicated')">
-                            Explain something complicated
-                        </button>
-
-                        <button
-                            class="suggestion"
-                            type="button"
-                            onclick="useSuggestion('Give me a creative idea')">
-                            Give me a creative idea
-                        </button>
-
-                        <button
-                            class="suggestion"
-                            type="button"
-                            onclick="useSuggestion('Generate an image of a giant cockroach')">
-                            🪳 Summon a roach
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- COMPOSER -->
-
-        <div class="composer-area">
-
-            <!-- ATTACHMENT PREVIEW -->
-
-            <div
-                class="attachment-preview"
-                id="attachmentPreview">
-
-                <img
-                    id="attachmentPreviewImage"
-                    src=""
-                    alt="Attached image"
-                >
-
-                <div class="attachment-info">
-
-                    <div class="attachment-title">
-                        IMAGE ATTACHED
-                    </div>
-
-                    <div class="attachment-sub">
-                        Dalbayob can analyze this image.
-                    </div>
-
-                </div>
-
-                <button
-                    class="attachment-remove"
-                    type="button"
-                    title="Remove image"
-                    onclick="clearAttachment()">
-                    ×
-                </button>
-
-            </div>
-
-
-            <div class="composer">
-
-                <!-- HIDDEN FILE PICKER -->
-
-                <input
-                    id="imageInput"
-                    type="file"
-                    accept="image/*"
-                    onchange="handleImageUpload(event)"
-                >
-
-
-                <!-- ATTACH -->
-
-                <button
-                    class="tool"
-                    title="Attach image"
-                    type="button"
-                    onclick="openImagePicker()">
-                    ✡
-                </button>
-
-
-                <!-- TEXT -->
-
-                <textarea
-                    id="input"
-                    rows="1"
-                    placeholder="Speak to Dalbayob..."></textarea>
-
-
-                <!-- IMAGE GENERATION -->
-
-                <button
-                    class="tool image"
-                    title="Generate image"
-                    type="button"
-                    onclick="generateImage()">
-                    ☪
-                </button>
-
-
-                <!-- SEND -->
-
-                <button
-                    class="tool send"
-                    title="Send"
-                    type="button"
-                    onclick="sendMessage()">
-                    ↑
-                </button>
-
-            </div>
-
-
-            <div class="note">
-                Dalbayob AI can make mistakes. Check important information.
-            </div>
+            <button
+                class="tool send"
+                title="Send"
+                type="button"
+                onclick="sendMessage()">
+                ↑
+            </button>
 
         </div>
 
-    </main>
+
+        <div class="note">
+            Dalbayob AI can make mistakes. Check important information.
+        </div>
+
+    </div>
+
+</main>
+```
 
 </div>
-
 
 <script>
 
@@ -1671,23 +1647,9 @@ let conversationHistory = [];
    IMAGE MEMORY
 ========================================================= */
 
-/*
-   currentImage
-   = latest generated/edited image.
-
-   attachedImage
-   = image currently uploaded by the user.
-
-   currentAnalysisImage
-   = image Dalbayob should continue
-     remembering during image questions.
-*/
-
 let currentImage = null;
 
 let attachedImage = null;
-
-let currentAnalysisImage = null;
 
 
 /* =========================================================
@@ -1868,6 +1830,8 @@ function handleImageUpload(event) {
 
         alert("Please select an image.");
 
+        imageInput.value = "";
+
         return;
     }
 
@@ -1879,9 +1843,6 @@ function handleImageUpload(event) {
     reader.onload = () => {
 
         attachedImage =
-            reader.result;
-
-        currentAnalysisImage =
             reader.result;
 
 
@@ -1914,8 +1875,6 @@ function clearAttachment() {
 
     attachedImage = null;
 
-    currentAnalysisImage = null;
-
     imageInput.value = "";
 
     attachmentPreviewImage.src = "";
@@ -1941,7 +1900,19 @@ async function sendMessage() {
 
 
     /*
-       Allow either:
+       The image belongs ONLY to this
+       message.
+
+       If there is no attachment,
+       imageForThisMessage is null.
+    */
+
+    const imageForThisMessage =
+        attachedImage || null;
+
+
+    /*
+       Allow:
 
        text
 
@@ -1954,14 +1925,8 @@ async function sendMessage() {
        image alone
     */
 
-    if (!text && !attachedImage)
+    if (!text && !imageForThisMessage)
         return;
-
-
-    const imageForThisMessage =
-        attachedImage ||
-        currentAnalysisImage ||
-        null;
 
 
     const actualMessage =
@@ -1991,6 +1956,31 @@ async function sendMessage() {
 
 
     /*
+       IMPORTANT:
+
+       Capture the image first, then
+       immediately clear the attachment
+       state.
+
+       This prevents the image from
+       leaking into future messages.
+    */
+
+    attachedImage = null;
+
+    imageInput.value = "";
+
+    attachmentPreviewImage.src = "";
+
+    attachmentPreview.classList.remove(
+        "visible"
+    );
+
+    input.placeholder =
+        "Speak to Dalbayob...";
+
+
+    /*
        Clear input.
     */
 
@@ -1998,40 +1988,6 @@ async function sendMessage() {
 
     input.style.height =
         "auto";
-
-
-    /*
-       Hide attachment preview,
-       but KEEP the image as the
-       active analysis image.
-
-       This allows follow-up questions.
-
-       Example:
-
-       Upload image
-
-       "What's this?"
-
-       "What color is the car?"
-
-       "What model is it?"
-    */
-
-    if (imageForThisMessage) {
-
-        currentAnalysisImage =
-            imageForThisMessage;
-
-        attachedImage = null;
-
-        imageInput.value = "";
-
-        attachmentPreview.classList.remove(
-            "visible"
-        );
-
-    }
 
 
     /*
@@ -2066,10 +2022,17 @@ async function sendMessage() {
                         history:
                             conversationHistory,
 
+                        /*
+                           Only this specific
+                           message gets the image.
+
+                           Future messages receive
+                           null unless the user
+                           uploads another image.
+                        */
+
                         image:
-                            imageForThisMessage ||
-                            currentAnalysisImage ||
-                            null
+                            imageForThisMessage
 
                     })
                 }
@@ -2101,7 +2064,7 @@ async function sendMessage() {
         /*
            Save text conversation.
 
-           Do NOT put base64 image data
+           Never save the base64 image
            inside conversationHistory.
         */
 
@@ -2151,9 +2114,10 @@ async function generateImage() {
 
 
     /*
-       If an uploaded image exists,
-       allow the image generator to
-       edit that image too.
+       Image generation can still use
+       the currently uploaded image
+       if the user explicitly clicks
+       the image generation button.
     */
 
     const sourceImage =
@@ -2186,6 +2150,30 @@ async function generateImage() {
 
     input.style.height =
         "auto";
+
+
+    /*
+       If an uploaded image was used
+       for editing, clear the attachment
+       after capturing it.
+    */
+
+    if (attachedImage) {
+
+        attachedImage = null;
+
+        imageInput.value = "";
+
+        attachmentPreviewImage.src = "";
+
+        attachmentPreview.classList.remove(
+            "visible"
+        );
+
+        input.placeholder =
+            "Speak to Dalbayob...";
+
+    }
 
 
     /*
@@ -2330,34 +2318,13 @@ async function generateImage() {
 
 function newChat() {
 
-    /*
-       Clear conversation.
-    */
-
     conversationHistory = [];
-
-
-    /*
-       Clear image memory.
-    */
 
     currentImage = null;
 
     attachedImage = null;
 
-    currentAnalysisImage = null;
-
-
-    /*
-       Reset file input.
-    */
-
     imageInput.value = "";
-
-
-    /*
-       Reset attachment UI.
-    */
 
     attachmentPreviewImage.src = "";
 
@@ -2365,18 +2332,9 @@ function newChat() {
         "visible"
     );
 
-
-    /*
-       Reset placeholder.
-    */
-
     input.placeholder =
         "Speak to Dalbayob...";
 
-
-    /*
-       Restore welcome screen.
-    */
 
     chatInner.innerHTML = `
 
