@@ -6,40 +6,35 @@ export default async function handler(req, res) {
         });
     }
 
-    const message = req.body?.message;
-
-    if (!message) {
-        return res.status(400).json({
-            error: "No message provided"
-        });
-    }
-
-    const key = process.env.POLLINATIONS_API_KEY;
-
-    if (!key) {
-        return res.status(500).json({
-            error: "POLLINATIONS_API_KEY is missing."
-        });
-    }
-
     try {
+        const body = req.body || {};
+        const message = body.message;
+
+        if (!message) {
+            return res.status(400).json({
+                error: "No message provided"
+            });
+        }
+
+        const apiKey = process.env.POLLINATIONS_API_KEY;
+
+        if (!apiKey) {
+            return res.status(500).json({
+                error: "POLLINATIONS_API_KEY is missing in Vercel."
+            });
+        }
+
         const response = await fetch(
             "https://gen.pollinations.ai/v1/chat/completions",
             {
                 method: "POST",
-
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": "Bearer " + key
+                    "Authorization": "Bearer " + apiKey
                 },
-
                 body: JSON.stringify({
                     model: "openai",
                     messages: [
-                        {
-                            role: "system",
-                            content: "You are Dalbayob AI. Be helpful, friendly and conversational."
-                        },
                         {
                             role: "user",
                             content: message
@@ -51,9 +46,6 @@ export default async function handler(req, res) {
 
         const text = await response.text();
 
-        console.log("Pollinations status:", response.status);
-        console.log("Pollinations response:", text);
-
         if (!response.ok) {
             return res.status(response.status).json({
                 error: text
@@ -64,9 +56,9 @@ export default async function handler(req, res) {
 
         try {
             data = JSON.parse(text);
-        } catch (e) {
+        } catch (error) {
             return res.status(500).json({
-                error: "Pollinations returned non-JSON data."
+                error: "Pollinations returned invalid JSON."
             });
         }
 
@@ -74,7 +66,7 @@ export default async function handler(req, res) {
 
         if (!reply) {
             return res.status(500).json({
-                error: "No reply received from Pollinations."
+                error: "Pollinations returned no reply."
             });
         }
 
@@ -83,10 +75,10 @@ export default async function handler(req, res) {
         });
 
     } catch (error) {
-        console.error(error);
+        console.error("Chat error:", error);
 
         return res.status(500).json({
-            error: error.message || "Chat request failed."
+            error: error.message
         });
     }
 }
