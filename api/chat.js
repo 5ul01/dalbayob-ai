@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 
         if (!apiKey) {
             return res.status(500).json({
-                error: "POLLINATIONS_API_KEY is not configured in Vercel."
+                error: "POLLINATIONS_API_KEY is missing in Vercel."
             });
         }
 
@@ -27,13 +27,11 @@ export default async function handler(req, res) {
             "https://gen.pollinations.ai/v1/chat/completions",
             {
                 method: "POST",
-
                 headers: {
                     "Content-Type": "application/json",
                     "Accept": "application/json",
-                    "Authorization": `Bearer ${apiKey}`
+                    "Authorization": "Bearer " + apiKey
                 },
-
                 body: JSON.stringify({
                     model: "openai",
                     messages: [
@@ -50,68 +48,43 @@ export default async function handler(req, res) {
             }
         );
 
-        const contentType =
-            response.headers.get("content-type") || "";
-
         const raw = await response.text();
-
-        console.log("Pollinations status:", response.status);
-        console.log("Pollinations content-type:", contentType);
-        console.log("Pollinations response:", raw);
-
-        if (!response.ok) {
-            let errorMessage = raw;
-
-            if (contentType.includes("application/json")) {
-                try {
-                    const errorData = JSON.parse(raw);
-
-                    errorMessage =
-                        errorData?.error?.message ||
-                        errorData?.error ||
-                        raw;
-                } catch {
-                    // Keep raw response
-                }
-            }
-
-            return res.status(response.status).json({
-                error: errorMessage || "Pollinations request failed"
-            });
-        }
 
         let data;
 
         try {
             data = JSON.parse(raw);
         } catch {
-            console.error(
-                "Pollinations returned non-JSON:",
-                raw
-            );
+            console.error("Pollinations returned:", raw);
 
             return res.status(502).json({
-                error:
-                    "Pollinations returned an unexpected response."
+                error: "Pollinations returned an invalid response."
             });
         }
 
-        const reply =
-            data?.choices?.[0]?.message?.content;
+        if (!response.ok) {
+            console.error("Pollinations error:", data);
+
+            return res.status(response.status).json({
+                error:
+                    data?.error?.message ||
+                    data?.error ||
+                    "Pollinations request failed."
+            });
+        }
+
+        const reply = data?.choices?.[0]?.message?.content;
 
         if (!reply) {
-            console.error(
-                "Unexpected Pollinations data:",
-                data
-            );
+            console.error("Unexpected response:", data);
 
             return res.status(500).json({
-                error: "Pollinations returned no AI response."
+                error: "Pollinations returned no response."
             });
         }
 
         return res.status(200).json({
-            reply
+            reply: reply
         });
 
     } catch (error) {
