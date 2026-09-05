@@ -1365,7 +1365,6 @@ textarea::placeholder {
 
 <div class="app">
 
-```
 <aside class="sidebar">
 
     <div class="brand-mark">
@@ -1607,7 +1606,6 @@ textarea::placeholder {
     </div>
 
 </main>
-```
 
 </div>
 
@@ -1680,6 +1678,79 @@ input.addEventListener("keydown", event => {
         event.preventDefault();
 
         sendMessage();
+
+    }
+
+});
+
+
+/* =========================================================
+   PASTE IMAGE FROM CLIPBOARD
+========================================================= */
+
+document.addEventListener("paste", event => {
+
+    const items =
+        event.clipboardData?.items;
+
+    if (!items)
+        return;
+
+
+    for (const item of items) {
+
+        if (
+            !item.type ||
+            !item.type.startsWith("image/")
+        ) {
+            continue;
+        }
+
+
+        event.preventDefault();
+
+
+        const file =
+            item.getAsFile();
+
+        if (!file)
+            return;
+
+
+        const reader =
+            new FileReader();
+
+
+        reader.onload = () => {
+
+            attachedImage =
+                reader.result;
+
+
+            attachmentPreviewImage.src =
+                attachedImage;
+
+
+            attachmentPreview.classList.add(
+                "visible"
+            );
+
+
+            input.placeholder =
+                "Ask Dalbayob about this image...";
+
+
+            input.focus();
+
+        };
+
+
+        reader.readAsDataURL(
+            file
+        );
+
+
+        break;
 
     }
 
@@ -1902,9 +1973,6 @@ async function sendMessage() {
     /*
        The image belongs ONLY to this
        message.
-
-       If there is no attachment,
-       imageForThisMessage is null.
     */
 
     const imageForThisMessage =
@@ -1956,14 +2024,8 @@ async function sendMessage() {
 
 
     /*
-       IMPORTANT:
-
-       Capture the image first, then
-       immediately clear the attachment
-       state.
-
-       This prevents the image from
-       leaking into future messages.
+       Capture the image first,
+       then immediately clear it.
     */
 
     attachedImage = null;
@@ -2021,15 +2083,6 @@ async function sendMessage() {
 
                         history:
                             conversationHistory,
-
-                        /*
-                           Only this specific
-                           message gets the image.
-
-                           Future messages receive
-                           null unless the user
-                           uploads another image.
-                        */
 
                         image:
                             imageForThisMessage
