@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -457,88 +456,26 @@ body::after {
     backdrop-filter: blur(20px);
 }
 
-/* =========================================================
-   DALBAYOB STAR LOGO
-========================================================= */
-
 .brand-mark {
-    position: relative;
-
     width: 50px;
     height: 50px;
 
     display: grid;
     place-items: center;
 
-    margin-bottom: 45px;
-
     border-radius: 16px;
 
     border:
         1px solid rgba(205,169,87,.5);
 
-    background:
-        radial-gradient(
-            circle,
-            rgba(205,169,87,.12),
-            rgba(5,6,4,.7)
-        );
-
     color: var(--gold-light);
+
+    font-size: 25px;
 
     box-shadow:
-        0 0 18px rgba(205,169,87,.10),
-        inset 0 0 18px rgba(205,169,87,.04);
-}
+        0 0 30px rgba(205,169,87,.08);
 
-.brand-mark::before,
-.brand-mark::after {
-    content: "";
-
-    position: absolute;
-
-    width: 27px;
-    height: 27px;
-
-    border:
-        1.5px solid var(--gold-light);
-
-    transform: rotate(0deg);
-
-    filter:
-        drop-shadow(0 0 5px rgba(240,215,140,.65));
-
-    opacity: .95;
-}
-
-.brand-mark::before {
-    clip-path: polygon(
-        50% 0%,
-        100% 86%,
-        0% 86%
-    );
-}
-
-.brand-mark::after {
-    clip-path: polygon(
-        0% 14%,
-        100% 14%,
-        50% 100%
-    );
-}
-
-.brand-mark span {
-    position: relative;
-    z-index: 2;
-
-    font-family: Cinzel, serif;
-
-    font-size: 9px;
-    font-weight: 700;
-
-    color: var(--gold-light);
-
-    letter-spacing: 0;
+    margin-bottom: 45px;
 }
 
 /* =========================================================
@@ -650,48 +587,9 @@ body::after {
     gap: 14px;
 }
 
-/* Header Star */
-
 .header-symbol {
-    position: relative;
-
-    width: 28px;
-    height: 28px;
-
-    display: grid;
-    place-items: center;
-}
-
-.header-symbol::before,
-.header-symbol::after {
-    content: "";
-
-    position: absolute;
-
-    width: 20px;
-    height: 20px;
-
-    border:
-        1.4px solid var(--gold-light);
-
-    filter:
-        drop-shadow(0 0 5px rgba(240,215,140,.55));
-}
-
-.header-symbol::before {
-    clip-path: polygon(
-        50% 0%,
-        100% 86%,
-        0% 86%
-    );
-}
-
-.header-symbol::after {
-    clip-path: polygon(
-        0% 14%,
-        100% 14%,
-        50% 100%
-    );
+    color: var(--gold-light);
+    font-size: 25px;
 }
 
 .header-title {
@@ -807,48 +705,9 @@ body::after {
         inset 0 0 30px rgba(205,169,87,.04);
 }
 
-/* Large Star */
-
 .crescent {
-    position: relative;
-
-    width: 58px;
-    height: 58px;
-
-    display: grid;
-    place-items: center;
-}
-
-.crescent::before,
-.crescent::after {
-    content: "";
-
-    position: absolute;
-
-    width: 47px;
-    height: 47px;
-
-    border:
-        2px solid var(--gold-light);
-
-    filter:
-        drop-shadow(0 0 8px rgba(240,215,140,.65));
-}
-
-.crescent::before {
-    clip-path: polygon(
-        50% 0%,
-        100% 86%,
-        0% 86%
-    );
-}
-
-.crescent::after {
-    clip-path: polygon(
-        0% 14%,
-        100% 14%,
-        50% 100%
-    );
+    color: var(--gold-light);
+    font-size: 50px;
 }
 
 .welcome h1 {
@@ -1394,13 +1253,9 @@ textarea::placeholder {
 
         margin-bottom: 25px;
 
-        border-radius: 12px;
-    }
+        font-size: 19px;
 
-    .brand-mark::before,
-    .brand-mark::after {
-        width: 22px;
-        height: 22px;
+        border-radius: 12px;
     }
 
     .nav button {
@@ -1515,8 +1370,8 @@ textarea::placeholder {
 
     <aside class="sidebar">
 
-        <div class="brand-mark" title="Dalbayob AI">
-            <span>DB</span>
+        <div class="brand-mark">
+            ✦
         </div>
 
         <div class="nav">
@@ -1539,7 +1394,7 @@ textarea::placeholder {
                 title="Image generation"
                 type="button"
                 onclick="focusImageMode()">
-                ✦
+                ☪
             </button>
 
         </div>
@@ -1563,8 +1418,10 @@ textarea::placeholder {
 
             <div class="header-left">
 
-                <div class="header-symbol"></div>
-                ☪
+                <div class="header-symbol">
+                    ☪
+                </div>
+
                 <div>
 
                     <div class="header-title">
@@ -1605,7 +1462,9 @@ textarea::placeholder {
 
                     <div class="welcome-emblem">
 
-                        <div class="crescent"></div>
+                        <div class="crescent">
+                            ☪
+                        </div>
 
                     </div>
 
@@ -1748,7 +1607,7 @@ textarea::placeholder {
                     title="Generate image"
                     type="button"
                     onclick="generateImage()">
-                    ✦
+                    ☪
                 </button>
 
 
@@ -2318,7 +2177,7 @@ async function generateImage() {
     */
 
     addMessage(
-        "✦ " + prompt,
+        "☪ " + prompt,
         "user"
     );
 
@@ -2527,7 +2386,9 @@ function newChat() {
 
             <div class="welcome-emblem">
 
-                <div class="crescent"></div>
+                <div class="crescent">
+                    ☪
+                </div>
 
             </div>
 
@@ -2646,4 +2507,3 @@ function focusImageMode() {
 
 </body>
 </html>
-```
