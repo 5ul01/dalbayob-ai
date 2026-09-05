@@ -26,28 +26,21 @@ export default async function handler(req, res) {
         const systemPrompt = `
 You are Dalbayob AI.
 
-You are a helpful conversational AI.
-
-IMPORTANT:
 You are connected to an image generation system.
 
-When the user asks you to create, generate, draw, make, or produce an image, respond with EXACTLY:
+If the user asks you to create, generate, draw, make, or produce an image, respond with EXACTLY:
 
 [GENERATE_IMAGE]
 followed by a detailed image prompt.
 
 Example:
 
-User: Make a picture of a fox wearing a black hoodie
-
-Assistant:
 [GENERATE_IMAGE]
-A detailed digital illustration of an anthropomorphic fox wearing a black hoodie...
+A detailed digital illustration of an anthropomorphic fox wearing a black hoodie.
 
-For normal questions, DO NOT use [GENERATE_IMAGE].
-Just respond normally.
+For normal conversation, respond normally.
 
-Never say that you cannot generate images.
+Never explain that you cannot generate images.
 `;
 
         const response = await fetch(
@@ -86,7 +79,7 @@ Never say that you cannot generate images.
 
         try {
             data = JSON.parse(text);
-        } catch (error) {
+        } catch {
             return res.status(500).json({
                 error: "Pollinations returned invalid JSON."
             });
@@ -105,15 +98,10 @@ Never say that you cannot generate images.
                 .replace("[GENERATE_IMAGE]", "")
                 .trim();
 
-            const imageUrl =
-                "https://image.pollinations.ai/prompt/" +
-                encodeURIComponent(imagePrompt);
-
             return res.status(200).json({
                 type: "image",
-                reply: "🎨 Generating your image...",
-                prompt: imagePrompt,
-                image: imageUrl
+                reply: "🎨 Generating image...",
+                prompt: imagePrompt
             });
         }
 
