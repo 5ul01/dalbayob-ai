@@ -1,4 +1,3 @@
-```js
 import OpenAI from "openai";
 import { toFile } from "openai";
 
@@ -101,4 +100,3 @@ ${prompt}
         });
     }
 }
-```
