@@ -4,134 +4,409 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Dalbayob AI</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cinzel:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --black: #050604;
+    --black2: #090d08;
+    --green: #102719;
+    --green2: #193722;
+    --green3: #284b31;
+    --gold: #cda957;
+    --gold-light: #f0d78c;
+    --cream: #eee8d6;
+    --muted: #858b7e;
+    --roach-brown: #5b301b;
+}
 
 * {
     box-sizing: border-box;
 }
 
-:root {
-    --black: #050705;
-    --black-2: #090c09;
-    --panel: rgba(10, 17, 11, .84);
-    --panel-light: rgba(18, 28, 18, .72);
-
-    --green: #16351e;
-    --green-2: #214d2a;
-    --green-bright: #62a66d;
-
-    --gold: #d4b15c;
-    --gold-light: #f0d58a;
-    --gold-dark: #80662d;
-
-    --cream: #eee9d8;
-    --text: #e8eadf;
-    --muted: #788076;
-
-    --border: rgba(212,177,92,.16);
-    --border-white: rgba(255,255,255,.065);
-
-    --shadow:
-        0 25px 80px rgba(0,0,0,.55),
-        inset 0 1px 0 rgba(255,255,255,.025);
-}
-
 html,
 body {
-    margin: 0;
     width: 100%;
     height: 100%;
+    margin: 0;
     overflow: hidden;
-
-    background:
-        radial-gradient(
-            circle at 75% 15%,
-            rgba(36,83,43,.22),
-            transparent 35%
-        ),
-        radial-gradient(
-            circle at 20% 85%,
-            rgba(121,94,35,.08),
-            transparent 35%
-        ),
-        var(--black);
-
-    color: var(--text);
-
-    font-family:
-        Inter,
-        system-ui,
-        sans-serif;
 }
 
+body {
+    font-family: Inter, sans-serif;
+    color: var(--cream);
+    background:
+        radial-gradient(
+            circle at 50% 40%,
+            rgba(39, 86, 48, .24),
+            transparent 42%
+        ),
+        radial-gradient(
+            circle at 15% 90%,
+            rgba(205, 169, 87, .08),
+            transparent 30%
+        ),
+        var(--black);
+}
 
 /* =========================================================
    BACKGROUND
 ========================================================= */
 
-.background-pattern {
+body::before {
+    content: "";
     position: fixed;
     inset: 0;
-
-    opacity: .11;
-
     pointer-events: none;
-
+    opacity: .16;
     background-image:
         linear-gradient(
             30deg,
-            transparent 47%,
-            rgba(212,177,92,.16) 48%,
-            rgba(212,177,92,.16) 52%,
-            transparent 53%
+            rgba(205,169,87,.15) 1px,
+            transparent 1px
         ),
         linear-gradient(
             150deg,
-            transparent 47%,
-            rgba(212,177,92,.16) 48%,
-            rgba(212,177,92,.16) 52%,
-            transparent 53%
+            rgba(205,169,87,.15) 1px,
+            transparent 1px
         );
-
-    background-size: 74px 74px;
-
-    mask-image:
-        radial-gradient(
-            ellipse at center,
-            black,
-            transparent 78%
-        );
+    background-size: 72px 72px;
+    z-index: 0;
 }
 
-
-/* Gold atmospheric glow */
-
-.ambient {
+body::after {
+    content: "";
     position: fixed;
-    width: 600px;
-    height: 600px;
-
-    top: -250px;
-    right: -180px;
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(212,177,92,.12),
-            transparent 65%
-        );
-
-    filter: blur(25px);
-
+    inset: 0;
     pointer-events: none;
+    box-shadow: inset 0 0 180px rgba(0,0,0,.9);
+    z-index: 9999;
 }
 
+/* =========================================================
+   REAL COCKROACHES
+========================================================= */
+
+.real-roach {
+    position: fixed;
+    width: 190px;
+    height: 190px;
+    pointer-events: none;
+
+    z-index: 50;
+
+    filter:
+        drop-shadow(0 18px 15px rgba(0,0,0,.78))
+        saturate(1.08)
+        contrast(1.05);
+}
+
+.real-roach img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+}
+
+/* Giant top crawler */
+
+.rr1 {
+    left: -240px;
+    top: 8%;
+    width: 210px;
+    height: 210px;
+    animation: crawlAcross 25s linear infinite;
+}
+
+/* Large reverse crawler */
+
+.rr2 {
+    right: -250px;
+    top: 30%;
+    width: 235px;
+    height: 235px;
+    transform: scaleX(-1);
+    animation: crawlReverse 30s linear infinite;
+}
+
+/* Vertical crawler */
+
+.rr3 {
+    left: 12%;
+    top: -230px;
+    width: 180px;
+    height: 180px;
+    transform: rotate(82deg);
+    animation: crawlDown 22s linear infinite;
+}
+
+/* Bottom monster */
+
+.rr4 {
+    right: 4%;
+    bottom: -280px;
+    width: 270px;
+    height: 270px;
+    transform: rotate(-58deg);
+    animation: crawlUp 27s linear infinite;
+}
+
+/* Fast little bastard */
+
+.rr5 {
+    left: -180px;
+    top: 75%;
+    width: 150px;
+    height: 150px;
+    animation: crawlFast 18s linear infinite;
+}
+
+/* Header crawler */
+
+.rr6 {
+    right: -230px;
+    top: 11%;
+    width: 220px;
+    height: 220px;
+    transform: rotate(180deg);
+    animation: crawlHeader 34s linear infinite;
+}
+
+/* Falling crawler */
+
+.rr7 {
+    left: 53%;
+    top: -210px;
+    width: 165px;
+    height: 165px;
+    transform: rotate(110deg);
+    animation: crawlDrop 36s linear infinite;
+}
+
+/* Another side crawler */
+
+.rr8 {
+    left: -210px;
+    top: 45%;
+    width: 175px;
+    height: 175px;
+    animation: crawlSide 39s linear infinite;
+}
+
+/* =========================================================
+   ROACH ANIMATIONS
+========================================================= */
+
+@keyframes crawlAcross {
+
+    0% {
+        left: -250px;
+        top: 8%;
+        transform: rotate(-10deg);
+    }
+
+    20% {
+        top: 13%;
+        transform: rotate(5deg);
+    }
+
+    40% {
+        top: 6%;
+        transform: rotate(-4deg);
+    }
+
+    60% {
+        top: 15%;
+        transform: rotate(7deg);
+    }
+
+    80% {
+        top: 8%;
+    }
+
+    100% {
+        left: calc(100% + 250px);
+        top: 12%;
+        transform: rotate(-10deg);
+    }
+}
+
+@keyframes crawlReverse {
+
+    0% {
+        right: -260px;
+        top: 30%;
+        transform: scaleX(-1) rotate(-12deg);
+    }
+
+    25% {
+        top: 24%;
+    }
+
+    50% {
+        top: 35%;
+    }
+
+    75% {
+        top: 27%;
+    }
+
+    100% {
+        right: calc(100% + 260px);
+        top: 32%;
+        transform: scaleX(-1) rotate(-12deg);
+    }
+}
+
+@keyframes crawlDown {
+
+    0% {
+        top: -230px;
+        left: 12%;
+    }
+
+    25% {
+        left: 17%;
+    }
+
+    50% {
+        left: 10%;
+    }
+
+    75% {
+        left: 15%;
+    }
+
+    100% {
+        top: calc(100% + 230px);
+        left: 8%;
+    }
+}
+
+@keyframes crawlUp {
+
+    0% {
+        bottom: -290px;
+        right: 4%;
+    }
+
+    25% {
+        right: 10%;
+    }
+
+    50% {
+        right: 3%;
+    }
+
+    75% {
+        right: 13%;
+    }
+
+    100% {
+        bottom: calc(100% + 290px);
+        right: 7%;
+    }
+}
+
+@keyframes crawlFast {
+
+    0% {
+        left: -190px;
+        top: 75%;
+    }
+
+    20% {
+        top: 69%;
+    }
+
+    40% {
+        top: 79%;
+    }
+
+    60% {
+        top: 71%;
+    }
+
+    80% {
+        top: 78%;
+    }
+
+    100% {
+        left: calc(100% + 190px);
+        top: 73%;
+    }
+}
+
+@keyframes crawlHeader {
+
+    0% {
+        right: -240px;
+        top: 11%;
+        transform: rotate(180deg);
+    }
+
+    25% {
+        top: 17%;
+    }
+
+    50% {
+        top: 8%;
+    }
+
+    75% {
+        top: 15%;
+    }
+
+    100% {
+        right: calc(100% + 240px);
+        top: 11%;
+        transform: rotate(180deg);
+    }
+}
+
+@keyframes crawlDrop {
+
+    0% {
+        top: -220px;
+        left: 53%;
+    }
+
+    30% {
+        left: 59%;
+    }
+
+    65% {
+        left: 48%;
+    }
+
+    100% {
+        top: calc(100% + 220px);
+        left: 54%;
+    }
+}
+
+@keyframes crawlSide {
+
+    0% {
+        left: -220px;
+        top: 45%;
+    }
+
+    30% {
+        top: 39%;
+    }
+
+    60% {
+        top: 51%;
+    }
+
+    100% {
+        left: calc(100% + 220px);
+        top: 44%;
+    }
+}
 
 /* =========================================================
    APP
@@ -139,247 +414,122 @@ body {
 
 .app {
     position: relative;
-    z-index: 2;
-
+    z-index: 100;
+    display: flex;
     width: 100%;
     height: 100vh;
-
-    display: flex;
 }
 
-
 /* =========================================================
-   NAVIGATION
+   SIDEBAR
 ========================================================= */
 
-.nav {
+.sidebar {
+    position: relative;
+    z-index: 300;
+
     width: 86px;
     height: 100%;
-
-    flex-shrink: 0;
 
     display: flex;
     flex-direction: column;
     align-items: center;
 
-    padding: 20px 12px;
+    padding: 20px 0;
 
-    background:
-        linear-gradient(
-            180deg,
-            rgba(7,12,8,.94),
-            rgba(4,7,5,.88)
-        );
+    background: rgba(5,8,5,.9);
+    border-right: 1px solid rgba(205,169,87,.18);
 
-    border-right: 1px solid var(--border);
-
-    box-shadow:
-        12px 0 50px rgba(0,0,0,.28);
+    backdrop-filter: blur(20px);
 }
 
-
-/* Logo */
-
-.logo {
+.brand-mark {
     width: 50px;
     height: 50px;
 
     display: grid;
     place-items: center;
 
-    position: relative;
-
-    margin-bottom: 32px;
-
     border-radius: 16px;
+    border: 1px solid rgba(205,169,87,.5);
 
-    background:
-        linear-gradient(
-            145deg,
-            #263f28,
-            #0c160d
-        );
-
-    border: 1px solid rgba(212,177,92,.28);
+    color: var(--gold-light);
+    font-size: 25px;
 
     box-shadow:
-        0 0 35px rgba(212,177,92,.07);
+        0 0 30px rgba(205,169,87,.08);
+
+    margin-bottom: 45px;
 }
 
-
-/* Cockroach */
-
-.roach {
-    position: relative;
-
-    width: 25px;
-    height: 15px;
-
-    border-radius: 50% 50% 45% 45%;
-
-    background:
-        linear-gradient(
-            90deg,
-            #1d241c,
-            #6a4b20,
-            #251c11
-        );
-
-    box-shadow:
-        inset 0 -3px 3px rgba(0,0,0,.5);
-}
-
-.roach::before,
-.roach::after {
-    content: "";
-
-    position: absolute;
-
-    width: 15px;
-    height: 8px;
-
-    top: 8px;
-
-    border-top: 1px solid #9a7940;
-}
-
-.roach::before {
-    left: -11px;
-    transform: rotate(-28deg);
-}
-
-.roach::after {
-    right: -11px;
-    transform: rotate(28deg);
-}
-
-.roach-head {
-    position: absolute;
-
-    width: 8px;
-    height: 8px;
-
-    right: -2px;
-    top: 3px;
-
-    border-radius: 50%;
-
-    background: #100e09;
-}
-
-.roach-eye {
-    position: absolute;
-
-    width: 2px;
-    height: 2px;
-
-    right: 1px;
-    top: 5px;
-
-    border-radius: 50%;
-
-    background: var(--gold-light);
-
-    box-shadow:
-        0 0 5px rgba(240,213,138,.7);
-}
-
-
-/* Nav buttons */
-
-.nav-buttons {
+.nav {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-
-    width: 100%;
+    gap: 15px;
 }
 
-.nav-button {
-    width: 100%;
+.nav button {
+    width: 48px;
     height: 48px;
 
-    display: grid;
-    place-items: center;
+    border-radius: 14px;
 
-    border: 1px solid transparent;
-    border-radius: 13px;
+    border: 1px solid rgba(205,169,87,.14);
 
-    color: #626b61;
+    background: rgba(255,255,255,.025);
 
-    background: transparent;
+    color: #8d927f;
+    font-size: 20px;
 
     cursor: pointer;
 
-    font-size: 19px;
-
     transition:
-        color .2s ease,
-        background .2s ease,
-        border-color .2s ease,
-        transform .2s ease;
+        transform .2s,
+        color .2s,
+        border-color .2s,
+        background .2s;
 }
 
-.nav-button:hover {
+.nav button:hover,
+.nav button.active {
     color: var(--gold-light);
-
-    background: rgba(212,177,92,.055);
-
-    border-color: var(--border);
-
-    transform: translateY(-1px);
+    border-color: rgba(205,169,87,.5);
+    background: rgba(205,169,87,.08);
+    transform: translateY(-2px);
 }
 
-.nav-button.active {
-    color: var(--gold-light);
+.sidebar-bottom {
+    margin-top: auto;
 
-    background:
-        linear-gradient(
-            145deg,
-            rgba(212,177,92,.11),
-            rgba(212,177,92,.025)
-        );
-
-    border-color: rgba(212,177,92,.18);
-}
-
-.nav-spacer {
-    flex: 1;
-}
-
-.nav-mark {
-    color: #454c45;
-    font-family: Cinzel, serif;
-    font-size: 9px;
     writing-mode: vertical-rl;
-    letter-spacing: 3px;
-}
 
+    color: #555c51;
+
+    font-size: 9px;
+    letter-spacing: 4px;
+}
 
 /* =========================================================
-   CONTENT
+   MAIN
 ========================================================= */
 
-.content {
-    min-width: 0;
-
+.main {
+    position: relative;
     flex: 1;
-
+    min-width: 0;
     display: flex;
     flex-direction: column;
-
-    position: relative;
 }
 
-
 /* =========================================================
-   TOP BAR
+   HEADER
 ========================================================= */
 
-.topbar {
-    height: 72px;
+.header {
+    position: relative;
+    z-index: 300;
 
-    flex-shrink: 0;
+    height: 78px;
 
     display: flex;
     align-items: center;
@@ -387,114 +537,95 @@ body {
 
     padding: 0 32px;
 
-    background:
-        rgba(5,9,6,.67);
+    background: rgba(4,7,4,.78);
 
-    backdrop-filter: blur(22px);
-    -webkit-backdrop-filter: blur(22px);
+    border-bottom: 1px solid rgba(205,169,87,.12);
 
-    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(20px);
 }
 
-.title-group {
+.header-left {
     display: flex;
     align-items: center;
     gap: 14px;
 }
 
-.title-symbol {
-    color: var(--gold);
-
-    font-size: 20px;
-
-    filter:
-        drop-shadow(
-            0 0 8px rgba(212,177,92,.22)
-        );
+.header-symbol {
+    color: var(--gold-light);
+    font-size: 25px;
 }
 
-.title {
+.header-title {
     font-family: Cinzel, serif;
 
-    color: var(--cream);
-
-    font-size: 14px;
-    font-weight: 600;
-
-    letter-spacing: .5px;
+    font-size: 16px;
+    letter-spacing: 4px;
 }
 
-.subtitle {
-    margin-left: 9px;
+.header-sub {
+    margin-top: 3px;
 
-    color: #596158;
+    color: #666d61;
 
     font-size: 9px;
+    letter-spacing: 2px;
 }
 
-.connection {
+.status {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 9px;
 
-    color: #687068;
+    color: #7f8979;
 
     font-size: 9px;
-
-    text-transform: uppercase;
-
-    letter-spacing: 1px;
+    letter-spacing: 2px;
 }
 
-.connection-dot {
-    width: 6px;
-    height: 6px;
+.status-dot {
+    width: 7px;
+    height: 7px;
 
     border-radius: 50%;
 
-    background: #76b97e;
+    background: #a8c174;
 
     box-shadow:
-        0 0 10px rgba(118,185,126,.7);
+        0 0 12px #a8c174;
 }
-
 
 /* =========================================================
    CHAT
 ========================================================= */
 
 #chat {
+    position: relative;
+    z-index: 120;
+
     flex: 1;
 
     overflow-y: auto;
 
-    padding: 30px 30px 190px;
-
-    scroll-behavior: smooth;
-}
-
-#chat::-webkit-scrollbar {
-    width: 5px;
-}
-
-#chat::-webkit-scrollbar-thumb {
-    background: rgba(212,177,92,.13);
-    border-radius: 10px;
+    scrollbar-width: thin;
+    scrollbar-color: #354332 transparent;
 }
 
 .chat-inner {
-    width: min(900px, 100%);
+    width: min(1050px, 100%);
+
+    min-height: 100%;
 
     margin: auto;
-}
 
+    padding: 50px 35px 190px;
+}
 
 /* =========================================================
    WELCOME
 ========================================================= */
 
 .welcome {
-    min-height: 61vh;
+    min-height: 60vh;
 
     display: flex;
     flex-direction: column;
@@ -502,212 +633,181 @@ body {
     justify-content: center;
 
     text-align: center;
-
-    animation:
-        entrance .7s cubic-bezier(.2,.8,.2,1);
 }
-
-@keyframes entrance {
-    from {
-        opacity: 0;
-        transform:
-            translateY(18px)
-            scale(.97);
-    }
-
-    to {
-        opacity: 1;
-        transform:
-            translateY(0)
-            scale(1);
-    }
-}
-
-
-/* Big roach emblem */
 
 .welcome-emblem {
-    width: 106px;
-    height: 106px;
+    width: 105px;
+    height: 105px;
 
     display: grid;
     place-items: center;
 
-    position: relative;
-
-    margin-bottom: 27px;
+    margin-bottom: 25px;
 
     border-radius: 50%;
+
+    border: 1px solid rgba(205,169,87,.42);
 
     background:
         radial-gradient(
             circle,
-            rgba(212,177,92,.12),
-            rgba(18,31,19,.38) 62%,
-            rgba(5,8,5,.5)
+            rgba(205,169,87,.1),
+            transparent 68%
         );
 
-    border:
-        1px solid rgba(212,177,92,.22);
-
     box-shadow:
-        0 0 65px rgba(212,177,92,.06),
-        inset 0 0 30px rgba(212,177,92,.04);
+        0 0 60px rgba(205,169,87,.07),
+        inset 0 0 30px rgba(205,169,87,.04);
 }
-
-.welcome-emblem::before {
-    content: "";
-
-    position: absolute;
-
-    inset: 8px;
-
-    border-radius: 50%;
-
-    border:
-        1px dashed rgba(212,177,92,.17);
-}
-
-
-/* Crescent */
 
 .crescent {
-    position: absolute;
-
-    width: 31px;
-    height: 31px;
-
-    top: 14px;
-    right: 18px;
-
-    border-radius: 50%;
-
-    background: var(--gold-light);
-
-    box-shadow:
-        0 0 20px rgba(240,213,138,.18);
+    color: var(--gold-light);
+    font-size: 50px;
 }
-
-.crescent::after {
-    content: "";
-
-    position: absolute;
-
-    width: 29px;
-    height: 29px;
-
-    left: -7px;
-    top: -4px;
-
-    border-radius: 50%;
-
-    background: #101810;
-}
-
-
-/* Welcome roach */
-
-.welcome-roach {
-    transform: scale(1.7);
-}
-
-
-/* Welcome text */
 
 .welcome h1 {
     margin: 0;
 
     font-family: Cinzel, serif;
 
-    font-size:
-        clamp(
-            28px,
-            4vw,
-            43px
-        );
+    font-size: clamp(28px, 4vw, 48px);
 
-    line-height: 1.1;
+    font-weight: 600;
 
-    letter-spacing: -1px;
-
-    color: var(--cream);
+    letter-spacing: 1px;
 }
 
-.welcome h1 span {
+.welcome > p {
+    margin-top: 12px;
+
+    color: #858b7e;
+
+    font-size: 14px;
+}
+
+/* =========================================================
+   SPECIMEN IMAGE
+========================================================= */
+
+.roach-gallery {
+    position: relative;
+
+    width: min(390px, 90%);
+
+    margin: 25px auto 5px;
+}
+
+.roach-gallery::before {
+    content: "SPECIMEN // 001";
+
+    position: absolute;
+
+    left: 17px;
+    top: -12px;
+
+    z-index: 5;
+
+    padding: 4px 8px;
+
     color: var(--gold-light);
+
+    background: var(--black);
+
+    font-size: 8px;
+    letter-spacing: 3px;
 }
 
-.welcome p {
-    margin: 13px 0 0;
+.roach-gallery img {
+    width: 100%;
 
-    color: #687168;
+    display: block;
 
-    font-size: 11px;
+    aspect-ratio: 1 / 1;
+
+    object-fit: cover;
+
+    border-radius: 20px;
+
+    border: 1px solid rgba(205,169,87,.35);
+
+    box-shadow:
+        0 20px 70px rgba(0,0,0,.7),
+        0 0 35px rgba(205,169,87,.07);
+
+    filter:
+        saturate(.88)
+        contrast(1.06);
 }
 
+.roach-gallery-caption {
+    position: absolute;
 
-/* Suggestion cards */
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
 
-.suggestions {
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
-    gap: 9px;
-
-    width: min(650px, 100%);
-
-    margin-top: 31px;
-}
-
-.suggestion {
-    padding: 13px 12px;
-
-    text-align: left;
-
-    border:
-        1px solid rgba(212,177,92,.10);
+    padding: 12px 14px;
 
     border-radius: 12px;
 
-    background:
-        rgba(10,16,10,.55);
+    background: rgba(3,5,3,.82);
 
-    color: #8c958c;
+    border: 1px solid rgba(205,169,87,.18);
+
+    backdrop-filter: blur(12px);
+
+    color: #b9b5a1;
+
+    text-align: left;
+
+    font-size: 9px;
+    letter-spacing: 2px;
+}
+
+/* =========================================================
+   SUGGESTIONS
+========================================================= */
+
+.suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    gap: 9px;
+
+    max-width: 700px;
+
+    margin-top: 27px;
+}
+
+.suggestion {
+    padding: 10px 16px;
+
+    border-radius: 100px;
+
+    border: 1px solid rgba(205,169,87,.16);
+
+    background: rgba(255,255,255,.025);
+
+    color: #aaa99a;
+
+    font-family: Inter, sans-serif;
+    font-size: 11px;
 
     cursor: pointer;
 
-    font-size: 9px;
-    line-height: 1.5;
-
-    transition:
-        background .2s ease,
-        border-color .2s ease,
-        transform .2s ease;
+    transition: .2s;
 }
 
 .suggestion:hover {
-    background:
-        rgba(212,177,92,.07);
+    color: var(--gold-light);
 
-    border-color:
-        rgba(212,177,92,.2);
+    border-color: rgba(205,169,87,.45);
 
-    transform:
-        translateY(-2px);
+    background: rgba(205,169,87,.07);
+
+    transform: translateY(-1px);
 }
-
-.suggestion strong {
-    display: block;
-
-    margin-bottom: 4px;
-
-    color: var(--gold);
-
-    font-size: 9px;
-}
-
 
 /* =========================================================
    MESSAGES
@@ -716,187 +816,62 @@ body {
 .message-row {
     display: flex;
 
-    margin: 27px 0;
-
-    animation:
-        messageIn .25s ease-out;
+    margin: 22px 0;
 }
-
-@keyframes messageIn {
-    from {
-        opacity: 0;
-        transform: translateY(7px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-
-/* User */
 
 .message-row.user {
     justify-content: flex-end;
 }
 
+.message {
+    max-width: 78%;
+
+    padding: 15px 18px;
+
+    border-radius: 17px;
+
+    line-height: 1.65;
+
+    font-size: 14px;
+
+    white-space: pre-wrap;
+}
+
 .message.user {
-    max-width: 72%;
-
-    padding: 14px 17px;
-
-    color: #eee9dc;
+    color: #e7eadc;
 
     background:
         linear-gradient(
             135deg,
-            rgba(38,65,41,.76),
-            rgba(14,26,15,.72)
+            #183522,
+            #102417
         );
 
-    border:
-        1px solid rgba(105,153,111,.17);
+    border: 1px solid rgba(111,160,110,.18);
 
-    border-radius:
-        18px 18px 5px 18px;
-
-    box-shadow:
-        0 15px 35px rgba(0,0,0,.18);
-
-    font-size: 12px;
-    line-height: 1.7;
-
-    white-space: pre-wrap;
-}
-
-
-/* Assistant */
-
-.message-row.assistant {
-    justify-content: flex-start;
+    border-bottom-right-radius: 5px;
 }
 
 .message.assistant {
-    position: relative;
+    color: #d3d2c5;
 
-    max-width: 80%;
+    background: rgba(255,255,255,.025);
 
-    padding:
-        18px 20px 18px 52px;
+    border: 1px solid rgba(205,169,87,.12);
 
-    color: #d8ddd5;
+    border-left: 2px solid rgba(205,169,87,.6);
 
-    background:
-        linear-gradient(
-            145deg,
-            rgba(10,17,11,.86),
-            rgba(6,10,7,.74)
-        );
-
-    border:
-        1px solid rgba(212,177,92,.10);
-
-    border-radius:
-        5px 18px 18px 18px;
-
-    box-shadow:
-        0 18px 45px rgba(0,0,0,.22);
-
-    backdrop-filter: blur(18px);
-
-    font-size: 12px;
-    line-height: 1.75;
-
-    white-space: pre-wrap;
+    border-bottom-left-radius: 5px;
 }
-
-
-/* Assistant emblem */
-
-.message.assistant::before {
-    content: "✦";
-
-    position: absolute;
-
-    left: 17px;
-    top: 18px;
-
-    color: var(--gold);
-
-    font-size: 14px;
-
-    text-shadow:
-        0 0 10px rgba(212,177,92,.22);
-}
-
-
-/* Image */
 
 .message.assistant img {
+    max-width: 100%;
     display: block;
 
-    max-width: 100%;
-    height: auto;
+    border-radius: 14px;
 
-    border-radius: 13px;
-
-    border:
-        1px solid rgba(212,177,92,.15);
-
-    box-shadow:
-        0 20px 50px rgba(0,0,0,.38);
+    border: 1px solid rgba(205,169,87,.3);
 }
-
-
-/* =========================================================
-   TYPING
-========================================================= */
-
-.typing {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-
-    height: 18px;
-}
-
-.typing span {
-    width: 5px;
-    height: 5px;
-
-    border-radius: 50%;
-
-    background: var(--gold);
-
-    opacity: .35;
-
-    animation:
-        typing 1.1s infinite;
-}
-
-.typing span:nth-child(2) {
-    animation-delay: .14s;
-}
-
-.typing span:nth-child(3) {
-    animation-delay: .28s;
-}
-
-@keyframes typing {
-    0%,
-    60%,
-    100% {
-        transform: translateY(0);
-        opacity: .3;
-    }
-
-    30% {
-        transform: translateY(-4px);
-        opacity: 1;
-    }
-}
-
 
 /* =========================================================
    COMPOSER
@@ -909,589 +884,366 @@ body {
     right: 0;
     bottom: 0;
 
-    z-index: 20;
+    z-index: 400;
 
-    padding:
-        25px 30px 21px;
-
-    background:
-        linear-gradient(
-            to bottom,
-            transparent,
-            rgba(4,7,5,.82) 34%,
-            rgba(4,7,5,.97) 72%
-        );
-}
-
-
-/* Decorative top line */
-
-.composer-area::before {
-    content: "";
-
-    position: absolute;
-
-    top: 17px;
-    left: 50%;
-
-    width: min(450px, 45%);
-
-    height: 1px;
-
-    transform: translateX(-50%);
+    padding: 20px 28px 23px;
 
     background:
         linear-gradient(
-            90deg,
-            transparent,
-            rgba(212,177,92,.28),
+            to top,
+            rgba(5,6,4,1) 40%,
+            rgba(5,6,4,.88),
             transparent
         );
 }
 
-
-/* Composer */
-
 .composer {
     width: min(900px, 100%);
 
-    min-height: 64px;
+    min-height: 62px;
 
     margin: auto;
 
     display: flex;
     align-items: flex-end;
 
-    gap: 5px;
+    gap: 9px;
 
-    padding: 7px;
+    padding: 8px;
 
-    background:
-        linear-gradient(
-            145deg,
-            rgba(15,24,16,.92),
-            rgba(6,11,7,.9)
-        );
+    border-radius: 19px;
 
-    border:
-        1px solid rgba(212,177,92,.17);
+    border: 1px solid rgba(205,169,87,.18);
 
-    border-radius: 17px;
+    background: rgba(11,16,11,.92);
+
+    backdrop-filter: blur(22px);
 
     box-shadow:
-        0 25px 70px rgba(0,0,0,.48),
-        inset 0 1px 0 rgba(255,255,255,.025);
-
-    backdrop-filter:
-        blur(25px);
-
-    transition:
-        border-color .25s ease,
-        box-shadow .25s ease;
+        0 20px 60px rgba(0,0,0,.5),
+        inset 0 0 25px rgba(205,169,87,.015);
 }
-
-.composer:focus-within {
-    border-color:
-        rgba(212,177,92,.34);
-
-    box-shadow:
-        0 25px 75px rgba(0,0,0,.52),
-        0 0 35px rgba(212,177,92,.045);
-}
-
-
-/* Textarea */
-
-textarea {
-    flex: 1;
-
-    min-width: 0;
-
-    min-height: 48px;
-    max-height: 150px;
-
-    resize: none;
-
-    outline: none;
-    border: 0;
-
-    padding:
-        14px 10px;
-
-    color: var(--cream);
-
-    background: transparent;
-
-    font: inherit;
-    font-size: 12px;
-
-    line-height: 20px;
-}
-
-textarea::placeholder {
-    color: #586158;
-}
-
-
-/* Tool buttons */
 
 .tool {
     width: 46px;
     height: 46px;
 
-    flex-shrink: 0;
+    flex: 0 0 46px;
 
-    display: grid;
-    place-items: center;
+    border-radius: 13px;
 
-    border: 1px solid transparent;
+    border: 1px solid rgba(205,169,87,.13);
 
-    border-radius: 12px;
+    background: rgba(255,255,255,.025);
 
-    color: #687269;
+    color: #929888;
 
-    background: transparent;
+    font-size: 20px;
 
     cursor: pointer;
 
-    font-size: 17px;
-
-    transition:
-        .18s ease;
+    transition: .2s;
 }
 
 .tool:hover {
     color: var(--gold-light);
 
-    background:
-        rgba(212,177,92,.065);
+    border-color: rgba(205,169,87,.4);
 
-    border-color:
-        rgba(212,177,92,.11);
+    background: rgba(205,169,87,.06);
 }
 
-.tool:active {
-    transform: scale(.94);
-}
-
-
-/* Star and Crescent */
-
-.crescent-button {
-    position: relative;
-
-    color: var(--gold-light);
-
+.tool.image {
     font-size: 21px;
-
-    text-shadow:
-        0 0 12px rgba(240,213,138,.18);
 }
 
-.crescent-button::after {
-    content: "IMAGE";
+.tool.send {
+    color: #10130d;
 
-    position: absolute;
+    background: var(--gold);
 
-    right: 5px;
-    bottom: 5px;
-
-    color: #6f765f;
-
-    font-size: 5px;
-    font-weight: 800;
-
-    letter-spacing: .7px;
-}
-
-
-/* Send */
-
-.send {
-    color: #11150f;
-
-    background:
-        linear-gradient(
-            145deg,
-            var(--gold-light),
-            #b99343
-        );
-
-    font-size: 18px;
+    border-color: var(--gold);
 
     font-weight: 800;
-
-    box-shadow:
-        0 7px 25px rgba(212,177,92,.12);
 }
 
-.send:hover {
-    color: #11150f;
+.tool.send:hover {
+    background: var(--gold-light);
 
-    background:
-        linear-gradient(
-            145deg,
-            #ffe8a2,
-            #d4b15c
-        );
-
-    border-color:
-        rgba(255,231,164,.3);
-
-    box-shadow:
-        0 8px 30px rgba(212,177,92,.2);
-
-    transform:
-        translateY(-1px);
+    transform: translateY(-2px);
 }
 
+textarea {
+    flex: 1;
 
-/* Note */
+    min-height: 46px;
+    max-height: 150px;
+
+    padding: 13px 4px;
+
+    resize: none;
+
+    border: 0;
+    outline: 0;
+
+    background: transparent;
+
+    color: #eee;
+
+    font-family: Inter, sans-serif;
+    font-size: 14px;
+}
+
+textarea::placeholder {
+    color: #62685e;
+}
 
 .note {
-    width: min(900px, 100%);
+    margin-top: 9px;
 
-    margin:
-        9px auto 0;
+    color: #555a51;
 
     text-align: center;
 
-    color: #414840;
-
-    font-size: 7px;
-
-    letter-spacing: .2px;
+    font-size: 9px;
+    letter-spacing: .5px;
 }
-
 
 /* =========================================================
-   RANDOM ROACH
+   SCROLLBAR
 ========================================================= */
 
-.crawling-roach {
-    position: fixed;
-
-    z-index: 5;
-
-    pointer-events: none;
-
-    opacity: .13;
-
-    transform:
-        scale(.75)
-        rotate(-8deg);
-
-    animation:
-        crawl 23s linear infinite;
+#chat::-webkit-scrollbar {
+    width: 7px;
 }
 
-.crawling-roach.one {
-    left: 8%;
-    bottom: 12%;
+#chat::-webkit-scrollbar-track {
+    background: transparent;
 }
 
-.crawling-roach.two {
-    right: 8%;
-    top: 23%;
-
-    animation-delay: -9s;
-    transform:
-        scale(.5)
-        rotate(12deg);
+#chat::-webkit-scrollbar-thumb {
+    background: #263126;
+    border-radius: 20px;
 }
-
-@keyframes crawl {
-
-    0% {
-        transform:
-            translateX(-40px)
-            rotate(-8deg)
-            scale(.7);
-    }
-
-    25% {
-        transform:
-            translateX(180px)
-            translateY(-35px)
-            rotate(7deg)
-            scale(.7);
-    }
-
-    50% {
-        transform:
-            translateX(350px)
-            translateY(15px)
-            rotate(-3deg)
-            scale(.7);
-    }
-
-    75% {
-        transform:
-            translateX(180px)
-            translateY(55px)
-            rotate(8deg)
-            scale(.7);
-    }
-
-    100% {
-        transform:
-            translateX(-40px)
-            rotate(-8deg)
-            scale(.7);
-    }
-}
-
 
 /* =========================================================
    MOBILE
 ========================================================= */
 
-@media (max-width: 760px) {
+@media (max-width: 700px) {
 
-    .nav {
-        width: 62px;
-
-        padding:
-            15px 8px;
+    .sidebar {
+        width: 58px;
     }
 
-    .logo {
-        width: 42px;
-        height: 42px;
+    .brand-mark {
+        width: 40px;
+        height: 40px;
 
-        margin-bottom: 22px;
+        margin-bottom: 25px;
+
+        font-size: 19px;
+
+        border-radius: 12px;
     }
 
-    .nav-button {
-        height: 42px;
+    .nav button {
+        width: 38px;
+        height: 38px;
 
-        font-size: 16px;
+        font-size: 17px;
     }
 
-    .nav-mark {
+    .header {
+        padding: 0 16px;
+    }
+
+    .header-sub,
+    .status {
         display: none;
     }
 
-    .topbar {
-        height: 59px;
-
-        padding:
-            0 15px;
+    .chat-inner {
+        padding: 30px 16px 165px;
     }
 
-    .subtitle,
-    .connection {
-        display: none;
-    }
-
-    #chat {
-        padding:
-            22px 12px 160px;
-    }
-
-    .welcome {
-        min-height: 57vh;
-    }
-
-    .welcome-emblem {
-        width: 82px;
-        height: 82px;
-    }
-
-    .welcome h1 {
-        font-size: 29px;
-    }
-
-    .welcome p {
-        font-size: 10px;
-    }
-
-    .suggestions {
-        grid-template-columns: 1fr;
-
-        width:
-            min(310px, 100%);
-    }
-
-    .suggestion {
-        text-align: center;
-    }
-
-    .message.user {
-        max-width: 88%;
-    }
-
-    .message.assistant {
-        max-width: 94%;
-
-        padding-left: 45px;
+    .message {
+        max-width: 90%;
     }
 
     .composer-area {
-        padding:
-            15px 9px 13px;
-    }
-
-    .composer {
-        min-height: 56px;
-
-        border-radius: 15px;
+        padding: 12px;
     }
 
     .tool {
         width: 40px;
         height: 40px;
+
+        flex-basis: 40px;
     }
 
-    textarea {
-        min-height: 40px;
-
-        font-size: 11px;
+    .composer {
+        min-height: 56px;
     }
 
-    .note {
-        font-size: 6px;
+    .real-roach {
+        width: 125px;
+        height: 125px;
     }
 
-    .crawling-roach {
+    .rr2,
+    .rr4,
+    .rr6,
+    .rr8 {
         display: none;
     }
-}
 
-
-/* =========================================================
-   REDUCED MOTION
-========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
+    .roach-gallery {
+        width: min(330px, 90%);
     }
 }
-
 </style>
 </head>
 
-
 <body>
 
-<div class="background-pattern"></div>
-<div class="ambient"></div>
+<!-- =========================================================
+     REAL COCKROACHES
+========================================================= -->
 
-
-<!-- Decorative cockroaches -->
-
-<div class="crawling-roach one">
-    <div class="roach">
-        <div class="roach-head"></div>
-        <div class="roach-eye"></div>
-    </div>
+<div class="real-roach rr1">
+    <img
+        src="https://png.pngtree.com/png-clipart/20240418/original/pngtree-close-up-american-brown-cockroach-png-image_14878801.png"
+        alt=""
+    >
 </div>
 
-<div class="crawling-roach two">
-    <div class="roach">
-        <div class="roach-head"></div>
-        <div class="roach-eye"></div>
-    </div>
+<div class="real-roach rr2">
+    <img
+        src="https://png.pngtree.com/png-clipart/20240418/original/pngtree-close-up-american-brown-cockroach-png-image_14878801.png"
+        alt=""
+    >
 </div>
 
+<div class="real-roach rr3">
+    <img
+        src="https://png.pngtree.com/png-clipart/20240418/original/pngtree-close-up-american-brown-cockroach-png-image_14878801.png"
+        alt=""
+    >
+</div>
+
+<div class="real-roach rr4">
+    <img
+        src="https://png.pngtree.com/png-clipart/20240418/original/pngtree-close-up-american-brown-cockroach-png-image_14878801.png"
+        alt=""
+    >
+</div>
+
+<div class="real-roach rr5">
+    <img
+        src="https://png.pngtree.com/png-clipart/20240418/original/pngtree-close-up-american-brown-cockroach-png-image_14878801.png"
+        alt=""
+    >
+</div>
+
+<div class="real-roach rr6">
+    <img
+        src="https://png.pngtree.com/png-clipart/20240418/original/pngtree-close-up-american-brown-cockroach-png-image_14878801.png"
+        alt=""
+    >
+</div>
+
+<div class="real-roach rr7">
+    <img
+        src="https://png.pngtree.com/png-clipart/20240418/original/pngtree-close-up-american-brown-cockroach-png-image_14878801.png"
+        alt=""
+    >
+</div>
+
+<div class="real-roach rr8">
+    <img
+        src="https://png.pngtree.com/png-clipart/20240418/original/pngtree-close-up-american-brown-cockroach-png-image_14878801.png"
+        alt=""
+    >
+</div>
+
+
+<!-- =========================================================
+     APPLICATION
+========================================================= -->
 
 <div class="app">
 
+    <!-- SIDEBAR -->
 
-    <!-- =====================================================
-         NAV
-    ====================================================== -->
+    <aside class="sidebar">
 
-    <aside class="nav">
-
-        <div class="logo">
-
-            <div class="roach">
-
-                <div class="roach-head"></div>
-                <div class="roach-eye"></div>
-
-            </div>
-
+        <div class="brand-mark">
+            ✦
         </div>
 
-
-        <div class="nav-buttons">
+        <div class="nav">
 
             <button
-                class="nav-button active"
+                class="active"
                 title="Chat"
-                type="button"
-            >
+                type="button">
                 ◈
             </button>
 
             <button
-                class="nav-button"
-                title="Conversations"
-                type="button"
-            >
+                title="Menu"
+                type="button">
                 ☰
             </button>
 
             <button
-                class="nav-button"
-                title="Images"
+                title="Image generation"
                 type="button"
-                onclick="focusImageMode()"
-            >
+                onclick="focusImageMode()">
                 ☪
             </button>
 
         </div>
 
-
-        <div class="nav-spacer"></div>
-
-        <div class="nav-mark">
+        <div class="sidebar-bottom">
             DALBAYOB
         </div>
 
     </aside>
 
 
-    <!-- =====================================================
-         CONTENT
-    ====================================================== -->
+    <!-- MAIN -->
 
-    <main class="content">
+    <main class="main">
 
+        <!-- HEADER -->
 
-        <!-- Top bar -->
+        <header class="header">
 
-        <header class="topbar">
+            <div class="header-left">
 
-            <div class="title-group">
-
-                <div class="title-symbol">
+                <div class="header-symbol">
                     ☪
                 </div>
 
-                <div class="title">
-                    DALBAYOB AI
-                </div>
+                <div>
 
-                <div class="subtitle">
-                    INTELLIGENCE SYSTEM
+                    <div class="header-title">
+                        DALBAYOB AI
+                    </div>
+
+                    <div class="header-sub">
+                        INTELLIGENCE SYSTEM
+                    </div>
+
                 </div>
 
             </div>
 
+            <div class="status">
 
-            <div class="connection">
-
-                <span class="connection-dot"></span>
+                <div class="status-dot"></div>
 
                 SYSTEM ONLINE
 
@@ -1500,74 +1252,80 @@ textarea::placeholder {
         </header>
 
 
-        <!-- Chat -->
+        <!-- CHAT -->
 
         <section id="chat">
 
             <div
                 class="chat-inner"
-                id="chat-inner"
-            >
+                id="chat-inner">
 
                 <div
                     class="welcome"
-                    id="welcome"
-                >
+                    id="welcome">
 
                     <div class="welcome-emblem">
+                        <div class="crescent">
+                            ☪
+                        </div>
+                    </div>
 
-                        <div class="crescent"></div>
+                    <h1>
+                        Welcome to Dalbayob.
+                    </h1>
 
-                        <div class="welcome-roach">
+                    <p>
+                        Intelligence with a slightly questionable pest problem.
+                    </p>
 
-                            <div class="roach">
 
-                                <div class="roach-head"></div>
-                                <div class="roach-eye"></div>
+                    <!-- USER PROVIDED IMAGE -->
 
-                            </div>
+                    <div class="roach-gallery">
 
+                        <img
+                            src="https://avatars.fastly.steamstatic.com/b76a2e69616ae68a574fdc638ab82fdcc3f94161_full.jpg"
+                            alt="Dalbayob specimen"
+                        >
+
+                        <div class="roach-gallery-caption">
+                            DALBAYOB SPECIMEN ARCHIVE · ROACH DIVISION
                         </div>
 
                     </div>
 
 
-                    <h1>
-                        Welcome to
-                        <span>Dalbayob.</span>
-                    </h1>
-
-
-                    <p>
-                        A slightly questionable intelligence system.
-                    </p>
-
+                    <!-- SUGGESTIONS -->
 
                     <div class="suggestions">
 
-                        <div
+                        <button
                             class="suggestion"
-                            onclick="useSuggestion('Tell me something interesting')"
-                        >
-                            <strong>ASK</strong>
-                            Tell me something interesting
-                        </div>
+                            type="button"
+                            onclick="useSuggestion('What can you do?')">
+                            What can you do?
+                        </button>
 
-                        <div
+                        <button
                             class="suggestion"
-                            onclick="useSuggestion('Give me a creative idea')"
-                        >
-                            <strong>CREATE</strong>
+                            type="button"
+                            onclick="useSuggestion('Explain something complicated')">
+                            Explain something complicated
+                        </button>
+
+                        <button
+                            class="suggestion"
+                            type="button"
+                            onclick="useSuggestion('Give me a creative idea')">
                             Give me a creative idea
-                        </div>
+                        </button>
 
-                        <div
+                        <button
                             class="suggestion"
-                            onclick="useSuggestion('Generate an image of a cockroach')"
-                        >
-                            <strong>GENERATE</strong>
-                            Create an image
-                        </div>
+                            type="button"
+                            onclick="useSuggestion('Generate an image of a giant cockroach')">
+                            🪳 Summon a roach
+                        </button>
 
                     </div>
 
@@ -1578,64 +1336,44 @@ textarea::placeholder {
         </section>
 
 
-        <!-- =================================================
-             COMPOSER
-        ================================================== -->
+        <!-- COMPOSER -->
 
         <div class="composer-area">
 
             <div class="composer">
 
-
-                <!-- Attachment -->
-
                 <button
                     class="tool"
-                    type="button"
                     title="Attach"
-                >
+                    type="button">
                     ＋
                 </button>
-
-
-                <!-- Input -->
 
                 <textarea
                     id="input"
                     rows="1"
-                    placeholder="Speak to Dalbayob..."
-                    aria-label="Message Dalbayob AI"
-                ></textarea>
-
-
-                <!-- Star and Crescent -->
+                    placeholder="Speak to Dalbayob..."></textarea>
 
                 <button
-                    class="tool crescent-button"
-                    type="button"
+                    class="tool image"
                     title="Generate image"
-                    onclick="generateImage()"
-                >
+                    type="button"
+                    onclick="generateImage()">
                     ☪
                 </button>
 
-
-                <!-- Send -->
-
                 <button
                     class="tool send"
-                    type="button"
                     title="Send"
-                    onclick="sendMessage()"
-                >
+                    type="button"
+                    onclick="sendMessage()">
                     ↑
                 </button>
 
             </div>
 
-
             <div class="note">
-                DALBAYOB AI • RESPONSES MAY CONTAIN ERRORS • USE YOUR JUDGEMENT
+                Dalbayob AI can make mistakes. Check important information.
             </div>
 
         </div>
@@ -1651,58 +1389,43 @@ textarea::placeholder {
    ELEMENTS
 ========================================================= */
 
-const input =
-    document.getElementById("input");
-
-const chat =
-    document.getElementById("chat");
-
-const chatInner =
-    document.getElementById("chat-inner");
+const input = document.getElementById("input");
+const chat = document.getElementById("chat");
+const chatInner = document.getElementById("chat-inner");
 
 
 /* =========================================================
-   AUTO RESIZE
+   TEXTAREA AUTO RESIZE
 ========================================================= */
 
-input.addEventListener(
-    "input",
-    () => {
+input.addEventListener("input", () => {
 
-        input.style.height =
-            "auto";
+    input.style.height = "auto";
 
-        input.style.height =
-            Math.min(
-                input.scrollHeight,
-                150
-            ) + "px";
+    input.style.height =
+        Math.min(input.scrollHeight, 150) + "px";
 
-    }
-);
+});
 
 
 /* =========================================================
    ENTER TO SEND
 ========================================================= */
 
-input.addEventListener(
-    "keydown",
-    event => {
+input.addEventListener("keydown", event => {
 
-        if (
-            event.key === "Enter" &&
-            !event.shiftKey
-        ) {
+    if (
+        event.key === "Enter" &&
+        !event.shiftKey
+    ) {
 
-            event.preventDefault();
+        event.preventDefault();
 
-            sendMessage();
-
-        }
+        sendMessage();
 
     }
-);
+
+});
 
 
 /* =========================================================
@@ -1741,14 +1464,12 @@ function addMessage(text, type) {
     chatInner.appendChild(row);
 
 
-    requestAnimationFrame(
-        () => {
+    requestAnimationFrame(() => {
 
-            chat.scrollTop =
-                chat.scrollHeight;
+        chat.scrollTop =
+            chat.scrollHeight;
 
-        }
-    );
+    });
 
 
     return message;
@@ -1756,31 +1477,7 @@ function addMessage(text, type) {
 
 
 /* =========================================================
-   TYPING INDICATOR
-========================================================= */
-
-function typingIndicator() {
-
-    const wrapper =
-        document.createElement("div");
-
-    wrapper.className =
-        "typing";
-
-
-    wrapper.innerHTML = `
-        <span></span>
-        <span></span>
-        <span></span>
-    `;
-
-
-    return wrapper;
-}
-
-
-/* =========================================================
-   SEND MESSAGE
+   CHAT
 ========================================================= */
 
 async function sendMessage() {
@@ -1789,12 +1486,9 @@ async function sendMessage() {
         input.value.trim();
 
 
-    if (!text) {
+    if (!text)
         return;
-    }
 
-
-    /* User */
 
     addMessage(
         text,
@@ -1802,26 +1496,17 @@ async function sendMessage() {
     );
 
 
-    /* Reset */
-
     input.value = "";
 
     input.style.height =
         "auto";
 
 
-    /* Assistant */
-
     const reply =
         addMessage(
-            "",
+            "Thinking...",
             "assistant"
         );
-
-
-    reply.appendChild(
-        typingIndicator()
-    );
 
 
     try {
@@ -1858,19 +1543,14 @@ async function sendMessage() {
         }
 
 
-        reply.innerHTML = "";
-
         reply.textContent =
             data.reply;
 
 
     } catch (error) {
 
-        reply.innerHTML = "";
-
         reply.textContent =
-            "⚠️ " +
-            error.message;
+            "⚠️ " + error.message;
 
     }
 
@@ -1898,15 +1578,11 @@ async function generateImage() {
     }
 
 
-    /* User prompt */
-
     addMessage(
-        prompt,
+        "☪ " + prompt,
         "user"
     );
 
-
-    /* Reset */
 
     input.value = "";
 
@@ -1914,17 +1590,11 @@ async function generateImage() {
         "auto";
 
 
-    /* Assistant */
-
     const message =
         addMessage(
-            "",
+            "🪳 Generating specimen...",
             "assistant"
         );
-
-
-    message.innerHTML =
-        "☪ Generating image...";
 
 
     try {
@@ -1961,7 +1631,7 @@ async function generateImage() {
         }
 
 
-        message.innerHTML = "";
+        message.textContent = "";
 
 
         const image =
@@ -1971,25 +1641,18 @@ async function generateImage() {
         image.src =
             data.image;
 
+
         image.alt =
             prompt;
 
-        image.loading =
-            "lazy";
 
-
-        message.appendChild(
-            image
-        );
+        message.appendChild(image);
 
 
     } catch (error) {
 
-        message.innerHTML = "";
-
         message.textContent =
-            "⚠️ " +
-            error.message;
+            "⚠️ " + error.message;
 
     }
 
@@ -2009,60 +1672,66 @@ function newChat() {
 
         <div
             class="welcome"
-            id="welcome"
-        >
+            id="welcome">
 
             <div class="welcome-emblem">
 
-                <div class="crescent"></div>
-
-                <div class="welcome-roach">
-
-                    <div class="roach">
-
-                        <div class="roach-head"></div>
-                        <div class="roach-eye"></div>
-
-                    </div>
-
+                <div class="crescent">
+                    ☪
                 </div>
 
             </div>
 
             <h1>
-                Welcome to
-                <span>Dalbayob.</span>
+                Welcome to Dalbayob.
             </h1>
 
             <p>
-                A slightly questionable intelligence system.
+                Intelligence with a slightly questionable pest problem.
             </p>
+
+            <div class="roach-gallery">
+
+                <img
+                    src="https://avatars.fastly.steamstatic.com/b76a2e69616ae68a574fdc638ab82fdcc3f94161_full.jpg"
+                    alt="Dalbayob specimen"
+                >
+
+                <div class="roach-gallery-caption">
+                    DALBAYOB SPECIMEN ARCHIVE · ROACH DIVISION
+                </div>
+
+            </div>
 
             <div class="suggestions">
 
-                <div
+                <button
                     class="suggestion"
-                    onclick="useSuggestion('Tell me something interesting')"
-                >
-                    <strong>ASK</strong>
-                    Tell me something interesting
-                </div>
+                    type="button"
+                    onclick="useSuggestion('What can you do?')">
+                    What can you do?
+                </button>
 
-                <div
+                <button
                     class="suggestion"
-                    onclick="useSuggestion('Give me a creative idea')"
-                >
-                    <strong>CREATE</strong>
+                    type="button"
+                    onclick="useSuggestion('Explain something complicated')">
+                    Explain something complicated
+                </button>
+
+                <button
+                    class="suggestion"
+                    type="button"
+                    onclick="useSuggestion('Give me a creative idea')">
                     Give me a creative idea
-                </div>
+                </button>
 
-                <div
+                <button
                     class="suggestion"
-                    onclick="useSuggestion('Generate an image of a cockroach')"
-                >
-                    <strong>GENERATE</strong>
-                    Create an image
-                </div>
+                    type="button"
+                    onclick="useSuggestion('Generate an image of a giant cockroach')">
+                    🪳 Summon a roach
+                </button>
 
             </div>
 
@@ -2070,17 +1739,13 @@ function newChat() {
 
     `;
 
-    input.value = "";
-
-    input.style.height =
-        "auto";
 
     input.focus();
 }
 
 
 /* =========================================================
-   SUGGESTIONS
+   SUGGESTION
 ========================================================= */
 
 function useSuggestion(text) {
@@ -2088,9 +1753,11 @@ function useSuggestion(text) {
     input.value =
         text;
 
+
     input.dispatchEvent(
         new Event("input")
     );
+
 
     input.focus();
 }
@@ -2105,21 +1772,14 @@ function focusImageMode() {
     input.value =
         "Generate an image of ";
 
+
+    input.dispatchEvent(
+        new Event("input")
+    );
+
+
     input.focus();
-
 }
-
-
-/* =========================================================
-   INITIAL FOCUS
-========================================================= */
-
-window.addEventListener(
-    "load",
-    () => {
-        input.focus();
-    }
-);
 
 </script>
 
