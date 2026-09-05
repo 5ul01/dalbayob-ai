@@ -76,7 +76,7 @@ For image generation:
                     "Authorization": "Bearer " + apiKey
                 },
                 body: JSON.stringify({
-                    model: "openai",
+                    model: "gpt-5.6-luna",
                     messages: [
                         {
                             role: "system",
