@@ -1495,13 +1495,18 @@ function addMessage(text, type) {
    CHAT
 ========================================================= */
 
-async function sendMessage() {
+    async function sendMessage() {
 
     const text =
         input.value.trim();
 
     if (!text)
         return;
+
+
+    /*
+       Show user's message.
+    */
 
     addMessage(
         text,
@@ -1513,13 +1518,24 @@ async function sendMessage() {
     input.style.height =
         "auto";
 
+
+    /*
+       Show temporary AI message.
+    */
+
     const reply =
         addMessage(
             "Thinking...",
             "assistant"
         );
 
+
     try {
+
+        /*
+           Send the previous conversation
+           to the backend.
+        */
 
         const response =
             await fetch(
@@ -1533,13 +1549,20 @@ async function sendMessage() {
                     },
 
                     body: JSON.stringify({
-                        message: text
+
+                        message: text,
+
+                        history:
+                            conversationHistory
+
                     })
                 }
             );
 
+
         const data =
             await response.json();
+
 
         if (!response.ok) {
 
@@ -1550,8 +1573,41 @@ async function sendMessage() {
 
         }
 
+
+        /*
+           Display AI response.
+        */
+
         reply.textContent =
             data.reply;
+
+
+        /*
+           Save this exchange to memory.
+
+           IMPORTANT:
+           We save the user's message AND
+           Dalbayob's response AFTER getting
+           the response.
+        */
+
+        conversationHistory.push({
+
+            role: "user",
+
+            content: text
+
+        });
+
+
+        conversationHistory.push({
+
+            role: "assistant",
+
+            content: data.reply
+
+        });
+
 
     } catch (error) {
 
@@ -1560,9 +1616,11 @@ async function sendMessage() {
 
     }
 
+
     chat.scrollTop =
         chat.scrollHeight;
 }
+
 
 
 /* =========================================================
