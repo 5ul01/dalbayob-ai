@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,6 +37,7 @@ body {
 body {
     font-family: Inter, sans-serif;
     color: var(--cream);
+
     background:
         radial-gradient(
             circle at 50% 40%,
@@ -56,6 +58,7 @@ body::before {
     inset: 0;
     pointer-events: none;
     opacity: .16;
+
     background-image:
         linear-gradient(
             30deg,
@@ -67,6 +70,7 @@ body::before {
             rgba(205,169,87,.15) 1px,
             transparent 1px
         );
+
     background-size: 72px 72px;
     z-index: 0;
 }
@@ -76,7 +80,10 @@ body::after {
     position: fixed;
     inset: 0;
     pointer-events: none;
-    box-shadow: inset 0 0 180px rgba(0,0,0,.9);
+
+    box-shadow:
+        inset 0 0 180px rgba(0,0,0,.9);
+
     z-index: 9999;
 }
 
@@ -86,8 +93,10 @@ body::after {
 
 .real-roach {
     position: fixed;
+
     width: 190px;
     height: 190px;
+
     pointer-events: none;
     z-index: 50;
 
@@ -100,76 +109,99 @@ body::after {
 .real-roach img {
     width: 100%;
     height: 100%;
+
     display: block;
+
     object-fit: contain;
 }
 
 .rr1 {
     left: -240px;
     top: 8%;
+
     width: 210px;
     height: 210px;
+
     animation: crawlAcross 25s linear infinite;
 }
 
 .rr2 {
     right: -250px;
     top: 30%;
+
     width: 235px;
     height: 235px;
+
     transform: scaleX(-1);
+
     animation: crawlReverse 30s linear infinite;
 }
 
 .rr3 {
     left: 12%;
     top: -230px;
+
     width: 180px;
     height: 180px;
+
     transform: rotate(82deg);
+
     animation: crawlDown 22s linear infinite;
 }
 
 .rr4 {
     right: 4%;
     bottom: -280px;
+
     width: 270px;
     height: 270px;
+
     transform: rotate(-58deg);
+
     animation: crawlUp 27s linear infinite;
 }
 
 .rr5 {
     left: -180px;
     top: 75%;
+
     width: 150px;
     height: 150px;
+
     animation: crawlFast 18s linear infinite;
 }
 
 .rr6 {
     right: -230px;
     top: 11%;
+
     width: 220px;
     height: 220px;
+
     transform: rotate(180deg);
+
     animation: crawlHeader 34s linear infinite;
 }
 
 .rr7 {
     left: 53%;
     top: -210px;
+
     width: 165px;
     height: 165px;
+
     transform: rotate(110deg);
+
     animation: crawlDrop 36s linear infinite;
 }
 
 .rr8 {
     left: -210px;
     top: 45%;
+
     width: 175px;
     height: 175px;
+
     animation: crawlSide 39s linear infinite;
 }
 
@@ -178,6 +210,7 @@ body::after {
 ========================================================= */
 
 @keyframes crawlAcross {
+
     0% {
         left: -250px;
         top: 8%;
@@ -211,6 +244,7 @@ body::after {
 }
 
 @keyframes crawlReverse {
+
     0% {
         right: -260px;
         top: 30%;
@@ -237,6 +271,7 @@ body::after {
 }
 
 @keyframes crawlDown {
+
     0% {
         top: -230px;
         left: 12%;
@@ -261,6 +296,7 @@ body::after {
 }
 
 @keyframes crawlUp {
+
     0% {
         bottom: -290px;
         right: 4%;
@@ -285,6 +321,7 @@ body::after {
 }
 
 @keyframes crawlFast {
+
     0% {
         left: -190px;
         top: 75%;
@@ -313,6 +350,7 @@ body::after {
 }
 
 @keyframes crawlHeader {
+
     0% {
         right: -240px;
         top: 11%;
@@ -339,6 +377,7 @@ body::after {
 }
 
 @keyframes crawlDrop {
+
     0% {
         top: -220px;
         left: 53%;
@@ -359,6 +398,7 @@ body::after {
 }
 
 @keyframes crawlSide {
+
     0% {
         left: -220px;
         top: 45%;
@@ -385,7 +425,9 @@ body::after {
 .app {
     position: relative;
     z-index: 100;
+
     display: flex;
+
     width: 100%;
     height: 100vh;
 }
@@ -408,33 +450,105 @@ body::after {
     padding: 20px 0;
 
     background: rgba(5,8,5,.9);
-    border-right: 1px solid rgba(205,169,87,.18);
+
+    border-right:
+        1px solid rgba(205,169,87,.18);
 
     backdrop-filter: blur(20px);
 }
 
+/* =========================================================
+   DALBAYOB STAR LOGO
+========================================================= */
+
 .brand-mark {
+    position: relative;
+
     width: 50px;
     height: 50px;
 
     display: grid;
     place-items: center;
 
+    margin-bottom: 45px;
+
     border-radius: 16px;
-    border: 1px solid rgba(205,169,87,.5);
+
+    border:
+        1px solid rgba(205,169,87,.5);
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(205,169,87,.12),
+            rgba(5,6,4,.7)
+        );
 
     color: var(--gold-light);
-    font-size: 25px;
 
     box-shadow:
-        0 0 30px rgba(205,169,87,.08);
-
-    margin-bottom: 45px;
+        0 0 18px rgba(205,169,87,.10),
+        inset 0 0 18px rgba(205,169,87,.04);
 }
+
+.brand-mark::before,
+.brand-mark::after {
+    content: "";
+
+    position: absolute;
+
+    width: 27px;
+    height: 27px;
+
+    border:
+        1.5px solid var(--gold-light);
+
+    transform: rotate(0deg);
+
+    filter:
+        drop-shadow(0 0 5px rgba(240,215,140,.65));
+
+    opacity: .95;
+}
+
+.brand-mark::before {
+    clip-path: polygon(
+        50% 0%,
+        100% 86%,
+        0% 86%
+    );
+}
+
+.brand-mark::after {
+    clip-path: polygon(
+        0% 14%,
+        100% 14%,
+        50% 100%
+    );
+}
+
+.brand-mark span {
+    position: relative;
+    z-index: 2;
+
+    font-family: Cinzel, serif;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    color: var(--gold-light);
+
+    letter-spacing: 0;
+}
+
+/* =========================================================
+   NAV
+========================================================= */
 
 .nav {
     display: flex;
     flex-direction: column;
+
     gap: 15px;
 }
 
@@ -444,11 +558,14 @@ body::after {
 
     border-radius: 14px;
 
-    border: 1px solid rgba(205,169,87,.14);
+    border:
+        1px solid rgba(205,169,87,.14);
 
-    background: rgba(255,255,255,.025);
+    background:
+        rgba(255,255,255,.025);
 
     color: #8d927f;
+
     font-size: 20px;
 
     cursor: pointer;
@@ -463,9 +580,15 @@ body::after {
 .nav button:hover,
 .nav button.active {
     color: var(--gold-light);
-    border-color: rgba(205,169,87,.5);
-    background: rgba(205,169,87,.08);
-    transform: translateY(-2px);
+
+    border-color:
+        rgba(205,169,87,.5);
+
+    background:
+        rgba(205,169,87,.08);
+
+    transform:
+        translateY(-2px);
 }
 
 .sidebar-bottom {
@@ -476,6 +599,7 @@ body::after {
     color: #555c51;
 
     font-size: 9px;
+
     letter-spacing: 4px;
 }
 
@@ -485,8 +609,11 @@ body::after {
 
 .main {
     position: relative;
+
     flex: 1;
+
     min-width: 0;
+
     display: flex;
     flex-direction: column;
 }
@@ -507,9 +634,11 @@ body::after {
 
     padding: 0 32px;
 
-    background: rgba(4,7,4,.78);
+    background:
+        rgba(4,7,4,.78);
 
-    border-bottom: 1px solid rgba(205,169,87,.12);
+    border-bottom:
+        1px solid rgba(205,169,87,.12);
 
     backdrop-filter: blur(20px);
 }
@@ -517,18 +646,59 @@ body::after {
 .header-left {
     display: flex;
     align-items: center;
+
     gap: 14px;
 }
 
+/* Header Star */
+
 .header-symbol {
-    color: var(--gold-light);
-    font-size: 25px;
+    position: relative;
+
+    width: 28px;
+    height: 28px;
+
+    display: grid;
+    place-items: center;
+}
+
+.header-symbol::before,
+.header-symbol::after {
+    content: "";
+
+    position: absolute;
+
+    width: 20px;
+    height: 20px;
+
+    border:
+        1.4px solid var(--gold-light);
+
+    filter:
+        drop-shadow(0 0 5px rgba(240,215,140,.55));
+}
+
+.header-symbol::before {
+    clip-path: polygon(
+        50% 0%,
+        100% 86%,
+        0% 86%
+    );
+}
+
+.header-symbol::after {
+    clip-path: polygon(
+        0% 14%,
+        100% 14%,
+        50% 100%
+    );
 }
 
 .header-title {
     font-family: Cinzel, serif;
 
     font-size: 16px;
+
     letter-spacing: 4px;
 }
 
@@ -538,17 +708,20 @@ body::after {
     color: #666d61;
 
     font-size: 9px;
+
     letter-spacing: 2px;
 }
 
 .status {
     display: flex;
     align-items: center;
+
     gap: 9px;
 
     color: #7f8979;
 
     font-size: 9px;
+
     letter-spacing: 2px;
 }
 
@@ -577,7 +750,10 @@ body::after {
     overflow-y: auto;
 
     scrollbar-width: thin;
-    scrollbar-color: #354332 transparent;
+
+    scrollbar-color:
+        #354332
+        transparent;
 }
 
 .chat-inner {
@@ -616,7 +792,8 @@ body::after {
 
     border-radius: 50%;
 
-    border: 1px solid rgba(205,169,87,.42);
+    border:
+        1px solid rgba(205,169,87,.42);
 
     background:
         radial-gradient(
@@ -630,9 +807,48 @@ body::after {
         inset 0 0 30px rgba(205,169,87,.04);
 }
 
+/* Large Star */
+
 .crescent {
-    color: var(--gold-light);
-    font-size: 50px;
+    position: relative;
+
+    width: 58px;
+    height: 58px;
+
+    display: grid;
+    place-items: center;
+}
+
+.crescent::before,
+.crescent::after {
+    content: "";
+
+    position: absolute;
+
+    width: 47px;
+    height: 47px;
+
+    border:
+        2px solid var(--gold-light);
+
+    filter:
+        drop-shadow(0 0 8px rgba(240,215,140,.65));
+}
+
+.crescent::before {
+    clip-path: polygon(
+        50% 0%,
+        100% 86%,
+        0% 86%
+    );
+}
+
+.crescent::after {
+    clip-path: polygon(
+        0% 14%,
+        100% 14%,
+        50% 100%
+    );
 }
 
 .welcome h1 {
@@ -640,7 +856,8 @@ body::after {
 
     font-family: Cinzel, serif;
 
-    font-size: clamp(28px, 4vw, 48px);
+    font-size:
+        clamp(28px, 4vw, 48px);
 
     font-weight: 600;
 
@@ -684,6 +901,7 @@ body::after {
     background: var(--black);
 
     font-size: 8px;
+
     letter-spacing: 3px;
 }
 
@@ -698,7 +916,8 @@ body::after {
 
     border-radius: 20px;
 
-    border: 1px solid rgba(205,169,87,.35);
+    border:
+        1px solid rgba(205,169,87,.35);
 
     box-shadow:
         0 20px 70px rgba(0,0,0,.7),
@@ -720,9 +939,11 @@ body::after {
 
     border-radius: 12px;
 
-    background: rgba(3,5,3,.82);
+    background:
+        rgba(3,5,3,.82);
 
-    border: 1px solid rgba(205,169,87,.18);
+    border:
+        1px solid rgba(205,169,87,.18);
 
     backdrop-filter: blur(12px);
 
@@ -731,6 +952,7 @@ body::after {
     text-align: left;
 
     font-size: 9px;
+
     letter-spacing: 2px;
 }
 
@@ -741,6 +963,7 @@ body::after {
 .suggestions {
     display: flex;
     flex-wrap: wrap;
+
     justify-content: center;
 
     gap: 9px;
@@ -755,13 +978,16 @@ body::after {
 
     border-radius: 100px;
 
-    border: 1px solid rgba(205,169,87,.16);
+    border:
+        1px solid rgba(205,169,87,.16);
 
-    background: rgba(255,255,255,.025);
+    background:
+        rgba(255,255,255,.025);
 
     color: #aaa99a;
 
     font-family: Inter, sans-serif;
+
     font-size: 11px;
 
     cursor: pointer;
@@ -772,11 +998,14 @@ body::after {
 .suggestion:hover {
     color: var(--gold-light);
 
-    border-color: rgba(205,169,87,.45);
+    border-color:
+        rgba(205,169,87,.45);
 
-    background: rgba(205,169,87,.07);
+    background:
+        rgba(205,169,87,.07);
 
-    transform: translateY(-1px);
+    transform:
+        translateY(-1px);
 }
 
 /* =========================================================
@@ -817,7 +1046,8 @@ body::after {
             #102417
         );
 
-    border: 1px solid rgba(111,160,110,.18);
+    border:
+        1px solid rgba(111,160,110,.18);
 
     border-bottom-right-radius: 5px;
 }
@@ -825,22 +1055,153 @@ body::after {
 .message.assistant {
     color: #d3d2c5;
 
-    background: rgba(255,255,255,.025);
+    background:
+        rgba(255,255,255,.025);
 
-    border: 1px solid rgba(205,169,87,.12);
+    border:
+        1px solid rgba(205,169,87,.12);
 
-    border-left: 2px solid rgba(205,169,87,.6);
+    border-left:
+        2px solid rgba(205,169,87,.6);
 
     border-bottom-left-radius: 5px;
 }
 
-.message.assistant img {
+.message.assistant img,
+.message.user img {
     max-width: 100%;
+
     display: block;
 
     border-radius: 14px;
 
-    border: 1px solid rgba(205,169,87,.3);
+    border:
+        1px solid rgba(205,169,87,.3);
+}
+
+/* =========================================================
+   IMAGE ATTACHMENT PREVIEW
+========================================================= */
+
+.attachment-preview {
+    position: absolute;
+
+    left: 50%;
+
+    bottom: 88px;
+
+    transform:
+        translateX(-50%);
+
+    width: min(900px, calc(100% - 56px));
+
+    display: none;
+
+    padding: 9px;
+
+    border-radius: 16px;
+
+    border:
+        1px solid rgba(205,169,87,.22);
+
+    background:
+        rgba(8,12,8,.94);
+
+    backdrop-filter: blur(22px);
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,.55);
+}
+
+.attachment-preview.visible {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.attachment-preview img {
+    width: 58px;
+    height: 58px;
+
+    object-fit: cover;
+
+    border-radius: 11px;
+
+    border:
+        1px solid rgba(205,169,87,.3);
+}
+
+.attachment-info {
+    flex: 1;
+
+    min-width: 0;
+}
+
+.attachment-title {
+    color: var(--gold-light);
+
+    font-size: 11px;
+
+    letter-spacing: 1px;
+}
+
+.attachment-sub {
+    margin-top: 4px;
+
+    color: #72796d;
+
+    font-size: 9px;
+}
+
+.attachment-remove {
+    width: 34px;
+    height: 34px;
+
+    border-radius: 10px;
+
+    border:
+        1px solid rgba(205,169,87,.15);
+
+    background:
+        rgba(255,255,255,.025);
+
+    color: #8d927f;
+
+    cursor: pointer;
+
+    font-size: 16px;
+
+    transition: .2s;
+}
+
+.attachment-remove:hover {
+    color: var(--gold-light);
+
+    border-color:
+        rgba(205,169,87,.45);
+
+    background:
+        rgba(205,169,87,.07);
+}
+
+/* =========================================================
+   ATTACHED IMAGE IN CHAT
+========================================================= */
+
+.chat-image-preview {
+    max-width: 260px;
+
+    margin-top: 10px;
+
+    border-radius: 13px;
+
+    border:
+        1px solid rgba(205,169,87,.25);
+
+    box-shadow:
+        0 10px 35px rgba(0,0,0,.35);
 }
 
 /* =========================================================
@@ -856,7 +1217,8 @@ body::after {
 
     z-index: 400;
 
-    padding: 20px 28px 23px;
+    padding:
+        20px 28px 23px;
 
     background:
         linear-gradient(
@@ -868,6 +1230,8 @@ body::after {
 }
 
 .composer {
+    position: relative;
+
     width: min(900px, 100%);
 
     min-height: 62px;
@@ -883,9 +1247,11 @@ body::after {
 
     border-radius: 19px;
 
-    border: 1px solid rgba(205,169,87,.18);
+    border:
+        1px solid rgba(205,169,87,.18);
 
-    background: rgba(11,16,11,.92);
+    background:
+        rgba(11,16,11,.92);
 
     backdrop-filter: blur(22px);
 
@@ -902,9 +1268,11 @@ body::after {
 
     border-radius: 13px;
 
-    border: 1px solid rgba(205,169,87,.13);
+    border:
+        1px solid rgba(205,169,87,.13);
 
-    background: rgba(255,255,255,.025);
+    background:
+        rgba(255,255,255,.025);
 
     color: #929888;
 
@@ -918,9 +1286,11 @@ body::after {
 .tool:hover {
     color: var(--gold-light);
 
-    border-color: rgba(205,169,87,.4);
+    border-color:
+        rgba(205,169,87,.4);
 
-    background: rgba(205,169,87,.06);
+    background:
+        rgba(205,169,87,.06);
 }
 
 .tool.image {
@@ -940,7 +1310,8 @@ body::after {
 .tool.send:hover {
     background: var(--gold-light);
 
-    transform: translateY(-2px);
+    transform:
+        translateY(-2px);
 }
 
 textarea {
@@ -961,6 +1332,7 @@ textarea {
     color: #eee;
 
     font-family: Inter, sans-serif;
+
     font-size: 14px;
 }
 
@@ -976,7 +1348,16 @@ textarea::placeholder {
     text-align: center;
 
     font-size: 9px;
+
     letter-spacing: .5px;
+}
+
+/* =========================================================
+   HIDDEN FILE INPUT
+========================================================= */
+
+#imageInput {
+    display: none;
 }
 
 /* =========================================================
@@ -993,6 +1374,7 @@ textarea::placeholder {
 
 #chat::-webkit-scrollbar-thumb {
     background: #263126;
+
     border-radius: 20px;
 }
 
@@ -1012,9 +1394,13 @@ textarea::placeholder {
 
         margin-bottom: 25px;
 
-        font-size: 19px;
-
         border-radius: 12px;
+    }
+
+    .brand-mark::before,
+    .brand-mark::after {
+        width: 22px;
+        height: 22px;
     }
 
     .nav button {
@@ -1034,7 +1420,8 @@ textarea::placeholder {
     }
 
     .chat-inner {
-        padding: 30px 16px 165px;
+        padding:
+            30px 16px 165px;
     }
 
     .message {
@@ -1071,76 +1458,65 @@ textarea::placeholder {
     .roach-gallery {
         width: min(330px, 90%);
     }
+
+    .attachment-preview {
+        width: calc(100% - 24px);
+
+        bottom: 76px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<!-- REAL COCKROACHES -->
+<!-- =========================================================
+     REAL COCKROACHES
+========================================================= -->
 
 <div class="real-roach rr1">
-    <img
-        src="/assets/model.png"
-        alt=""
-    >
+    <img src="/assets/model.png" alt="">
 </div>
 
 <div class="real-roach rr2">
-    <img
-        src="/assets/model.png"
-        alt=""
-    >
+    <img src="/assets/model.png" alt="">
 </div>
 
 <div class="real-roach rr3">
-    <img
-        src="/assets/model.png"
-        alt=""
-    >
+    <img src="/assets/model.png" alt="">
 </div>
 
 <div class="real-roach rr4">
-    <img
-        src="/assets/model.png"
-        alt=""
-    >
+    <img src="/assets/model.png" alt="">
 </div>
 
 <div class="real-roach rr5">
-    <img
-        src="/assets/model.png"
-        alt=""
-    >
+    <img src="/assets/model.png" alt="">
 </div>
 
 <div class="real-roach rr6">
-    <img
-        src="/assets/model.png"
-        alt=""
-    >
+    <img src="/assets/model.png" alt="">
 </div>
 
 <div class="real-roach rr7">
-    <img
-        src="/assets/model.png"
-        alt=""
-    >
+    <img src="/assets/model.png" alt="">
 </div>
 
 <div class="real-roach rr8">
-    <img
-        src="/assets/model.png"
-        alt=""
-    >
+    <img src="/assets/model.png" alt="">
 </div>
+
 
 <div class="app">
 
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
     <aside class="sidebar">
 
-        <div class="brand-mark">
-            ✦
+        <div class="brand-mark" title="Dalbayob AI">
+            <span>DB</span>
         </div>
 
         <div class="nav">
@@ -1153,8 +1529,9 @@ textarea::placeholder {
             </button>
 
             <button
-                title="Menu"
-                type="button">
+                title="New chat"
+                type="button"
+                onclick="newChat()">
                 ☰
             </button>
 
@@ -1162,7 +1539,7 @@ textarea::placeholder {
                 title="Image generation"
                 type="button"
                 onclick="focusImageMode()">
-                ☪
+                ✦
             </button>
 
         </div>
@@ -1173,15 +1550,20 @@ textarea::placeholder {
 
     </aside>
 
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
     <main class="main">
+
+        <!-- HEADER -->
 
         <header class="header">
 
             <div class="header-left">
 
-                <div class="header-symbol">
-                    ☪
-                </div>
+                <div class="header-symbol"></div>
 
                 <div>
 
@@ -1197,6 +1579,7 @@ textarea::placeholder {
 
             </div>
 
+
             <div class="status">
 
                 <div class="status-dot"></div>
@@ -1206,6 +1589,9 @@ textarea::placeholder {
             </div>
 
         </header>
+
+
+        <!-- CHAT -->
 
         <section id="chat">
 
@@ -1218,9 +1604,9 @@ textarea::placeholder {
                     id="welcome">
 
                     <div class="welcome-emblem">
-                        <div class="crescent">
-                            ☪
-                        </div>
+
+                        <div class="crescent"></div>
+
                     </div>
 
                     <h1>
@@ -1230,6 +1616,7 @@ textarea::placeholder {
                     <p>
                         Intelligence with a slightly questionable pest problem.
                     </p>
+
 
                     <div class="roach-gallery">
 
@@ -1243,6 +1630,7 @@ textarea::placeholder {
                         </div>
 
                     </div>
+
 
                     <div class="suggestions">
 
@@ -1282,29 +1670,89 @@ textarea::placeholder {
 
         </section>
 
+
+        <!-- COMPOSER -->
+
         <div class="composer-area">
+
+            <!-- ATTACHMENT PREVIEW -->
+
+            <div
+                class="attachment-preview"
+                id="attachmentPreview">
+
+                <img
+                    id="attachmentPreviewImage"
+                    src=""
+                    alt="Attached image"
+                >
+
+                <div class="attachment-info">
+
+                    <div class="attachment-title">
+                        IMAGE ATTACHED
+                    </div>
+
+                    <div class="attachment-sub">
+                        Dalbayob can analyze this image.
+                    </div>
+
+                </div>
+
+                <button
+                    class="attachment-remove"
+                    type="button"
+                    title="Remove image"
+                    onclick="clearAttachment()">
+                    ×
+                </button>
+
+            </div>
+
 
             <div class="composer">
 
+                <!-- HIDDEN FILE PICKER -->
+
+                <input
+                    id="imageInput"
+                    type="file"
+                    accept="image/*"
+                    onchange="handleImageUpload(event)"
+                >
+
+
+                <!-- ATTACH -->
+
                 <button
                     class="tool"
-                    title="Attach"
-                    type="button">
+                    title="Attach image"
+                    type="button"
+                    onclick="openImagePicker()">
                     ＋
                 </button>
+
+
+                <!-- TEXT -->
 
                 <textarea
                     id="input"
                     rows="1"
                     placeholder="Speak to Dalbayob..."></textarea>
 
+
+                <!-- IMAGE GENERATION -->
+
                 <button
                     class="tool image"
                     title="Generate image"
                     type="button"
                     onclick="generateImage()">
-                    ☪
+                    ✦
                 </button>
+
+
+                <!-- SEND -->
 
                 <button
                     class="tool send"
@@ -1316,6 +1764,7 @@ textarea::placeholder {
 
             </div>
 
+
             <div class="note">
                 Dalbayob AI can make mistakes. Check important information.
             </div>
@@ -1326,27 +1775,35 @@ textarea::placeholder {
 
 </div>
 
+
 <script>
 
 /* =========================================================
    ELEMENTS
 ========================================================= */
 
-const input = document.getElementById("input");
-const chat = document.getElementById("chat");
-const chatInner = document.getElementById("chat-inner");
+const input =
+    document.getElementById("input");
+
+const chat =
+    document.getElementById("chat");
+
+const chatInner =
+    document.getElementById("chat-inner");
+
+const imageInput =
+    document.getElementById("imageInput");
+
+const attachmentPreview =
+    document.getElementById("attachmentPreview");
+
+const attachmentPreviewImage =
+    document.getElementById("attachmentPreviewImage");
 
 
 /* =========================================================
    MEMORY
 ========================================================= */
-
-/*
-   Stores the current conversation.
-
-   This allows Dalbayob to understand things
-   mentioned earlier in the same chat.
-*/
 
 let conversationHistory = [];
 
@@ -1356,18 +1813,22 @@ let conversationHistory = [];
 ========================================================= */
 
 /*
-   Stores the latest generated image.
+   currentImage
+   = latest generated/edited image.
 
-   First:
-   "Create a fox driving a Mercedes"
+   attachedImage
+   = image currently uploaded by the user.
 
-   Then:
-   "Make the Mercedes black"
-
-   The newest image becomes the new currentImage.
+   currentAnalysisImage
+   = image Dalbayob should continue
+     remembering during image questions.
 */
 
 let currentImage = null;
+
+let attachedImage = null;
+
+let currentAnalysisImage = null;
 
 
 /* =========================================================
@@ -1448,6 +1909,169 @@ function addMessage(text, type) {
 
 
 /* =========================================================
+   ADD IMAGE MESSAGE
+========================================================= */
+
+function addImageMessage(image, text) {
+
+    const welcome =
+        document.getElementById("welcome");
+
+    if (welcome) {
+        welcome.remove();
+    }
+
+    const row =
+        document.createElement("div");
+
+    row.className =
+        "message-row user";
+
+    const message =
+        document.createElement("div");
+
+    message.className =
+        "message user";
+
+    if (text) {
+
+        const textNode =
+            document.createElement("div");
+
+        textNode.textContent =
+            text;
+
+        message.appendChild(
+            textNode
+        );
+    }
+
+    const imageElement =
+        document.createElement("img");
+
+    imageElement.src =
+        image;
+
+    imageElement.alt =
+        "Uploaded image";
+
+    imageElement.className =
+        "chat-image-preview";
+
+    message.appendChild(
+        imageElement
+    );
+
+    row.appendChild(
+        message
+    );
+
+    chatInner.appendChild(
+        row
+    );
+
+    requestAnimationFrame(() => {
+
+        chat.scrollTop =
+            chat.scrollHeight;
+
+    });
+
+    return message;
+}
+
+
+/* =========================================================
+   IMAGE UPLOAD
+========================================================= */
+
+function openImagePicker() {
+
+    imageInput.click();
+
+}
+
+
+/* =========================================================
+   HANDLE IMAGE UPLOAD
+========================================================= */
+
+function handleImageUpload(event) {
+
+    const file =
+        event.target.files?.[0];
+
+    if (!file)
+        return;
+
+
+    if (!file.type.startsWith("image/")) {
+
+        alert("Please select an image.");
+
+        return;
+    }
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload = () => {
+
+        attachedImage =
+            reader.result;
+
+        currentAnalysisImage =
+            reader.result;
+
+
+        attachmentPreviewImage.src =
+            attachedImage;
+
+        attachmentPreview.classList.add(
+            "visible"
+        );
+
+
+        input.placeholder =
+            "Ask Dalbayob about this image...";
+
+        input.focus();
+
+    };
+
+
+    reader.readAsDataURL(file);
+
+}
+
+
+/* =========================================================
+   CLEAR ATTACHMENT
+========================================================= */
+
+function clearAttachment() {
+
+    attachedImage = null;
+
+    currentAnalysisImage = null;
+
+    imageInput.value = "";
+
+    attachmentPreviewImage.src = "";
+
+    attachmentPreview.classList.remove(
+        "visible"
+    );
+
+    input.placeholder =
+        "Speak to Dalbayob...";
+
+}
+
+
+/* =========================================================
    CHAT
 ========================================================= */
 
@@ -1456,19 +2080,60 @@ async function sendMessage() {
     const text =
         input.value.trim();
 
-    if (!text)
+
+    /*
+       Allow either:
+
+       text
+
+       OR
+
+       image + text
+
+       OR
+
+       image alone
+    */
+
+    if (!text && !attachedImage)
         return;
 
 
-    /* Show user's message */
-
-    addMessage(
-        text,
-        "user"
-    );
+    const imageForThisMessage =
+        attachedImage ||
+        currentAnalysisImage ||
+        null;
 
 
-    /* Clear input */
+    const actualMessage =
+        text ||
+        "Analyze this image and tell me what you see.";
+
+
+    /*
+       Display user's message.
+    */
+
+    if (imageForThisMessage) {
+
+        addImageMessage(
+            imageForThisMessage,
+            text
+        );
+
+    } else {
+
+        addMessage(
+            text,
+            "user"
+        );
+
+    }
+
+
+    /*
+       Clear input.
+    */
 
     input.value = "";
 
@@ -1476,7 +2141,43 @@ async function sendMessage() {
         "auto";
 
 
-    /* Show thinking message */
+    /*
+       Hide attachment preview,
+       but KEEP the image as the
+       active analysis image.
+
+       This allows follow-up questions.
+
+       Example:
+
+       Upload image
+
+       "What's this?"
+
+       "What color is the car?"
+
+       "What model is it?"
+    */
+
+    if (imageForThisMessage) {
+
+        currentAnalysisImage =
+            imageForThisMessage;
+
+        attachedImage = null;
+
+        imageInput.value = "";
+
+        attachmentPreview.classList.remove(
+            "visible"
+        );
+
+    }
+
+
+    /*
+       Show thinking.
+    */
 
     const reply =
         addMessage(
@@ -1500,10 +2201,16 @@ async function sendMessage() {
 
                     body: JSON.stringify({
 
-                        message: text,
+                        message:
+                            actualMessage,
 
                         history:
-                            conversationHistory
+                            conversationHistory,
+
+                        image:
+                            imageForThisMessage ||
+                            currentAnalysisImage ||
+                            null
 
                     })
                 }
@@ -1525,7 +2232,7 @@ async function sendMessage() {
 
 
         /*
-           Display response
+           Display response.
         */
 
         reply.textContent =
@@ -1533,17 +2240,20 @@ async function sendMessage() {
 
 
         /*
-           Save conversation
+           Save text conversation.
 
-           This is what gives Dalbayob
-           context from previous messages.
+           Do NOT put base64 image data
+           inside conversationHistory.
         */
 
         conversationHistory.push({
 
             role: "user",
 
-            content: text
+            content:
+                imageForThisMessage
+                    ? "[Image attached] " + actualMessage
+                    : actualMessage
 
         });
 
@@ -1552,7 +2262,8 @@ async function sendMessage() {
 
             role: "assistant",
 
-            content: data.reply
+            content:
+                data.reply
 
         });
 
@@ -1580,6 +2291,18 @@ async function generateImage() {
         input.value.trim();
 
 
+    /*
+       If an uploaded image exists,
+       allow the image generator to
+       edit that image too.
+    */
+
+    const sourceImage =
+        currentImage ||
+        attachedImage ||
+        null;
+
+
     if (!prompt) {
 
         input.focus();
@@ -1591,11 +2314,11 @@ async function generateImage() {
 
     /*
        Add user's image instruction
-       to the visible chat.
+       to visible chat.
     */
 
     addMessage(
-        "☪ " + prompt,
+        "✦ " + prompt,
         "user"
     );
 
@@ -1607,12 +2330,17 @@ async function generateImage() {
 
 
     /*
-       Decide whether this is a new
-       image or an edit.
+       Decide whether this is:
+
+       new image
+
+       or
+
+       image edit.
     */
 
     const statusText =
-        currentImage
+        sourceImage
             ? "✏️ Editing the latest specimen..."
             : "🪳 Generating specimen...";
 
@@ -1642,7 +2370,7 @@ async function generateImage() {
                         prompt: prompt,
 
                         image:
-                            currentImage
+                            sourceImage
 
                     })
                 }
@@ -1686,14 +2414,11 @@ async function generateImage() {
         const image =
             document.createElement("img");
 
-
         image.src =
             currentImage;
 
-
         image.alt =
             prompt;
-
 
         message.appendChild(
             image
@@ -1702,10 +2427,8 @@ async function generateImage() {
 
         /*
            Save image interaction
-           to conversation history.
-
-           This gives the text AI some
-           awareness that an image was made.
+           without storing the actual
+           base64 image.
         */
 
         conversationHistory.push({
@@ -1749,7 +2472,7 @@ async function generateImage() {
 function newChat() {
 
     /*
-       Clear all conversation memory.
+       Clear conversation.
     */
 
     conversationHistory = [];
@@ -1760,6 +2483,36 @@ function newChat() {
     */
 
     currentImage = null;
+
+    attachedImage = null;
+
+    currentAnalysisImage = null;
+
+
+    /*
+       Reset file input.
+    */
+
+    imageInput.value = "";
+
+
+    /*
+       Reset attachment UI.
+    */
+
+    attachmentPreviewImage.src = "";
+
+    attachmentPreview.classList.remove(
+        "visible"
+    );
+
+
+    /*
+       Reset placeholder.
+    */
+
+    input.placeholder =
+        "Speak to Dalbayob...";
 
 
     /*
@@ -1774,9 +2527,7 @@ function newChat() {
 
             <div class="welcome-emblem">
 
-                <div class="crescent">
-                    ☪
-                </div>
+                <div class="crescent"></div>
 
             </div>
 
@@ -1845,6 +2596,7 @@ function newChat() {
 
     `;
 
+
     input.focus();
 
 }
@@ -1877,7 +2629,9 @@ function focusImageMode() {
     input.value =
         currentImage
             ? "Edit the latest image: "
-            : "Generate an image of ";
+            : attachedImage
+                ? "Edit this image: "
+                : "Generate an image of ";
 
 
     input.dispatchEvent(
@@ -1892,3 +2646,4 @@ function focusImageMode() {
 
 </body>
 </html>
+```
