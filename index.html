@@ -1495,119 +1495,54 @@ function addMessage(text, type) {
    CHAT
 ========================================================= */
 
-    async function sendMessage() {
+   async function sendMessage() {
 
-    const text =
-        input.value.trim();
+    const text = input.value.trim();
 
-    if (!text)
-        return;
+    if (!text) return;
 
-
-    /*
-       Show user's message.
-    */
-
-    addMessage(
-        text,
-        "user"
-    );
+    addMessage(text, "user");
 
     input.value = "";
+    input.style.height = "auto";
 
-    input.style.height =
-        "auto";
-
-
-    /*
-       Show temporary AI message.
-    */
-
-    const reply =
-        addMessage(
-            "Thinking...",
-            "assistant"
-        );
-
+    const reply = addMessage("Thinking...", "assistant");
 
     try {
 
-        /*
-           Send the previous conversation
-           to the backend.
-        */
+        const response = await fetch("/api/chat", {
+            method: "POST",
 
-        const response =
-            await fetch(
-                "/api/chat",
-                {
-                    method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
 
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
+            body: JSON.stringify({
+                message: text,
+                history: conversationHistory
+            })
+        });
 
-                    body: JSON.stringify({
-
-                        message: text,
-
-                        history:
-                            conversationHistory
-
-                    })
-                }
-            );
-
-
-        const data =
-            await response.json();
-
+        const data = await response.json();
 
         if (!response.ok) {
-
             throw new Error(
-                data.error ||
-                "AI request failed."
+                data.error || "AI request failed."
             );
-
         }
 
+        reply.textContent = data.reply;
 
-        /*
-           Display AI response.
-        */
-
-        reply.textContent =
-            data.reply;
-
-
-        /*
-           Save this exchange to memory.
-
-           IMPORTANT:
-           We save the user's message AND
-           Dalbayob's response AFTER getting
-           the response.
-        */
-
+        // Save this conversation
         conversationHistory.push({
-
             role: "user",
-
             content: text
-
         });
-
 
         conversationHistory.push({
-
             role: "assistant",
-
             content: data.reply
-
         });
-
 
     } catch (error) {
 
@@ -1616,11 +1551,8 @@ function addMessage(text, type) {
 
     }
 
-
-    chat.scrollTop =
-        chat.scrollHeight;
+    chat.scrollTop = chat.scrollHeight;
 }
-
 
 
 /* =========================================================
