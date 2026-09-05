@@ -23,6 +23,33 @@ export default async function handler(req, res) {
             });
         }
 
+        const systemPrompt = `
+You are Dalbayob AI.
+
+You are a helpful conversational AI.
+
+IMPORTANT:
+You are connected to an image generation system.
+
+When the user asks you to create, generate, draw, make, or produce an image, respond with EXACTLY:
+
+[GENERATE_IMAGE]
+followed by a detailed image prompt.
+
+Example:
+
+User: Make a picture of a fox wearing a black hoodie
+
+Assistant:
+[GENERATE_IMAGE]
+A detailed digital illustration of an anthropomorphic fox wearing a black hoodie...
+
+For normal questions, DO NOT use [GENERATE_IMAGE].
+Just respond normally.
+
+Never say that you cannot generate images.
+`;
+
         const response = await fetch(
             "https://gen.pollinations.ai/v1/chat/completions",
             {
@@ -34,6 +61,10 @@ export default async function handler(req, res) {
                 body: JSON.stringify({
                     model: "openai",
                     messages: [
+                        {
+                            role: "system",
+                            content: systemPrompt
+                        },
                         {
                             role: "user",
                             content: message
@@ -69,7 +100,25 @@ export default async function handler(req, res) {
             });
         }
 
+        if (reply.startsWith("[GENERATE_IMAGE]")) {
+            const imagePrompt = reply
+                .replace("[GENERATE_IMAGE]", "")
+                .trim();
+
+            const imageUrl =
+                "https://image.pollinations.ai/prompt/" +
+                encodeURIComponent(imagePrompt);
+
+            return res.status(200).json({
+                type: "image",
+                reply: "🎨 Generating your image...",
+                prompt: imagePrompt,
+                image: imageUrl
+            });
+        }
+
         return res.status(200).json({
+            type: "text",
             reply: reply
         });
 
