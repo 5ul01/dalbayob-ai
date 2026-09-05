@@ -1,3 +1,4 @@
+
 export default async function handler(req, res) {
     if (req.method !== "POST") {
         return res.status(405).json({
@@ -7,10 +8,20 @@ export default async function handler(req, res) {
 
     try {
         const body = req.body || {};
+
         const message = body.message;
         const history = Array.isArray(body.history)
             ? body.history
             : [];
+
+        /*
+         * Optional image supplied by the frontend.
+         *
+         * This should be a data URL such as:
+         *
+         * data:image/png;base64,...
+         */
+        const image = body.image || null;
 
         if (!message) {
             return res.status(400).json({
@@ -18,16 +29,18 @@ export default async function handler(req, res) {
             });
         }
 
-        const apiKey = process.env.POLLINATIONS_API_KEY;
+        const apiKey =
+            process.env.POLLINATIONS_API_KEY;
 
         if (!apiKey) {
             return res.status(500).json({
-                error: "POLLINATIONS_API_KEY is missing in Vercel."
+                error:
+                    "POLLINATIONS_API_KEY is missing in Vercel."
             });
         }
 
         const systemPrompt = `
-You are Dalbayob AI, a modern conversational AI assistant.
+You are Dalbayob AI, a modern multimodal conversational AI assistant.
 
 Your personality:
 - Natural, intelligent, relaxed and conversational.
@@ -55,6 +68,15 @@ Conversation behavior:
 - Keep answers concise when the question is simple.
 - Give more detail when the user needs it.
 
+Image understanding:
+- When an image is provided, carefully analyze what is actually visible.
+- Answer questions about objects, people, animals, vehicles, environments, text, screenshots, layouts, colors, and other visible details.
+- Do not claim to see something that is not visible.
+- If text is visible in an image, read it when possible.
+- If the image is unclear or something cannot be determined reliably, say so.
+- Treat the image as visual context for the user's current question.
+- If the user asks a general question about the uploaded image, describe the relevant parts naturally instead of explaining how image analysis works.
+
 For coding:
 - Give complete working code when requested.
 - Don't randomly change unrelated parts of the user's project.
@@ -68,8 +90,7 @@ For image generation:
 `;
 
         /*
-         * Build the conversation that will be sent
-         * to Pollinations.
+         * Build conversation.
          */
 
         const messages = [
@@ -80,17 +101,14 @@ For image generation:
         ];
 
         /*
-         * Add previous conversation messages.
-         *
-         * Only accept normal user/assistant messages.
-         * This prevents the frontend from injecting another
-         * system prompt.
+         * Add previous text conversation.
          */
 
         for (const item of history) {
             if (
                 item &&
-                (item.role === "user" || item.role === "assistant") &&
+                (item.role === "user" ||
+                    item.role === "assistant") &&
                 typeof item.content === "string" &&
                 item.content.trim()
             ) {
@@ -102,13 +120,37 @@ For image generation:
         }
 
         /*
-         * Add the current message last.
+         * Build the current user message.
+         *
+         * If there is an image, use multimodal content.
          */
 
-        messages.push({
-            role: "user",
-            content: message
-        });
+        if (image) {
+            messages.push({
+                role: "user",
+                content: [
+                    {
+                        type: "text",
+                        text: message
+                    },
+                    {
+                        type: "image_url",
+                        image_url: {
+                            url: image
+                        }
+                    }
+                ]
+            });
+        } else {
+            messages.push({
+                role: "user",
+                content: message
+            });
+        }
+
+        /*
+         * Send request to Pollinations.
+         */
 
         const response = await fetch(
             "https://gen.pollinations.ai/v1/chat/completions",
@@ -116,8 +158,11 @@ For image generation:
                 method: "POST",
 
                 headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer " + apiKey
+                    "Content-Type":
+                        "application/json",
+
+                    "Authorization":
+                        "Bearer " + apiKey
                 },
 
                 body: JSON.stringify({
@@ -127,10 +172,18 @@ For image generation:
             }
         );
 
-        const text = await response.text();
+        const text =
+            await response.text();
 
         if (!response.ok) {
-            return res.status(response.status).json({
+            console.error(
+                "Pollinations error:",
+                text
+            );
+
+            return res.status(
+                response.status
+            ).json({
                 error: text
             });
         }
@@ -141,15 +194,18 @@ For image generation:
             data = JSON.parse(text);
         } catch {
             return res.status(500).json({
-                error: "Pollinations returned invalid JSON."
+                error:
+                    "Pollinations returned invalid JSON."
             });
         }
 
-        const reply = data.choices?.[0]?.message?.content;
+        const reply =
+            data.choices?.[0]?.message?.content;
 
         if (!reply) {
             return res.status(500).json({
-                error: "Pollinations returned no reply."
+                error:
+                    "Pollinations returned no reply."
             });
         }
 
@@ -157,15 +213,25 @@ For image generation:
          * Image generation request.
          */
 
-        if (reply.startsWith("[GENERATE_IMAGE]")) {
-            const imagePrompt = reply
-                .replace("[GENERATE_IMAGE]", "")
-                .trim();
+        if (
+            reply.startsWith(
+                "[GENERATE_IMAGE]"
+            )
+        ) {
+            const imagePrompt =
+                reply
+                    .replace(
+                        "[GENERATE_IMAGE]",
+                        ""
+                    )
+                    .trim();
 
             return res.status(200).json({
                 type: "image",
-                reply: "🎨 Generating image...",
-                prompt: imagePrompt
+                reply:
+                    "🎨 Generating image...",
+                prompt:
+                    imagePrompt
             });
         }
 
@@ -175,10 +241,15 @@ For image generation:
         });
 
     } catch (error) {
-        console.error("Chat error:", error);
+        console.error(
+            "Chat error:",
+            error
+        );
 
         return res.status(500).json({
-            error: error.message
+            error:
+                error?.message ||
+                "Chat request failed."
         });
     }
 }
