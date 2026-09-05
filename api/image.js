@@ -1,10 +1,4 @@
-import OpenAI from "openai";
-import { toFile } from "openai";
-
-const client = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
-});
-
+```js
 export default async function handler(req, res) {
     if (req.method !== "POST") {
         return res.status(405).json({
@@ -13,10 +7,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        const {
-            prompt,
-            image
-        } = req.body;
+        const { prompt, image } = req.body;
 
         if (!prompt) {
             return res.status(400).json({
@@ -24,79 +15,223 @@ export default async function handler(req, res) {
             });
         }
 
-        let result;
+        const apiKey = process.env.POLLINATIONS_API_KEY;
 
-        /*
-         * NO PREVIOUS IMAGE
-         * Generate a completely new image.
-         */
-        if (!image) {
-            result = await client.images.generate({
-                model: "gpt-image-2",
-                prompt: prompt,
-                size: "1024x1024",
-                quality: "medium"
+        if (!apiKey) {
+            return res.status(500).json({
+                error: "POLLINATIONS_API_KEY is not configured in Vercel."
             });
         }
 
+        let response;
+
         /*
-         * PREVIOUS IMAGE EXISTS
-         * Edit the existing image instead of starting over.
+         * =====================================================
+         * NEW IMAGE
+         * =====================================================
          */
-        else {
-            // Remove "data:image/png;base64," etc.
-            const base64Data = image.replace(
-                /^data:image\/\w+;base64,/,
-                ""
-            );
 
-            const imageBuffer = Buffer.from(base64Data, "base64");
+        if (!image) {
 
-            const imageFile = await toFile(
-                imageBuffer,
-                "previous-image.png",
+            response = await fetch(
+                "https://gen.pollinations.ai/v1/images/generations",
                 {
-                    type: "image/png"
+                    method: "POST",
+
+                    headers: {
+                        "Authorization": `Bearer ${apiKey}`,
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        model: "gpt-image-2",
+
+                        prompt: prompt,
+
+                        size: "1024x1024"
+                    })
                 }
             );
+        }
 
-            result = await client.images.edit({
-                model: "gpt-image-2",
-                image: imageFile,
-                prompt: `
+        /*
+         * =====================================================
+         * EDIT EXISTING IMAGE
+         * =====================================================
+         */
+
+        else {
+
+            /*
+             * Convert the data URL from the browser
+             * into a Blob that Pollinations can receive.
+             */
+
+            const base64Data =
+                image.replace(
+                    /^data:image\/\w+;base64,/,
+                    ""
+                );
+
+            const imageBuffer =
+                Buffer.from(
+                    base64Data,
+                    "base64"
+                );
+
+
+            const form =
+                new FormData();
+
+
+            /*
+             * Add the previous image.
+             */
+
+            form.append(
+                "image",
+                new Blob(
+                    [imageBuffer],
+                    {
+                        type: "image/png"
+                    }
+                ),
+                "previous-image.png"
+            );
+
+
+            /*
+             * Tell the image model exactly what
+             * needs to change.
+             */
+
+            form.append(
+                "prompt",
+                `
 Edit the provided image.
 
-IMPORTANT:
-- Make ONLY the changes requested by the user.
-- Preserve the existing subject, composition, camera angle,
-  background, lighting, proportions and style whenever possible.
-- Do not unnecessarily regenerate or redesign unchanged parts.
-- If the user requests a small change, keep everything else
-  as close to the original as possible.
+Make ONLY the changes requested below.
+
+Preserve everything else:
+- subject
+- identity
+- pose
+- composition
+- camera angle
+- background
+- lighting
+- colors
+- art style
+- proportions
+
+Do not redesign the image.
 
 USER REQUEST:
 ${prompt}
-                `,
-                size: "1024x1024",
-                quality: "medium"
-            });
+                `.trim()
+            );
+
+
+            /*
+             * Image editing model.
+             */
+
+            form.append(
+                "model",
+                "gpt-image-2"
+            );
+
+
+            response =
+                await fetch(
+                    "https://gen.pollinations.ai/v1/images/edits",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Authorization":
+                                `Bearer ${apiKey}`
+                        },
+
+                        body: form
+                    }
+                );
         }
 
-        const imageBase64 = result.data?.[0]?.b64_json;
+
+        /*
+         * =====================================================
+         * HANDLE API RESPONSE
+         * =====================================================
+         */
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            console.error(
+                "Pollinations error:",
+                data
+            );
+
+            throw new Error(
+                data?.error?.message ||
+                data?.error ||
+                "Pollinations image request failed."
+            );
+        }
+
+
+        /*
+         * Pollinations returns b64_json
+         * for the OpenAI-compatible image endpoints.
+         */
+
+        const imageBase64 =
+            data?.data?.[0]?.b64_json;
+
 
         if (!imageBase64) {
-            throw new Error("Image API returned no image.");
+
+            console.error(
+                "Unexpected Pollinations response:",
+                data
+            );
+
+            throw new Error(
+                "Pollinations returned no image."
+            );
         }
 
+
+        /*
+         * Send the image back to the browser.
+         */
+
         return res.status(200).json({
-            image: `data:image/png;base64,${imageBase64}`
+
+            image:
+                `data:image/png;base64,${imageBase64}`
+
         });
 
+
     } catch (error) {
-        console.error("IMAGE ERROR:", error);
+
+        console.error(
+            "POLLINATIONS IMAGE ERROR:",
+            error
+        );
 
         return res.status(500).json({
-            error: error?.message || "Image generation failed."
+
+            error:
+                error?.message ||
+                "Image generation failed."
+
         });
     }
 }
+```
