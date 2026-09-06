@@ -6,9 +6,8 @@
 <meta charset="UTF-8">
 
 <meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
-
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
 >
 
 <title>Dalbayob AI</title>
@@ -566,6 +565,8 @@ body::after {
 
     display: flex;
     flex-direction: column;
+
+    overflow: hidden;
 }
 
 
@@ -578,6 +579,8 @@ body::after {
     z-index: 300;
 
     height: 78px;
+
+    flex: 0 0 78px;
 
     display: flex;
     align-items: center;
@@ -660,6 +663,8 @@ body::after {
 
     flex: 1;
 
+    min-height: 0;
+
     overflow-y: auto;
 
     scrollbar-width: thin;
@@ -676,7 +681,7 @@ body::after {
 
     margin: auto;
 
-    padding: 50px 35px 190px;
+    padding: 50px 35px 260px;
 }
 
 
@@ -977,15 +982,13 @@ body::after {
 ========================================================= */
 
 .reverse-search-results {
+    width: min(1050px, 100%);
+
+    margin: 0 auto;
+
+    padding: 0 35px 20px;
+
     display: none;
-
-    width: 100%;
-
-    margin: 0 auto 30px;
-
-    position: relative;
-
-    z-index: 150;
 }
 
 .reverse-search-results.visible {
@@ -1003,12 +1006,12 @@ body::after {
     background:
         linear-gradient(
             135deg,
-            rgba(18,30,20,.94),
-            rgba(5,8,5,.96)
+            rgba(18,30,20,.96),
+            rgba(5,8,5,.98)
         );
 
     box-shadow:
-        0 20px 60px rgba(0,0,0,.35);
+        0 20px 60px rgba(0,0,0,.45);
 
     backdrop-filter: blur(18px);
 }
@@ -1182,7 +1185,7 @@ body::after {
 
     left: 50%;
 
-    bottom: 88px;
+    bottom: 105px;
 
     transform:
         translateX(-50%);
@@ -1200,12 +1203,14 @@ body::after {
         1px solid rgba(205,169,87,.22);
 
     background:
-        rgba(8,12,8,.94);
+        rgba(8,12,8,.98);
 
     backdrop-filter: blur(22px);
 
     box-shadow:
-        0 20px 50px rgba(0,0,0,.55);
+        0 20px 50px rgba(0,0,0,.7);
+
+    z-index: 500;
 }
 
 .attachment-preview.visible {
@@ -1302,7 +1307,7 @@ body::after {
         linear-gradient(
             to top,
             rgba(5,6,4,1) 40%,
-            rgba(5,6,4,.88),
+            rgba(5,6,4,.92) 70%,
             transparent
         );
 }
@@ -1330,13 +1335,15 @@ body::after {
         1px solid rgba(205,169,87,.18);
 
     background:
-        rgba(11,16,11,.92);
+        rgba(11,16,11,.96);
 
     backdrop-filter: blur(22px);
 
     box-shadow:
         0 20px 60px rgba(0,0,0,.5),
         inset 0 0 25px rgba(205,169,87,.015);
+
+    z-index: 450;
 }
 
 .tool {
@@ -1490,7 +1497,7 @@ textarea::placeholder {
 
     .chat-inner {
         padding:
-            30px 16px 165px;
+            30px 16px 270px;
     }
 
     .message {
@@ -1506,6 +1513,8 @@ textarea::placeholder {
         height: 40px;
 
         flex-basis: 40px;
+
+        font-size: 17px;
     }
 
     .composer {
@@ -1532,10 +1541,15 @@ textarea::placeholder {
         width: calc(100% - 24px);
 
         bottom: 76px;
+
+        z-index: 500;
     }
 
     .reverse-search-results {
         width: 100%;
+
+        padding:
+            0 12px 20px;
     }
 
     .reverse-search-grid {
@@ -1552,7 +1566,9 @@ textarea::placeholder {
 
 </head>
 
+
 <body>
+
 
 <!-- =========================================================
      REAL COCKROACHES
@@ -1590,306 +1606,307 @@ textarea::placeholder {
     <img src="/assets/model.png" alt="">
 </div>
 
+
 <div class="app">
+
 
 <aside class="sidebar">
 
-```
-<div class="brand-mark">
-    ✦
-</div>
+    <div class="brand-mark">
+        ✦
+    </div>
 
-<div class="nav">
+    <div class="nav">
 
-    <button
-        class="active"
-        title="Chat"
-        type="button">
-        ◈
-    </button>
+        <button
+            class="active"
+            title="Chat"
+            type="button">
+            ◈
+        </button>
 
-    <button
-        title="New chat"
-        type="button"
-        onclick="newChat()">
-        ☰
-    </button>
+        <button
+            title="New chat"
+            type="button"
+            onclick="newChat()">
+            ☰
+        </button>
 
-    <button
-        title="Image generation"
-        type="button"
-        onclick="focusImageMode()">
-        ☪
-    </button>
+        <button
+            title="Image generation"
+            type="button"
+            onclick="focusImageMode()">
+            ☪
+        </button>
 
-</div>
+    </div>
 
-<div class="sidebar-bottom">
-    DALBAYOB
-</div>
-```
+    <div class="sidebar-bottom">
+        DALBAYOB
+    </div>
 
 </aside>
 
+
 <main class="main">
+
 
 <header class="header">
 
-```
-<div class="header-left">
+    <div class="header-left">
 
-    <div class="header-symbol">
-        ☪
-    </div>
-
-    <div>
-
-        <div class="header-title">
-            DALBAYOB AI
+        <div class="header-symbol">
+            ☪
         </div>
 
-        <div class="header-sub">
-            INTELLIGENCE SYSTEM
+        <div>
+
+            <div class="header-title">
+                DALBAYOB AI
+            </div>
+
+            <div class="header-sub">
+                INTELLIGENCE SYSTEM
+            </div>
+
         </div>
 
     </div>
 
-</div>
 
+    <div class="status">
 
-<div class="status">
+        <div class="status-dot"></div>
 
-    <div class="status-dot"></div>
+        SYSTEM ONLINE
 
-    SYSTEM ONLINE
-
-</div>
-```
+    </div>
 
 </header>
 
+
 <section id="chat">
 
-```
-<div
-    class="chat-inner"
-    id="chat-inner">
-
-
     <div
-        class="welcome"
-        id="welcome">
+        class="chat-inner"
+        id="chat-inner">
 
 
-        <div class="welcome-emblem">
+        <div
+            class="welcome"
+            id="welcome">
 
-            <div class="crescent">
-                ☪
+
+            <div class="welcome-emblem">
+
+                <div class="crescent">
+                    ☪
+                </div>
+
+            </div>
+
+
+            <h1>
+                Welcome to Dalbayob.
+            </h1>
+
+
+            <p>
+                Intelligence with a slightly questionable pest problem.
+            </p>
+
+
+            <div class="roach-gallery">
+
+                <img
+                    src="https://avatars.fastly.steamstatic.com/b76a2e69616ae68a574fdc638ab82fdcc3f94161_full.jpg"
+                    alt="Dalbayob specimen"
+                >
+
+                <div class="roach-gallery-caption">
+                    DALBAYOB SPECIMEN ARCHIVE · ROACH DIVISION
+                </div>
+
+            </div>
+
+
+            <div class="suggestions">
+
+                <button
+                    class="suggestion"
+                    type="button"
+                    onclick="useSuggestion('What can you do?')">
+
+                    What can you do?
+
+                </button>
+
+
+                <button
+                    class="suggestion"
+                    type="button"
+                    onclick="useSuggestion('Explain something complicated')">
+
+                    Explain something complicated
+
+                </button>
+
+
+                <button
+                    class="suggestion"
+                    type="button"
+                    onclick="useSuggestion('Give me a creative idea')">
+
+                    Give me a creative idea
+
+                </button>
+
+
+                <button
+                    class="suggestion"
+                    type="button"
+                    onclick="useSuggestion('Generate an image of a giant cockroach')">
+
+                    🪳 Summon a roach
+
+                </button>
+
             </div>
 
         </div>
 
-
-        <h1>
-            Welcome to Dalbayob.
-        </h1>
-
-
-        <p>
-            Intelligence with a slightly questionable pest problem.
-        </p>
-
-
-        <div class="roach-gallery">
-
-            <img
-                src="https://avatars.fastly.steamstatic.com/b76a2e69616ae68a574fdc638ab82fdcc3f94161_full.jpg"
-                alt="Dalbayob specimen"
-            >
-
-            <div class="roach-gallery-caption">
-                DALBAYOB SPECIMEN ARCHIVE · ROACH DIVISION
-            </div>
-
-        </div>
-
-
-        <div class="suggestions">
-
-            <button
-                class="suggestion"
-                type="button"
-                onclick="useSuggestion('What can you do?')">
-
-                What can you do?
-
-            </button>
-
-
-            <button
-                class="suggestion"
-                type="button"
-                onclick="useSuggestion('Explain something complicated')">
-
-                Explain something complicated
-
-            </button>
-
-
-            <button
-                class="suggestion"
-                type="button"
-                onclick="useSuggestion('Give me a creative idea')">
-
-                Give me a creative idea
-
-            </button>
-
-
-            <button
-                class="suggestion"
-                type="button"
-                onclick="useSuggestion('Generate an image of a giant cockroach')">
-
-                🪳 Summon a roach
-
-            </button>
-
-        </div>
-
     </div>
-
-
-    <!-- =====================================================
-         REVERSE SEARCH RESULTS
-    ====================================================== -->
-
-    <div
-        id="reverseSearchResults"
-        class="reverse-search-results">
-    </div>
-
-
-</div>
-```
 
 </section>
 
+
+<!-- =========================================================
+     REVERSE SEARCH RESULTS
+========================================================= -->
+
+<div
+    id="reverseSearchResults"
+    class="reverse-search-results">
+</div>
+
+
 <div class="composer-area">
 
-```
-<div
-    class="attachment-preview"
-    id="attachmentPreview">
+
+    <div
+        class="attachment-preview"
+        id="attachmentPreview">
 
 
-    <img
-        id="attachmentPreviewImage"
-        src=""
-        alt="Attached image"
-    >
+        <img
+            id="attachmentPreviewImage"
+            src=""
+            alt="Attached image"
+        >
 
 
-    <div class="attachment-info">
+        <div class="attachment-info">
 
-        <div class="attachment-title">
-            IMAGE ATTACHED
+            <div class="attachment-title">
+                IMAGE ATTACHED
+            </div>
+
+            <div class="attachment-sub">
+                Dalbayob can analyze or reverse-search this image.
+            </div>
+
         </div>
 
-        <div class="attachment-sub">
-            Dalbayob can analyze or reverse-search this image.
-        </div>
+
+        <button
+            class="attachment-remove"
+            type="button"
+            title="Remove image"
+            onclick="clearAttachment()">
+
+            ×
+
+        </button>
+
 
     </div>
 
 
-    <button
-        class="attachment-remove"
-        type="button"
-        title="Remove image"
-        onclick="clearAttachment()">
-
-        ×
-
-    </button>
-
-</div>
+    <div class="composer">
 
 
-<div class="composer">
+        <input
+            id="imageInput"
+            type="file"
+            accept="image/*"
+            onchange="handleImageUpload(event)"
+        >
 
 
-    <input
-        id="imageInput"
-        type="file"
-        accept="image/*"
-        onchange="handleImageUpload(event)"
-    >
+        <button
+            class="tool"
+            title="Attach image"
+            type="button"
+            onclick="openImagePicker()">
+
+            ✡
+
+        </button>
 
 
-    <button
-        class="tool"
-        title="Attach image"
-        type="button"
-        onclick="openImagePicker()">
-
-        ✡
-
-    </button>
+        <textarea
+            id="input"
+            rows="1"
+            placeholder="Speak to Dalbayob..."></textarea>
 
 
-    <textarea
-        id="input"
-        rows="1"
-        placeholder="Speak to Dalbayob..."></textarea>
+        <button
+            class="tool"
+            title="Generate image"
+            type="button"
+            onclick="generateImage()">
+
+            ☪
+
+        </button>
 
 
-    <button
-        class="tool"
-        title="Generate image"
-        type="button"
-        onclick="generateImage()">
+        <button
+            class="tool"
+            title="Reverse image search"
+            type="button"
+            onclick="reverseSearch()">
 
-        ☪
+            🔎
 
-    </button>
-
-
-    <button
-        class="tool"
-        title="Reverse image search"
-        type="button"
-        onclick="reverseSearch()">
-
-        🔎
-
-    </button>
+        </button>
 
 
-    <button
-        class="tool send"
-        title="Send"
-        type="button"
-        onclick="sendMessage()">
+        <button
+            class="tool send"
+            title="Send"
+            type="button"
+            onclick="sendMessage()">
 
-        ↑
+            ↑
 
-    </button>
-
-
-</div>
+        </button>
 
 
-<div class="note">
-    Dalbayob AI can make mistakes. Check important information.
-</div>
-```
+    </div>
+
+
+    <div class="note">
+        Dalbayob AI can make mistakes. Check important information.
+    </div>
+
 
 </div>
 
 </main>
 
 </div>
+
 
 <script>
 
@@ -2274,28 +2291,6 @@ async function reverseSearch() {
     }
 
 
-    /*
-     * The backend currently expects an image data URL.
-     * Attached images are always data URLs.
-     * Generated images may be normal URLs, so we
-     * explicitly reject those here with a useful message.
-     */
-
-    if (
-        typeof image !== "string" ||
-        !image.startsWith("data:image/")
-    ) {
-
-        addMessage(
-            "⚠️ This image is not in a format that can be reverse-searched yet. Please upload or paste the image again.",
-            "assistant"
-        );
-
-        return;
-
-    }
-
-
     const resultsContainer =
         document.getElementById(
             "reverseSearchResults"
@@ -2324,7 +2319,7 @@ async function reverseSearch() {
             </div>
 
             <div class="reverse-search-loading">
-                Scanning indexed images...
+                Uploading image and scanning indexed images...
             </div>
 
         </div>
@@ -2334,9 +2329,9 @@ async function reverseSearch() {
 
     requestAnimationFrame(() => {
 
-        resultsContainer.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
+        chat.scrollTo({
+            top: chat.scrollHeight,
+            behavior: "smooth"
         });
 
     });
@@ -2362,22 +2357,56 @@ async function reverseSearch() {
             );
 
 
-        const data =
-            await response.json();
+        const responseText =
+            await response.text();
+
+
+        let data;
+
+        try {
+
+            data =
+                JSON.parse(responseText);
+
+        } catch {
+
+            throw new Error(
+                "The reverse-search server returned invalid JSON."
+            );
+
+        }
 
 
         if (!response.ok) {
 
             throw new Error(
                 data.error ||
-                "Reverse image search failed."
+                data.message ||
+                `Reverse image search failed (${response.status}).`
+            );
+
+        }
+
+
+        if (
+            !data ||
+            !Array.isArray(data.results)
+        ) {
+
+            console.error(
+                "Invalid reverse search response:",
+                data
+            );
+
+            throw new Error(
+                "Reverse search returned an unexpected response."
             );
 
         }
 
 
         renderReverseSearchResults(
-            data.results || []
+            data.results
         );
 
 
@@ -2423,9 +2452,9 @@ async function reverseSearch() {
 
     requestAnimationFrame(() => {
 
-        resultsContainer.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
+        chat.scrollTo({
+            top: chat.scrollHeight,
+            behavior: "smooth"
         });
 
     });
@@ -2473,17 +2502,6 @@ function renderReverseSearchResults(
 
         `;
 
-
-        requestAnimationFrame(() => {
-
-            container.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
-
-        });
-
-
         return;
 
     }
@@ -2511,8 +2529,7 @@ function renderReverseSearchResults(
                 const imageUrl =
                     safeUrl(
                         result.imageUrl ||
-                        result.thumbnail ||
-                        ""
+                        result.thumbnail
                     );
 
 
@@ -2520,23 +2537,6 @@ function renderReverseSearchResults(
                     safeUrl(
                         result.pageUrl
                     );
-
-
-                const exactMatch =
-                    result.exactMatch
-                        ? `
-                            <div
-                                style="
-                                    margin-top:8px;
-                                    color:#a8c174;
-                                    font-size:9px;
-                                    letter-spacing:1px;
-                                "
-                            >
-                                ✓ EXACT MATCH
-                            </div>
-                        `
-                        : "";
 
 
                 return `
@@ -2583,8 +2583,6 @@ function renderReverseSearchResults(
                                     : ""
                             }
 
-                            ${exactMatch}
-
                         </div>
 
                     </article>
@@ -2626,16 +2624,6 @@ function renderReverseSearchResults(
         </div>
 
     `;
-
-
-    requestAnimationFrame(() => {
-
-        container.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
-
-    });
 
 }
 
@@ -3141,12 +3129,6 @@ function newChat() {
 
             </div>
 
-        </div>
-
-
-        <div
-            id="reverseSearchResults"
-            class="reverse-search-results">
         </div>
 
     `;
