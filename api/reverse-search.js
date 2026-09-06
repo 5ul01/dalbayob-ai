@@ -1,11 +1,13 @@
-function sendError(res, status, message) {
+function errorResponse(res, status, message) {
     return res.status(status).json({
         success: false,
         error: message
     });
 }
 
+
 function extractBase64(dataUrl) {
+
     if (
         typeof dataUrl !== "string" ||
         !dataUrl.startsWith("data:image/")
@@ -13,122 +15,170 @@ function extractBase64(dataUrl) {
         return null;
     }
 
-    const commaIndex =
+
+    const comma =
         dataUrl.indexOf(",");
 
-    if (commaIndex === -1) {
+
+    if (comma === -1) {
         return null;
     }
 
+
     return dataUrl.slice(
-        commaIndex + 1
+        comma + 1
     );
 }
 
-function cleanHost(host) {
-    if (!host) {
+
+function getHost(value) {
+
+    if (!value) {
         return "";
     }
 
-    return host
-        .replace(/^https?:\/\//, "")
-        .replace(/^www\./, "")
-        .split("/")[0];
+
+    try {
+
+        return new URL(value)
+            .hostname
+            .replace(/^www\./, "");
+
+    } catch {
+
+        return "";
+
+    }
+
 }
 
-export default async function handler(req, res) {
+
+export default async function handler(
+    req,
+    res
+) {
+
     if (req.method !== "POST") {
-        return sendError(
+
+        return errorResponse(
             res,
             405,
             "Method not allowed."
         );
+
     }
 
+
     try {
+
         const body =
             req.body || {};
 
+
         const image =
             body.image;
+
 
         if (
             typeof image !== "string" ||
             !image.startsWith("data:image/")
         ) {
-            return sendError(
+
+            return errorResponse(
                 res,
                 400,
                 "A valid image is required."
             );
+
         }
+
 
         const base64 =
             extractBase64(image);
 
+
         if (!base64) {
-            return sendError(
+
+            return errorResponse(
                 res,
                 400,
                 "Invalid image data."
             );
+
         }
 
+
         /*
-         * Protect the server from enormous
-         * browser payloads.
-         *
-         * Base64 is roughly 4/3 the size
-         * of the original binary image.
+         * Prevent extremely large requests.
          */
-        if (base64.length > 15_000_000) {
-            return sendError(
+
+        if (
+            base64.length >
+            15_000_000
+        ) {
+
+            return errorResponse(
                 res,
                 413,
-                "Image is too large. Please use an image under roughly 10 MB."
+                "Image is too large. Please use a smaller image."
             );
+
         }
+
 
         const apiKey =
             process.env.YANDEX_API_KEY;
 
+
         const folderId =
             process.env.YANDEX_FOLDER_ID;
 
+
         if (!apiKey) {
-            return sendError(
+
+            return errorResponse(
                 res,
                 500,
-                "YANDEX_API_KEY is missing in Vercel."
+                "YANDEX_API_KEY is not configured."
             );
+
         }
+
 
         if (!folderId) {
-            return sendError(
+
+            return errorResponse(
                 res,
                 500,
-                "YANDEX_FOLDER_ID is missing in Vercel."
+                "YANDEX_FOLDER_ID is not configured."
             );
+
         }
 
-        const yandexResponse =
+
+        /*
+         * Yandex Image Search API.
+         */
+
+        const response =
             await fetch(
                 "https://searchapi.api.cloud.yandex.net/v2/image/search_by_image",
                 {
                     method: "POST",
 
                     headers: {
+
                         "Authorization":
-                            "Api-Key " +
-                            apiKey,
+                            `Api-Key ${apiKey}`,
 
                         "Content-Type":
                             "application/json"
+
                     },
 
                     body: JSON.stringify({
-                        folderId:
-                            folderId,
+
+                        folderId,
 
                         data:
                             base64,
@@ -138,135 +188,186 @@ export default async function handler(req, res) {
 
                         familyMode:
                             "FAMILY_MODE_MODERATE"
+
                     })
+
                 }
             );
 
-        const rawText =
-            await yandexResponse.text();
 
-        if (!yandexResponse.ok) {
+        const raw =
+            await response.text();
+
+
+        if (!response.ok) {
+
             console.error(
-                "Yandex reverse search error:",
-                rawText
+                "Yandex error:",
+                raw
             );
 
-            return sendError(
+
+            return errorResponse(
                 res,
-                yandexResponse.status,
-                "Yandex image search failed."
+                response.status,
+                "Yandex reverse image search failed."
             );
+
         }
+
 
         let data;
 
+
         try {
+
             data =
-                JSON.parse(rawText);
+                JSON.parse(raw);
+
         } catch {
-            return sendError(
+
+            return errorResponse(
                 res,
                 502,
-                "Yandex returned invalid JSON."
+                "Yandex returned invalid data."
             );
+
         }
 
-        const images =
-            Array.isArray(data.images)
-                ? data.images
-                : [];
 
         /*
-         * Normalize Yandex's response into
-         * a format that the frontend can
-         * easily display.
+         * Be defensive about response
+         * formats.
          */
-        const results =
-            images
-                .map((item) => {
+
+        const source =
+            Array.isArray(data.images)
+                ? data.images
+                : Array.isArray(data.results)
+                    ? data.results
+                    : [];
+
+
+        const normalized =
+            source
+                .map(item => {
+
                     const pageUrl =
-                        item.pageUrl || "";
+                        item.pageUrl ||
+                        item.page_url ||
+                        item.url ||
+                        "";
+
 
                     const imageUrl =
-                        item.url || "";
+                        item.imageUrl ||
+                        item.image_url ||
+                        item.thumbnail ||
+                        item.url ||
+                        "";
+
 
                     const title =
                         item.pageTitle ||
-                        "Untitled result";
+                        item.page_title ||
+                        item.title ||
+                        "Image result";
+
 
                     const host =
-                        cleanHost(
-                            item.host ||
-                            pageUrl
-                        );
+                        item.host ||
+                        getHost(pageUrl);
+
 
                     return {
-                        title,
-                        host,
-                        pageUrl,
-                        imageUrl,
+
+                        title:
+                            String(title),
+
+                        host:
+                            String(host),
+
+                        pageUrl:
+                            String(pageUrl),
+
+                        imageUrl:
+                            String(imageUrl),
+
                         passage:
-                            item.passage || "",
-                        width:
-                            item.width || null,
-                        height:
-                            item.height || null
+                            item.passage ||
+                            ""
+
                     };
+
                 })
-                .filter(
-                    (item) =>
+
+
+                .filter(item => {
+
+                    return (
                         item.pageUrl ||
                         item.imageUrl
-                );
+                    );
+
+                });
+
 
         /*
-         * Remove duplicate page URLs.
+         * Remove duplicate URLs.
          */
+
         const seen =
             new Set();
 
-        const uniqueResults =
-            results.filter((item) => {
+
+        const results =
+            normalized.filter(item => {
+
                 const key =
                     item.pageUrl ||
                     item.imageUrl;
+
 
                 if (seen.has(key)) {
                     return false;
                 }
 
+
                 seen.add(key);
 
+
                 return true;
+
             });
 
+
         return res.status(200).json({
+
             success: true,
 
-            results:
-                uniqueResults,
+            results,
 
-            page:
-                Number(data.page || 0),
+            count:
+                results.length
 
-            maxPage:
-                Number(data.maxPage || 0),
-
-            searchId:
-                data.id || null
         });
 
+
     } catch (error) {
+
         console.error(
             "Reverse search error:",
             error
         );
 
-        return sendError(
+
+        return errorResponse(
             res,
             500,
             error?.message ||
-                "Reverse image search failed."
+            "Reverse image search failed."
         );
+
     }
+
 }
