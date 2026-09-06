@@ -2,11 +2,18 @@
 
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
 <title>Dalbayob AI</title>
 
 <style>
+
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
@@ -19,7 +26,6 @@
     --gold-light: #f0d78c;
     --cream: #eee8d6;
     --muted: #858b7e;
-    --roach-brown: #5b301b;
 }
 
 * {
@@ -54,9 +60,12 @@ body {
 
 body::before {
     content: "";
+
     position: fixed;
     inset: 0;
+
     pointer-events: none;
+
     opacity: .16;
 
     background-image:
@@ -72,13 +81,16 @@ body::before {
         );
 
     background-size: 72px 72px;
+
     z-index: 0;
 }
 
 body::after {
     content: "";
+
     position: fixed;
     inset: 0;
+
     pointer-events: none;
 
     box-shadow:
@@ -86,6 +98,7 @@ body::after {
 
     z-index: 9999;
 }
+
 
 /* =========================================================
    REAL COCKROACHES
@@ -98,6 +111,7 @@ body::after {
     height: 190px;
 
     pointer-events: none;
+
     z-index: 50;
 
     filter:
@@ -205,12 +219,12 @@ body::after {
     animation: crawlSide 39s linear infinite;
 }
 
+
 /* =========================================================
    ROACH ANIMATIONS
 ========================================================= */
 
 @keyframes crawlAcross {
-
     0% {
         left: -250px;
         top: 8%;
@@ -244,7 +258,6 @@ body::after {
 }
 
 @keyframes crawlReverse {
-
     0% {
         right: -260px;
         top: 30%;
@@ -271,7 +284,6 @@ body::after {
 }
 
 @keyframes crawlDown {
-
     0% {
         top: -230px;
         left: 12%;
@@ -296,7 +308,6 @@ body::after {
 }
 
 @keyframes crawlUp {
-
     0% {
         bottom: -290px;
         right: 4%;
@@ -321,7 +332,6 @@ body::after {
 }
 
 @keyframes crawlFast {
-
     0% {
         left: -190px;
         top: 75%;
@@ -350,7 +360,6 @@ body::after {
 }
 
 @keyframes crawlHeader {
-
     0% {
         right: -240px;
         top: 11%;
@@ -377,7 +386,6 @@ body::after {
 }
 
 @keyframes crawlDrop {
-
     0% {
         top: -220px;
         left: 53%;
@@ -398,7 +406,6 @@ body::after {
 }
 
 @keyframes crawlSide {
-
     0% {
         left: -220px;
         top: 45%;
@@ -418,6 +425,7 @@ body::after {
     }
 }
 
+
 /* =========================================================
    APP
 ========================================================= */
@@ -431,6 +439,7 @@ body::after {
     width: 100%;
     height: 100vh;
 }
+
 
 /* =========================================================
    SIDEBAR
@@ -478,6 +487,7 @@ body::after {
 
     margin-bottom: 45px;
 }
+
 
 /* =========================================================
    NAV
@@ -541,6 +551,7 @@ body::after {
     letter-spacing: 4px;
 }
 
+
 /* =========================================================
    MAIN
 ========================================================= */
@@ -555,6 +566,7 @@ body::after {
     display: flex;
     flex-direction: column;
 }
+
 
 /* =========================================================
    HEADER
@@ -636,6 +648,7 @@ body::after {
         0 0 12px #a8c174;
 }
 
+
 /* =========================================================
    CHAT
 ========================================================= */
@@ -664,6 +677,7 @@ body::after {
 
     padding: 50px 35px 190px;
 }
+
 
 /* =========================================================
    WELCOME
@@ -731,6 +745,7 @@ body::after {
 
     font-size: 14px;
 }
+
 
 /* =========================================================
    SPECIMEN IMAGE
@@ -816,6 +831,7 @@ body::after {
     letter-spacing: 2px;
 }
 
+
 /* =========================================================
    SUGGESTIONS
 ========================================================= */
@@ -867,6 +883,7 @@ body::after {
     transform:
         translateY(-1px);
 }
+
 
 /* =========================================================
    MESSAGES
@@ -939,6 +956,216 @@ body::after {
         1px solid rgba(205,169,87,.3);
 }
 
+.chat-image-preview {
+    max-width: 260px;
+
+    margin-top: 10px;
+
+    border-radius: 13px;
+
+    border:
+        1px solid rgba(205,169,87,.25);
+
+    box-shadow:
+        0 10px 35px rgba(0,0,0,.35);
+}
+
+
+/* =========================================================
+   REVERSE IMAGE SEARCH
+========================================================= */
+
+.reverse-search-results {
+    display: none;
+
+    width: min(1050px, calc(100% - 70px));
+
+    margin: 0 auto 18px;
+}
+
+.reverse-search-results.visible {
+    display: block;
+}
+
+.reverse-search-panel {
+    padding: 18px;
+
+    border:
+        1px solid rgba(205,169,87,.22);
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(18,30,20,.94),
+            rgba(5,8,5,.96)
+        );
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.35);
+
+    backdrop-filter: blur(18px);
+}
+
+.reverse-search-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 16px;
+}
+
+.reverse-search-title {
+    color: var(--gold-light);
+
+    font-family: Cinzel, serif;
+
+    font-size: 13px;
+
+    letter-spacing: 2px;
+}
+
+.reverse-search-count {
+    color: var(--muted);
+
+    font-size: 10px;
+}
+
+.reverse-search-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(210px, 1fr)
+        );
+
+    gap: 12px;
+}
+
+.reverse-result {
+    min-width: 0;
+
+    overflow: hidden;
+
+    border:
+        1px solid rgba(205,169,87,.12);
+
+    border-radius: 14px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    transition:
+        transform .2s,
+        border-color .2s,
+        background .2s;
+}
+
+.reverse-result:hover {
+    transform: translateY(-3px);
+
+    border-color:
+        rgba(205,169,87,.35);
+
+    background:
+        rgba(205,169,87,.05);
+}
+
+.reverse-result-image {
+    width: 100%;
+    height: 150px;
+
+    display: block;
+
+    object-fit: cover;
+
+    background: #050604;
+}
+
+.reverse-result-body {
+    padding: 13px;
+}
+
+.reverse-result-title {
+    margin-bottom: 6px;
+
+    color: var(--cream);
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    line-height: 1.4;
+
+    display: -webkit-box;
+
+    -webkit-line-clamp: 2;
+
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+}
+
+.reverse-result-host {
+    margin-bottom: 10px;
+
+    color: var(--muted);
+
+    font-size: 10px;
+}
+
+.reverse-result-link {
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 7px 10px;
+
+    border:
+        1px solid rgba(205,169,87,.2);
+
+    border-radius: 8px;
+
+    color: var(--gold-light);
+
+    font-size: 10px;
+
+    text-decoration: none;
+
+    transition: .2s;
+}
+
+.reverse-result-link:hover {
+    background:
+        rgba(205,169,87,.08);
+
+    border-color:
+        rgba(205,169,87,.4);
+}
+
+.reverse-search-loading {
+    padding: 22px;
+
+    text-align: center;
+
+    color: var(--muted);
+
+    font-size: 12px;
+}
+
+.reverse-search-error {
+    padding: 18px;
+
+    color: #d99a9a;
+
+    font-size: 12px;
+}
+
+
 /* =========================================================
    IMAGE ATTACHMENT PREVIEW
 ========================================================= */
@@ -953,7 +1180,8 @@ body::after {
     transform:
         translateX(-50%);
 
-    width: min(900px, calc(100% - 56px));
+    width:
+        min(900px, calc(100% - 56px));
 
     display: none;
 
@@ -1046,23 +1274,6 @@ body::after {
         rgba(205,169,87,.07);
 }
 
-/* =========================================================
-   ATTACHED IMAGE IN CHAT
-========================================================= */
-
-.chat-image-preview {
-    max-width: 260px;
-
-    margin-top: 10px;
-
-    border-radius: 13px;
-
-    border:
-        1px solid rgba(205,169,87,.25);
-
-    box-shadow:
-        0 10px 35px rgba(0,0,0,.35);
-}
 
 /* =========================================================
    COMPOSER
@@ -1099,6 +1310,7 @@ body::after {
     margin: auto;
 
     display: flex;
+
     align-items: flex-end;
 
     gap: 9px;
@@ -1151,10 +1363,6 @@ body::after {
 
     background:
         rgba(205,169,87,.06);
-}
-
-.tool.image {
-    font-size: 21px;
 }
 
 .tool.send {
@@ -1212,13 +1420,10 @@ textarea::placeholder {
     letter-spacing: .5px;
 }
 
-/* =========================================================
-   HIDDEN FILE INPUT
-========================================================= */
-
 #imageInput {
     display: none;
 }
+
 
 /* =========================================================
    SCROLLBAR
@@ -1237,6 +1442,7 @@ textarea::placeholder {
 
     border-radius: 20px;
 }
+
 
 /* =========================================================
    MOBILE
@@ -1320,12 +1526,28 @@ textarea::placeholder {
 
         bottom: 76px;
     }
+
+    .reverse-search-results {
+        width: calc(100% - 24px);
+    }
+
+    .reverse-search-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .reverse-result-image {
+        height: 120px;
+    }
 }
+
 </style>
 
 </head>
 
+
 <body>
+
 
 <!-- =========================================================
      REAL COCKROACHES
@@ -1363,7 +1585,9 @@ textarea::placeholder {
     <img src="/assets/model.png" alt="">
 </div>
 
+
 <div class="app">
+
 
 <aside class="sidebar">
 
@@ -1405,218 +1629,265 @@ textarea::placeholder {
 
 <main class="main">
 
-    <header class="header">
 
-        <div class="header-left">
+<header class="header">
 
-            <div class="header-symbol">
-                ☪
+    <div class="header-left">
+
+        <div class="header-symbol">
+            ☪
+        </div>
+
+        <div>
+
+            <div class="header-title">
+                DALBAYOB AI
             </div>
 
-            <div>
-
-                <div class="header-title">
-                    DALBAYOB AI
-                </div>
-
-                <div class="header-sub">
-                    INTELLIGENCE SYSTEM
-                </div>
-
+            <div class="header-sub">
+                INTELLIGENCE SYSTEM
             </div>
 
-        </div>
-
-
-        <div class="status">
-
-            <div class="status-dot"></div>
-
-            SYSTEM ONLINE
-
-        </div>
-
-    </header>
-
-
-    <section id="chat">
-
-        <div
-            class="chat-inner"
-            id="chat-inner">
-
-            <div
-                class="welcome"
-                id="welcome">
-
-                <div class="welcome-emblem">
-
-                    <div class="crescent">
-                        ☪
-                    </div>
-
-                </div>
-
-                <h1>
-                    Welcome to Dalbayob.
-                </h1>
-
-                <p>
-                    Intelligence with a slightly questionable pest problem.
-                </p>
-
-
-                <div class="roach-gallery">
-
-                    <img
-                        src="https://avatars.fastly.steamstatic.com/b76a2e69616ae68a574fdc638ab82fdcc3f94161_full.jpg"
-                        alt="Dalbayob specimen"
-                    >
-
-                    <div class="roach-gallery-caption">
-                        DALBAYOB SPECIMEN ARCHIVE · ROACH DIVISION
-                    </div>
-
-                </div>
-
-
-                <div class="suggestions">
-
-                    <button
-                        class="suggestion"
-                        type="button"
-                        onclick="useSuggestion('What can you do?')">
-                        What can you do?
-                    </button>
-
-                    <button
-                        class="suggestion"
-                        type="button"
-                        onclick="useSuggestion('Explain something complicated')">
-                        Explain something complicated
-                    </button>
-
-                    <button
-                        class="suggestion"
-                        type="button"
-                        onclick="useSuggestion('Give me a creative idea')">
-                        Give me a creative idea
-                    </button>
-
-                    <button
-                        class="suggestion"
-                        type="button"
-                        onclick="useSuggestion('Generate an image of a giant cockroach')">
-                        🪳 Summon a roach
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <div class="composer-area">
-
-        <div
-            class="attachment-preview"
-            id="attachmentPreview">
-
-            <img
-                id="attachmentPreviewImage"
-                src=""
-                alt="Attached image"
-            >
-
-            <div class="attachment-info">
-
-                <div class="attachment-title">
-                    IMAGE ATTACHED
-                </div>
-
-                <div class="attachment-sub">
-                    Dalbayob can analyze this image.
-                </div>
-
-            </div>
-
-            <button
-                class="attachment-remove"
-                type="button"
-                title="Remove image"
-                onclick="clearAttachment()">
-                ×
-            </button>
-
-        </div>
-
-
-        <div class="composer">
-
-            <input
-                id="imageInput"
-                type="file"
-                accept="image/*"
-                onchange="handleImageUpload(event)"
-            >
-
-
-            <button
-                class="tool"
-                title="Attach image"
-                type="button"
-                onclick="openImagePicker()">
-                ✡
-            </button>
-
-
-            <textarea
-                id="input"
-                rows="1"
-                placeholder="Speak to Dalbayob..."></textarea>
-
-
-<button
-    class="tool image"
-    title="Generate image"
-    type="button"
-    onclick="generateImage()">
-    ☪
-</button>
-
-<button
-    class="tool reverse"
-    title="Reverse image search"
-    type="button"
-    onclick="reverseSearch()">
-    🔎
-</button>
-
-<button
-    class="tool send"
-                title="Send"
-                type="button"
-                onclick="sendMessage()">
-                ↑
-            </button>
-
-        </div>
-
-
-        <div class="note">
-            Dalbayob AI can make mistakes. Check important information.
         </div>
 
     </div>
+
+
+    <div class="status">
+
+        <div class="status-dot"></div>
+
+        SYSTEM ONLINE
+
+    </div>
+
+</header>
+
+
+<section id="chat">
+
+    <div
+        class="chat-inner"
+        id="chat-inner">
+
+
+        <div
+            class="welcome"
+            id="welcome">
+
+
+            <div class="welcome-emblem">
+
+                <div class="crescent">
+                    ☪
+                </div>
+
+            </div>
+
+
+            <h1>
+                Welcome to Dalbayob.
+            </h1>
+
+
+            <p>
+                Intelligence with a slightly questionable pest problem.
+            </p>
+
+
+            <div class="roach-gallery">
+
+                <img
+                    src="https://avatars.fastly.steamstatic.com/b76a2e69616ae68a574fdc638ab82fdcc3f94161_full.jpg"
+                    alt="Dalbayob specimen"
+                >
+
+                <div class="roach-gallery-caption">
+                    DALBAYOB SPECIMEN ARCHIVE · ROACH DIVISION
+                </div>
+
+            </div>
+
+
+            <div class="suggestions">
+
+                <button
+                    class="suggestion"
+                    type="button"
+                    onclick="useSuggestion('What can you do?')">
+
+                    What can you do?
+
+                </button>
+
+
+                <button
+                    class="suggestion"
+                    type="button"
+                    onclick="useSuggestion('Explain something complicated')">
+
+                    Explain something complicated
+
+                </button>
+
+
+                <button
+                    class="suggestion"
+                    type="button"
+                    onclick="useSuggestion('Give me a creative idea')">
+
+                    Give me a creative idea
+
+                </button>
+
+
+                <button
+                    class="suggestion"
+                    type="button"
+                    onclick="useSuggestion('Generate an image of a giant cockroach')">
+
+                    🪳 Summon a roach
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     REVERSE SEARCH RESULTS
+========================================================= -->
+
+<div
+    id="reverseSearchResults"
+    class="reverse-search-results">
+</div>
+
+
+<div class="composer-area">
+
+
+    <div
+        class="attachment-preview"
+        id="attachmentPreview">
+
+
+        <img
+            id="attachmentPreviewImage"
+            src=""
+            alt="Attached image"
+        >
+
+
+        <div class="attachment-info">
+
+            <div class="attachment-title">
+                IMAGE ATTACHED
+            </div>
+
+            <div class="attachment-sub">
+                Dalbayob can analyze or reverse-search this image.
+            </div>
+
+        </div>
+
+
+        <button
+            class="attachment-remove"
+            type="button"
+            title="Remove image"
+            onclick="clearAttachment()">
+
+            ×
+
+        </button>
+
+    </div>
+
+
+    <div class="composer">
+
+
+        <input
+            id="imageInput"
+            type="file"
+            accept="image/*"
+            onchange="handleImageUpload(event)"
+        >
+
+
+        <button
+            class="tool"
+            title="Attach image"
+            type="button"
+            onclick="openImagePicker()">
+
+            ✡
+
+        </button>
+
+
+        <textarea
+            id="input"
+            rows="1"
+            placeholder="Speak to Dalbayob..."></textarea>
+
+
+        <button
+            class="tool"
+            title="Generate image"
+            type="button"
+            onclick="generateImage()">
+
+            ☪
+
+        </button>
+
+
+        <button
+            class="tool"
+            title="Reverse image search"
+            type="button"
+            onclick="reverseSearch()">
+
+            🔎
+
+        </button>
+
+
+        <button
+            class="tool send"
+            title="Send"
+            type="button"
+            onclick="sendMessage()">
+
+            ↑
+
+        </button>
+
+
+    </div>
+
+
+    <div class="note">
+        Dalbayob AI can make mistakes. Check important information.
+    </div>
+
+
+</div>
 
 </main>
 
 </div>
 
+
 <script>
+
 
 /* =========================================================
    ELEMENTS
@@ -1658,7 +1929,7 @@ let attachedImage = null;
 
 
 /* =========================================================
-   TEXTAREA AUTO RESIZE
+   TEXTAREA
 ========================================================= */
 
 input.addEventListener("input", () => {
@@ -1666,7 +1937,10 @@ input.addEventListener("input", () => {
     input.style.height = "auto";
 
     input.style.height =
-        Math.min(input.scrollHeight, 150) + "px";
+        Math.min(
+            input.scrollHeight,
+            150
+        ) + "px";
 
 });
 
@@ -1692,7 +1966,7 @@ input.addEventListener("keydown", event => {
 
 
 /* =========================================================
-   PASTE IMAGE FROM CLIPBOARD
+   PASTE IMAGE
 ========================================================= */
 
 document.addEventListener("paste", event => {
@@ -1724,37 +1998,7 @@ document.addEventListener("paste", event => {
             return;
 
 
-        const reader =
-            new FileReader();
-
-
-        reader.onload = () => {
-
-            attachedImage =
-                reader.result;
-
-
-            attachmentPreviewImage.src =
-                attachedImage;
-
-
-            attachmentPreview.classList.add(
-                "visible"
-            );
-
-
-            input.placeholder =
-                "Ask Dalbayob about this image...";
-
-
-            input.focus();
-
-        };
-
-
-        reader.readAsDataURL(
-            file
-        );
+        readImageFile(file);
 
 
         break;
@@ -1765,152 +2009,19 @@ document.addEventListener("paste", event => {
 
 
 /* =========================================================
-   ADD MESSAGE
+   READ IMAGE
 ========================================================= */
 
-function addMessage(text, type) {
-
-    const welcome =
-        document.getElementById("welcome");
-
-    if (welcome) {
-        welcome.remove();
-    }
-
-    const row =
-        document.createElement("div");
-
-    row.className =
-        "message-row " + type;
-
-    const message =
-        document.createElement("div");
-
-    message.className =
-        "message " + type;
-
-    message.textContent =
-        text;
-
-    row.appendChild(message);
-
-    chatInner.appendChild(row);
-
-    requestAnimationFrame(() => {
-
-        chat.scrollTop =
-            chat.scrollHeight;
-
-    });
-
-    return message;
-}
-
-
-/* =========================================================
-   ADD IMAGE MESSAGE
-========================================================= */
-
-function addImageMessage(image, text) {
-
-    const welcome =
-        document.getElementById("welcome");
-
-    if (welcome) {
-        welcome.remove();
-    }
-
-    const row =
-        document.createElement("div");
-
-    row.className =
-        "message-row user";
-
-    const message =
-        document.createElement("div");
-
-    message.className =
-        "message user";
-
-    if (text) {
-
-        const textNode =
-            document.createElement("div");
-
-        textNode.textContent =
-            text;
-
-        message.appendChild(
-            textNode
-        );
-    }
-
-    const imageElement =
-        document.createElement("img");
-
-    imageElement.src =
-        image;
-
-    imageElement.alt =
-        "Uploaded image";
-
-    imageElement.className =
-        "chat-image-preview";
-
-    message.appendChild(
-        imageElement
-    );
-
-    row.appendChild(
-        message
-    );
-
-    chatInner.appendChild(
-        row
-    );
-
-    requestAnimationFrame(() => {
-
-        chat.scrollTop =
-            chat.scrollHeight;
-
-    });
-
-    return message;
-}
-
-
-/* =========================================================
-   IMAGE UPLOAD
-========================================================= */
-
-function openImagePicker() {
-
-    imageInput.click();
-
-}
-
-
-/* =========================================================
-   HANDLE IMAGE UPLOAD
-========================================================= */
-
-function handleImageUpload(event) {
-
-    const file =
-        event.target.files?.[0];
-
-    if (!file)
-        return;
-
+function readImageFile(file) {
 
     if (!file.type.startsWith("image/")) {
 
-        alert("Please select an image.");
-
-        imageInput.value = "";
+        alert(
+            "Please select an image."
+        );
 
         return;
+
     }
 
 
@@ -1927,6 +2038,7 @@ function handleImageUpload(event) {
         attachmentPreviewImage.src =
             attachedImage;
 
+
         attachmentPreview.classList.add(
             "visible"
         );
@@ -1935,12 +2047,178 @@ function handleImageUpload(event) {
         input.placeholder =
             "Ask Dalbayob about this image...";
 
+
         input.focus();
 
     };
 
 
     reader.readAsDataURL(file);
+
+}
+
+
+/* =========================================================
+   ADD MESSAGE
+========================================================= */
+
+function addMessage(text, type) {
+
+    const welcome =
+        document.getElementById(
+            "welcome"
+        );
+
+    if (welcome) {
+        welcome.remove();
+    }
+
+
+    const row =
+        document.createElement("div");
+
+    row.className =
+        "message-row " + type;
+
+
+    const message =
+        document.createElement("div");
+
+    message.className =
+        "message " + type;
+
+
+    message.textContent =
+        text;
+
+
+    row.appendChild(message);
+
+    chatInner.appendChild(row);
+
+
+    requestAnimationFrame(() => {
+
+        chat.scrollTop =
+            chat.scrollHeight;
+
+    });
+
+
+    return message;
+
+}
+
+
+/* =========================================================
+   ADD IMAGE MESSAGE
+========================================================= */
+
+function addImageMessage(
+    image,
+    text
+) {
+
+    const welcome =
+        document.getElementById(
+            "welcome"
+        );
+
+    if (welcome) {
+        welcome.remove();
+    }
+
+
+    const row =
+        document.createElement("div");
+
+    row.className =
+        "message-row user";
+
+
+    const message =
+        document.createElement("div");
+
+    message.className =
+        "message user";
+
+
+    if (text) {
+
+        const textNode =
+            document.createElement("div");
+
+        textNode.textContent =
+            text;
+
+        message.appendChild(
+            textNode
+        );
+
+    }
+
+
+    const imageElement =
+        document.createElement("img");
+
+    imageElement.src =
+        image;
+
+    imageElement.alt =
+        "Uploaded image";
+
+    imageElement.className =
+        "chat-image-preview";
+
+
+    message.appendChild(
+        imageElement
+    );
+
+
+    row.appendChild(
+        message
+    );
+
+
+    chatInner.appendChild(
+        row
+    );
+
+
+    requestAnimationFrame(() => {
+
+        chat.scrollTop =
+            chat.scrollHeight;
+
+    });
+
+
+    return message;
+
+}
+
+
+/* =========================================================
+   IMAGE UPLOAD
+========================================================= */
+
+function openImagePicker() {
+
+    imageInput.click();
+
+}
+
+
+function handleImageUpload(event) {
+
+    const file =
+        event.target.files?.[0];
+
+    if (!file)
+        return;
+
+    readImageFile(file);
 
 }
 
@@ -1968,6 +2246,365 @@ function clearAttachment() {
 
 
 /* =========================================================
+   REVERSE IMAGE SEARCH
+========================================================= */
+
+async function reverseSearch() {
+
+    const image =
+        attachedImage ||
+        currentImage ||
+        null;
+
+
+    if (!image) {
+
+        addMessage(
+            "🔎 Upload or paste an image first.",
+            "assistant"
+        );
+
+        return;
+
+    }
+
+
+    const resultsContainer =
+        document.getElementById(
+            "reverseSearchResults"
+        );
+
+
+    resultsContainer.classList.add(
+        "visible"
+    );
+
+
+    resultsContainer.innerHTML = `
+
+        <div class="reverse-search-panel">
+
+            <div class="reverse-search-header">
+
+                <div class="reverse-search-title">
+                    🔎 REVERSE IMAGE SEARCH
+                </div>
+
+                <div class="reverse-search-count">
+                    SEARCHING
+                </div>
+
+            </div>
+
+            <div class="reverse-search-loading">
+                Scanning indexed images...
+            </div>
+
+        </div>
+
+    `;
+
+
+    chat.scrollTop =
+        chat.scrollHeight;
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/reverse-search",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        image
+                    })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                "Reverse image search failed."
+            );
+
+        }
+
+
+        renderReverseSearchResults(
+            data.results || []
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Reverse search error:",
+            error
+        );
+
+
+        resultsContainer.innerHTML = `
+
+            <div class="reverse-search-panel">
+
+                <div class="reverse-search-error">
+
+                    ⚠️ ${escapeHtml(
+                        error.message
+                    )}
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    chat.scrollTop =
+        chat.scrollHeight;
+
+}
+
+
+/* =========================================================
+   RENDER SEARCH RESULTS
+========================================================= */
+
+function renderReverseSearchResults(
+    results
+) {
+
+    const container =
+        document.getElementById(
+            "reverseSearchResults"
+        );
+
+
+    if (!results.length) {
+
+        container.innerHTML = `
+
+            <div class="reverse-search-panel">
+
+                <div class="reverse-search-header">
+
+                    <div class="reverse-search-title">
+                        🔎 REVERSE IMAGE SEARCH
+                    </div>
+
+                    <div class="reverse-search-count">
+                        0 MATCHES
+                    </div>
+
+                </div>
+
+                <div class="reverse-search-loading">
+                    No indexed matches were found.
+                </div>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    const cards =
+        results
+            .map(result => {
+
+                const title =
+                    escapeHtml(
+                        result.title ||
+                        "Untitled result"
+                    );
+
+
+                const host =
+                    escapeHtml(
+                        result.host ||
+                        "Unknown source"
+                    );
+
+
+                const imageUrl =
+                    safeUrl(
+                        result.imageUrl
+                    );
+
+
+                const pageUrl =
+                    safeUrl(
+                        result.pageUrl
+                    );
+
+
+                return `
+
+                    <article class="reverse-result">
+
+                        ${
+                            imageUrl
+                                ? `
+                                    <img
+                                        class="reverse-result-image"
+                                        src="${imageUrl}"
+                                        alt=""
+                                        loading="lazy"
+                                        referrerpolicy="no-referrer"
+                                        onerror="this.style.display='none'"
+                                    >
+                                `
+                                : ""
+                        }
+
+                        <div class="reverse-result-body">
+
+                            <div class="reverse-result-title">
+                                ${title}
+                            </div>
+
+                            <div class="reverse-result-host">
+                                ${host}
+                            </div>
+
+                            ${
+                                pageUrl
+                                    ? `
+                                        <a
+                                            class="reverse-result-link"
+                                            href="${pageUrl}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Open source ↗
+                                        </a>
+                                    `
+                                    : ""
+                            }
+
+                        </div>
+
+                    </article>
+
+                `;
+
+            })
+            .join("");
+
+
+    container.innerHTML = `
+
+        <div class="reverse-search-panel">
+
+            <div class="reverse-search-header">
+
+                <div class="reverse-search-title">
+                    🔎 REVERSE IMAGE SEARCH
+                </div>
+
+                <div class="reverse-search-count">
+                    ${results.length}
+                    ${
+                        results.length === 1
+                            ? " MATCH"
+                            : " MATCHES"
+                    }
+                </div>
+
+            </div>
+
+
+            <div class="reverse-search-grid">
+
+                ${cards}
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   URL SECURITY
+========================================================= */
+
+function safeUrl(value) {
+
+    if (!value)
+        return "";
+
+
+    try {
+
+        const url =
+            new URL(value);
+
+
+        if (
+            url.protocol !== "http:" &&
+            url.protocol !== "https:"
+        ) {
+
+            return "";
+
+        }
+
+
+        return escapeAttribute(
+            url.href
+        );
+
+
+    } catch {
+
+        return "";
+
+    }
+
+}
+
+
+function escapeHtml(value) {
+
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+}
+
+
+function escapeAttribute(value) {
+
+    return escapeHtml(value);
+
+}
+
+
+/* =========================================================
    CHAT
 ========================================================= */
 
@@ -1977,41 +2614,22 @@ async function sendMessage() {
         input.value.trim();
 
 
-    /*
-       The image belongs ONLY to this
-       message.
-    */
-
     const imageForThisMessage =
         attachedImage || null;
 
 
-    /*
-       Allow:
-
-       text
-
-       OR
-
-       image + text
-
-       OR
-
-       image alone
-    */
-
-    if (!text && !imageForThisMessage)
+    if (
+        !text &&
+        !imageForThisMessage
+    ) {
         return;
+    }
 
 
     const actualMessage =
         text ||
         "Analyze this image and tell me what you see.";
 
-
-    /*
-       Display user's message.
-    */
 
     if (imageForThisMessage) {
 
@@ -2030,11 +2648,6 @@ async function sendMessage() {
     }
 
 
-    /*
-       Capture the image first,
-       then immediately clear it.
-    */
-
     attachedImage = null;
 
     imageInput.value = "";
@@ -2049,19 +2662,11 @@ async function sendMessage() {
         "Speak to Dalbayob...";
 
 
-    /*
-       Clear input.
-    */
-
     input.value = "";
 
     input.style.height =
         "auto";
 
-
-    /*
-       Show thinking.
-    */
 
     const reply =
         addMessage(
@@ -2113,20 +2718,9 @@ async function sendMessage() {
         }
 
 
-        /*
-           Display response.
-        */
-
         reply.textContent =
             data.reply;
 
-
-        /*
-           Save text conversation.
-
-           Never save the base64 image
-           inside conversationHistory.
-        */
 
         conversationHistory.push({
 
@@ -2134,7 +2728,8 @@ async function sendMessage() {
 
             content:
                 imageForThisMessage
-                    ? "[Image attached] " + actualMessage
+                    ? "[Image attached] " +
+                      actualMessage
                     : actualMessage
 
         });
@@ -2160,11 +2755,12 @@ async function sendMessage() {
 
     chat.scrollTop =
         chat.scrollHeight;
+
 }
 
 
 /* =========================================================
-   IMAGE GENERATION + IMAGE EDITING
+   IMAGE GENERATION
 ========================================================= */
 
 async function generateImage() {
@@ -2172,13 +2768,6 @@ async function generateImage() {
     const prompt =
         input.value.trim();
 
-
-    /*
-       Image generation can still use
-       the currently uploaded image
-       if the user explicitly clicks
-       the image generation button.
-    */
 
     const sourceImage =
         currentImage ||
@@ -2195,11 +2784,6 @@ async function generateImage() {
     }
 
 
-    /*
-       Add user's image instruction
-       to visible chat.
-    */
-
     addMessage(
         "☪ " + prompt,
         "user"
@@ -2211,12 +2795,6 @@ async function generateImage() {
     input.style.height =
         "auto";
 
-
-    /*
-       If an uploaded image was used
-       for editing, clear the attachment
-       after capturing it.
-    */
 
     if (attachedImage) {
 
@@ -2235,16 +2813,6 @@ async function generateImage() {
 
     }
 
-
-    /*
-       Decide whether this is:
-
-       new image
-
-       or
-
-       image edit.
-    */
 
     const statusText =
         sourceImage
@@ -2274,7 +2842,7 @@ async function generateImage() {
 
                     body: JSON.stringify({
 
-                        prompt: prompt,
+                        prompt,
 
                         image:
                             sourceImage
@@ -2298,45 +2866,30 @@ async function generateImage() {
         }
 
 
-        /*
-           Save newest image.
-        */
-
         currentImage =
             data.image;
 
-
-        /*
-           Remove loading text.
-        */
 
         message.textContent =
             "";
 
 
-        /*
-           Create image.
-        */
-
         const image =
             document.createElement("img");
+
 
         image.src =
             currentImage;
 
+
         image.alt =
             prompt;
+
 
         message.appendChild(
             image
         );
 
-
-        /*
-           Save image interaction
-           without storing the actual
-           base64 image.
-        */
 
         conversationHistory.push({
 
@@ -2354,7 +2907,7 @@ async function generateImage() {
             role: "assistant",
 
             content:
-                "[Generated an image based on the user's request]"
+                "[Generated an image]"
 
         });
 
@@ -2369,6 +2922,7 @@ async function generateImage() {
 
     chat.scrollTop =
         chat.scrollHeight;
+
 }
 
 
@@ -2396,6 +2950,20 @@ function newChat() {
         "Speak to Dalbayob...";
 
 
+    const reverseResults =
+        document.getElementById(
+            "reverseSearchResults"
+        );
+
+
+    reverseResults.classList.remove(
+        "visible"
+    );
+
+
+    reverseResults.innerHTML = "";
+
+
     chatInner.innerHTML = `
 
         <div
@@ -2410,13 +2978,16 @@ function newChat() {
 
             </div>
 
+
             <h1>
                 Welcome to Dalbayob.
             </h1>
 
+
             <p>
                 Intelligence with a slightly questionable pest problem.
             </p>
+
 
             <div class="roach-gallery">
 
@@ -2431,6 +3002,7 @@ function newChat() {
 
             </div>
 
+
             <div class="suggestions">
 
                 <button
@@ -2442,6 +3014,7 @@ function newChat() {
 
                 </button>
 
+
                 <button
                     class="suggestion"
                     type="button"
@@ -2451,6 +3024,7 @@ function newChat() {
 
                 </button>
 
+
                 <button
                     class="suggestion"
                     type="button"
@@ -2459,6 +3033,7 @@ function newChat() {
                     Give me a creative idea
 
                 </button>
+
 
                 <button
                     class="suggestion"
@@ -2482,7 +3057,7 @@ function newChat() {
 
 
 /* =========================================================
-   SUGGESTION
+   SUGGESTIONS
 ========================================================= */
 
 function useSuggestion(text) {
@@ -2490,9 +3065,11 @@ function useSuggestion(text) {
     input.value =
         text;
 
+
     input.dispatchEvent(
         new Event("input")
     );
+
 
     input.focus();
 
@@ -2516,6 +3093,7 @@ function focusImageMode() {
     input.dispatchEvent(
         new Event("input")
     );
+
 
     input.focus();
 
