@@ -20,10 +20,10 @@ export default async function handler(req, res) {
 
         let imageUrl = image;
 
-        /*
-         * If the frontend sends a base64 data URL,
-         * upload it to tmpfiles first.
-         */
+        // --------------------------------------------------
+        // HANDLE BASE64 IMAGE
+        // --------------------------------------------------
+
         if (image.startsWith("data:image/")) {
             const match = image.match(
                 /^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/
@@ -44,12 +44,12 @@ export default async function handler(req, res) {
 
             try {
                 buffer = Buffer.from(base64Data, "base64");
-            } catch (err) {
+            } catch (error) {
                 return res.status(400).json({
                     error: "Could not decode image.",
                     stage: "decode",
                     status: 400,
-                    details: err.message
+                    details: error.message
                 });
             }
 
@@ -62,12 +62,11 @@ export default async function handler(req, res) {
             }
 
             const extension =
-                mimeType.split("/")[1]?.replace("jpeg", "jpg") || "jpg";
+                mimeType
+                    .split("/")
+                    .pop()
+                    ?.replace("jpeg", "jpg") || "jpg";
 
-            /*
-             * Native Web FormData.
-             * This works with Vercel's native fetch.
-             */
             const form = new FormData();
 
             const blob = new Blob([buffer], {
@@ -90,12 +89,12 @@ export default async function handler(req, res) {
                         body: form
                     }
                 );
-            } catch (err) {
+            } catch (error) {
                 return res.status(502).json({
-                    error: "Could not connect to temporary image upload service.",
+                    error: "Could not connect to image upload service.",
                     stage: "tmpfiles",
                     status: 502,
-                    details: err.message
+                    details: error.message
                 });
             }
 
@@ -107,7 +106,7 @@ export default async function handler(req, res) {
                 uploadData = JSON.parse(uploadText);
             } catch {
                 return res.status(502).json({
-                    error: "Temporary image upload service returned invalid JSON.",
+                    error: "Image upload service returned invalid JSON.",
                     stage: "tmpfiles",
                     status: uploadResponse.status,
                     details: uploadText
@@ -118,7 +117,7 @@ export default async function handler(req, res) {
                 return res.status(502).json({
                     error:
                         uploadData.message ||
-                        "Temporary image upload failed.",
+                        "Image upload failed.",
                     stage: "tmpfiles",
                     status: uploadResponse.status,
                     details: uploadData
@@ -127,7 +126,7 @@ export default async function handler(req, res) {
 
             if (!uploadData.data?.url) {
                 return res.status(502).json({
-                    error: "Temporary image service did not return an image URL.",
+                    error: "Image upload service did not return a URL.",
                     stage: "tmpfiles",
                     status: uploadResponse.status,
                     details: uploadData
@@ -136,26 +135,20 @@ export default async function handler(req, res) {
 
             imageUrl = uploadData.data.url;
 
-            /*
-             * tmpfiles returns:
-             * https://tmpfiles.org/123456/image.png
-             *
-             * Google Lens needs the direct file URL:
-             * https://tmpfiles.org/dl/123456/image.png
-             */
+            // Convert tmpfiles page URL to direct download URL
             imageUrl = imageUrl.replace(
                 "https://tmpfiles.org/",
                 "https://tmpfiles.org/dl/"
             );
         }
 
-        /*
-         * If the image is already hosted online,
-         * don't upload it again.
-         */
+        // --------------------------------------------------
+        // ALREADY-HOSTED IMAGE
+        // --------------------------------------------------
+
         else if (
-            image.startsWith("http://") ||
-            image.startsWith("https://")
+            image.startsWith("https://") ||
+            image.startsWith("http://")
         ) {
             imageUrl = image;
         }
@@ -168,23 +161,24 @@ export default async function handler(req, res) {
             });
         }
 
+        // --------------------------------------------------
+        // QUANTICDATA
+        // --------------------------------------------------
+
         const apiKey = process.env.QD_API_KEY;
 
         if (!apiKey) {
             return res.status(500).json({
-                error: "QD_API_KEY is not configured in Vercel.",
+                error: "QD_API_KEY is not configured.",
                 stage: "configuration",
                 status: 500
             });
         }
 
-        /*
-         * Start Google Lens reverse image search.
-         */
-        let lensResponse;
+        let response;
 
         try {
-            lensResponse = await fetch(
+            response = await fetch(
                 "https://api.quanticdata.io/v1/scraper/collectors/google_lens/run",
                 {
                     method: "POST",
@@ -198,213 +192,157 @@ export default async function handler(req, res) {
                     })
                 }
             );
-        } catch (err) {
+        } catch (error) {
             return res.status(502).json({
-                error: "Could not connect to reverse image search API.",
+                error: "Could not connect to QuanticData.",
                 stage: "quanticdata",
                 status: 502,
-                details: err.message
+                details: error.message
             });
         }
 
-        const lensText = await lensResponse.text();
+        const responseText = await response.text();
 
-        let lensData;
+        // --------------------------------------------------
+        // QUANTICDATA ERROR
+        // --------------------------------------------------
+
+        if (!response.ok) {
+            let errorData;
+
+            try {
+                errorData = JSON.parse(responseText);
+            } catch {
+                errorData = responseText;
+            }
+
+            return res.status(502).json({
+                error:
+                    typeof errorData === "object"
+                        ? (
+                            errorData.message ||
+                            errorData.error ||
+                            "QuanticData returned an error."
+                        )
+                        : "QuanticData returned an error.",
+
+                stage: "quanticdata",
+
+                status: response.status,
+
+                details: errorData
+            });
+        }
+
+        // --------------------------------------------------
+        // PARSE SUCCESS RESPONSE
+        // --------------------------------------------------
+
+        let data;
 
         try {
-            lensData = JSON.parse(lensText);
+            data = JSON.parse(responseText);
         } catch {
             return res.status(502).json({
-                error: "Reverse image search API returned invalid JSON.",
+                error: "QuanticData returned invalid JSON.",
                 stage: "quanticdata",
-                status: lensResponse.status,
-                details: lensText
-            });
-        }
-
-        if (!lensResponse.ok) {
-            return res.status(lensResponse.status).json({
-                error:
-                    lensData.message ||
-                    lensData.error ||
-                    "Reverse image search API request failed.",
-                stage: "quanticdata",
-                status: lensResponse.status,
-                details: lensData
+                status: response.status,
+                details: responseText
             });
         }
 
         /*
-         * Some QuanticData requests may return 202
-         * and require polling.
+         * QuanticData response:
+         *
+         * {
+         *   "status": "done",
+         *   "count": 20,
+         *   "results": [...]
+         * }
+         *
+         * Some API responses may also use:
+         *
+         * {
+         *   "payload": {
+         *      "results": [...]
+         *   }
+         * }
          */
-        let finalData = lensData;
 
-        const runId =
-            lensData.run_id ||
-            lensData.id ||
-            lensData.data?.run_id ||
-            lensData.data?.id;
-
-        if (
-            lensResponse.status === 202 &&
-            runId
-        ) {
-            const maxAttempts = 20;
-            const delay = 1500;
-
-            for (let attempt = 0; attempt < maxAttempts; attempt++) {
-                await new Promise(resolve =>
-                    setTimeout(resolve, delay)
-                );
-
-                let pollResponse;
-
-                try {
-                    pollResponse = await fetch(
-                        `https://api.quanticdata.io/v1/scraper/collectors/runs/${encodeURIComponent(runId)}`,
-                        {
-                            method: "GET",
-                            headers: {
-                                "Authorization": `Bearer ${apiKey}`
-                            }
-                        }
-                    );
-                } catch (err) {
-                    return res.status(502).json({
-                        error: "Could not poll reverse image search.",
-                        stage: "quanticdata-poll",
-                        status: 502,
-                        details: err.message
-                    });
-                }
-
-                const pollText = await pollResponse.text();
-
-                let pollData;
-
-                try {
-                    pollData = JSON.parse(pollText);
-                } catch {
-                    return res.status(502).json({
-                        error: "Reverse image search polling returned invalid JSON.",
-                        stage: "quanticdata-poll",
-                        status: pollResponse.status,
-                        details: pollText
-                    });
-                }
-
-                finalData = pollData;
-
-                const status =
-                    pollData.status ||
-                    pollData.data?.status ||
-                    "";
-
-                if (
-                    status === "completed" ||
-                    status === "success" ||
-                    status === "succeeded" ||
-                    pollData.completed === true
-                ) {
-                    break;
-                }
-
-                if (
-                    status === "failed" ||
-                    status === "error"
-                ) {
-                    return res.status(502).json({
-                        error:
-                            pollData.message ||
-                            pollData.error ||
-                            "Reverse image search failed.",
-                        stage: "quanticdata-poll",
-                        status: 502,
-                        details: pollData
-                    });
-                }
-            }
-        }
-
-        /*
-         * Extract results from the various possible
-         * QuanticData response structures.
-         */
         const results =
-            finalData.results ||
-            finalData.data?.results ||
-            finalData.data ||
-            finalData.output ||
-            finalData.items ||
+            data.results ||
+            data.payload?.results ||
+            data.data?.results ||
             [];
 
-        const resultArray = Array.isArray(results)
-            ? results
-            : [];
+        if (!Array.isArray(results)) {
+            return res.status(502).json({
+                error: "QuanticData returned an unexpected result format.",
+                stage: "quanticdata",
+                status: response.status,
+                details: data
+            });
+        }
 
-        const normalizedResults = resultArray.map((item, index) => ({
+        // --------------------------------------------------
+        // NORMALIZE RESULTS
+        // --------------------------------------------------
+
+        const normalizedResults = results.map((item, index) => ({
             rank:
-                item.rank ||
-                item.position ||
+                item.rank ??
                 index + 1,
 
             title:
-                item.title ||
-                item.name ||
-                item.page_title ||
-                "Untitled result",
+                item.title ??
+                "",
 
             host:
-                item.host ||
-                item.domain ||
-                item.source_domain ||
+                item.domain ??
+                item.host ??
                 "",
 
             source:
-                item.source ||
-                item.site ||
-                item.domain ||
+                item.source ??
                 "",
 
             pageUrl:
-                item.page_url ||
-                item.url ||
-                item.link ||
+                item.link ??
+                item.page_url ??
+                item.url ??
                 "",
 
             imageUrl:
-                item.image_url ||
-                item.image ||
-                item.original_image ||
+                item.image ??
+                item.image_url ??
                 "",
 
             thumbnail:
-                item.thumbnail ||
-                item.thumbnail_url ||
-                item.image_thumbnail ||
+                item.thumbnail ??
                 "",
 
             date:
-                item.date ||
-                item.published_at ||
+                item.date ??
                 "",
 
             size:
-                item.size ||
+                item.size ??
                 "",
 
             exactMatch:
                 item.exact_match ??
-                item.exactMatch ??
                 false
         }));
+
+        // --------------------------------------------------
+        // SUCCESS
+        // --------------------------------------------------
 
         return res.status(200).json({
             success: true,
             imageUrl,
-            results: normalizedResults,
-            raw: finalData
+            count: normalizedResults.length,
+            results: normalizedResults
         });
 
     } catch (error) {
@@ -417,8 +355,11 @@ export default async function handler(req, res) {
             error:
                 error?.message ||
                 "Internal server error.",
+
             stage: "backend",
+
             status: 500,
+
             details: {
                 name: error?.name || "UnknownError",
                 stack: error?.stack || null
