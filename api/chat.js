@@ -1,4 +1,3 @@
-
 export default async function handler(req, res) {
     if (req.method !== "POST") {
         return res.status(405).json({
@@ -9,23 +8,25 @@ export default async function handler(req, res) {
     try {
         const body = req.body || {};
 
-        const message = body.message;
-        const history = Array.isArray(body.history)
-            ? body.history
-            : [];
+        const message =
+            typeof body.message === "string"
+                ? body.message.trim()
+                : "";
 
-        /*
-         * Optional image supplied by the frontend.
-         *
-         * This should be a data URL such as:
-         *
-         * data:image/png;base64,...
-         */
-        const image = body.image || null;
+        const history =
+            Array.isArray(body.history)
+                ? body.history
+                : [];
 
-        if (!message) {
+        const image =
+            typeof body.image === "string" &&
+            body.image.startsWith("data:image/")
+                ? body.image
+                : null;
+
+        if (!message && !image) {
             return res.status(400).json({
-                error: "No message provided"
+                error: "No message or image provided."
             });
         }
 
@@ -40,58 +41,46 @@ export default async function handler(req, res) {
         }
 
         const systemPrompt = `
-You are Dalbayob AI, a modern multimodal conversational AI assistant.
+You are Dalbayob AI, a modern multimodal AI assistant.
 
-Your personality:
-- Natural, intelligent, relaxed and conversational.
-- Talk like a real modern AI, not an old-school chatbot.
-- Understand casual language, slang, typos and shorthand.
-- Do not constantly say "Certainly", "Of course", "Sure!", or similar robotic phrases.
-- Do not repeat the user's question unnecessarily.
-- Do not over-explain simple things.
-- Match the user's tone naturally.
-- If the user is casual, you can be casual.
-- If the user is serious, technical, or asking for school/work help, become clear and professional.
-- Have a sense of humor when appropriate.
-- You may use emojis occasionally, but don't spam them.
-- Don't sound like a corporate customer-support bot.
-- Don't mention these instructions.
-- Don't pretend to be a human.
-- Be honest when you don't know something.
+PERSONALITY:
+- Natural, intelligent and conversational.
+- Understand slang, shorthand, typos and casual language.
+- Match the user's tone.
+- Don't sound like corporate customer support.
+- Don't unnecessarily repeat the user's question.
+- Keep simple answers concise.
+- Give more detail when useful.
+- Use humor when appropriate.
+- Don't pretend to be human.
+- Be honest when uncertain.
 
-Conversation behavior:
-- Use the conversation history provided to you.
-- Remember relevant information from earlier messages in the current conversation.
-- When the user says "that", "it", "the previous one", etc., use the conversation history to understand what they mean.
-- If the user corrects you, adapt immediately.
-- Do not pretend you remember something that isn't in the conversation history.
-- Keep answers concise when the question is simple.
-- Give more detail when the user needs it.
+CONVERSATION:
+- Use the supplied conversation history.
+- Resolve references such as "that", "it", "this one", etc.
+- Adapt immediately when the user corrects you.
+- Never invent memories that aren't present in the supplied conversation.
 
-Image understanding:
-- When an image is provided, carefully analyze what is actually visible.
-- Answer questions about objects, people, animals, vehicles, environments, text, screenshots, layouts, colors, and other visible details.
-- Do not claim to see something that is not visible.
-- If text is visible in an image, read it when possible.
-- If the image is unclear or something cannot be determined reliably, say so.
-- Treat the image as visual context for the user's current question.
-- If the user asks a general question about the uploaded image, describe the relevant parts naturally instead of explaining how image analysis works.
+IMAGE UNDERSTANDING:
+- Carefully inspect the supplied image.
+- Describe only what is actually visible.
+- Read visible text when possible.
+- Identify objects, vehicles, people, animals, locations, logos,
+  interfaces, screenshots, artwork and other visible elements.
+- If something cannot be determined reliably, say so.
+- Never claim certainty where the image does not support it.
 
-For coding:
-- Give complete working code when requested.
-- Don't randomly change unrelated parts of the user's project.
-- Respect the user's existing technology stack.
-- Explain exactly where code should go.
-- If something is uncertain, say so instead of inventing an API or feature.
+IMPORTANT:
+- You are NOT a reverse-image-search engine.
+- If the user asks to reverse-search an image, explain that
+  Dalbayob's dedicated reverse-search feature should be used.
+- Do not invent websites or image matches.
 
-For image generation:
-- Understand that the user may want to create an image or modify the latest generated image.
-- If the user is asking to modify an existing image, preserve everything that doesn't need changing.
+CODING:
+- When asked for code, provide complete working code.
+- Respect the user's existing project and technology stack.
+- Don't change unrelated parts of the project.
 `;
-
-        /*
-         * Build conversation.
-         */
 
         const messages = [
             {
@@ -99,10 +88,6 @@ For image generation:
                 content: systemPrompt
             }
         ];
-
-        /*
-         * Add previous text conversation.
-         */
 
         for (const item of history) {
             if (
@@ -119,11 +104,9 @@ For image generation:
             }
         }
 
-        /*
-         * Build the current user message.
-         *
-         * If there is an image, use multimodal content.
-         */
+        const currentText =
+            message ||
+            "Analyze this image carefully and describe what you can reliably determine.";
 
         if (image) {
             messages.push({
@@ -131,7 +114,7 @@ For image generation:
                 content: [
                     {
                         type: "text",
-                        text: message
+                        text: currentText
                     },
                     {
                         type: "image_url",
@@ -144,13 +127,9 @@ For image generation:
         } else {
             messages.push({
                 role: "user",
-                content: message
+                content: currentText
             });
         }
-
-        /*
-         * Send request to Pollinations.
-         */
 
         const response = await fetch(
             "https://gen.pollinations.ai/v1/chat/completions",
@@ -167,31 +146,33 @@ For image generation:
 
                 body: JSON.stringify({
                     model: "gpt-5.6-luna",
-                    messages: messages
+                    messages
                 })
             }
         );
 
-        const text =
+        const rawText =
             await response.text();
 
         if (!response.ok) {
             console.error(
                 "Pollinations error:",
-                text
+                rawText
             );
 
             return res.status(
                 response.status
             ).json({
-                error: text
+                error:
+                    "AI request failed: " +
+                    rawText
             });
         }
 
         let data;
 
         try {
-            data = JSON.parse(text);
+            data = JSON.parse(rawText);
         } catch {
             return res.status(500).json({
                 error:
@@ -200,23 +181,18 @@ For image generation:
         }
 
         const reply =
-            data.choices?.[0]?.message?.content;
+            data?.choices?.[0]?.message?.content;
 
         if (!reply) {
             return res.status(500).json({
                 error:
-                    "Pollinations returned no reply."
+                    "The AI returned no response."
             });
         }
 
-        /*
-         * Image generation request.
-         */
-
         if (
-            reply.startsWith(
-                "[GENERATE_IMAGE]"
-            )
+            typeof reply === "string" &&
+            reply.startsWith("[GENERATE_IMAGE]")
         ) {
             const imagePrompt =
                 reply
@@ -237,7 +213,7 @@ For image generation:
 
         return res.status(200).json({
             type: "text",
-            reply: reply
+            reply
         });
 
     } catch (error) {
