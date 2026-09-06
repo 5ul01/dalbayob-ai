@@ -681,7 +681,12 @@ body::after {
 
     margin: auto;
 
-    padding: 50px 35px 260px;
+    /*
+        Extra bottom space is intentional.
+        It keeps search results and messages above
+        the fixed composer instead of hiding behind it.
+    */
+    padding: 50px 35px 340px;
 }
 
 
@@ -981,12 +986,20 @@ body::after {
    REVERSE IMAGE SEARCH
 ========================================================= */
 
+/*
+    IMPORTANT:
+    This is now INSIDE .chat-inner.
+
+    Therefore it becomes normal scrollable chat content
+    and can no longer be trapped underneath the composer.
+*/
+
 .reverse-search-results {
-    width: min(1050px, 100%);
+    width: 100%;
 
-    margin: 0 auto;
+    margin: 30px 0 0;
 
-    padding: 0 35px 20px;
+    padding: 0;
 
     display: none;
 }
@@ -1173,6 +1186,65 @@ body::after {
     font-size: 12px;
 
     line-height: 1.6;
+
+    border:
+        1px solid rgba(180,70,70,.18);
+
+    border-radius: 12px;
+
+    background:
+        rgba(120,35,35,.08);
+}
+
+.reverse-error-line {
+    margin-bottom: 7px;
+}
+
+.reverse-error-label {
+    color: #777e72;
+
+    font-size: 9px;
+
+    letter-spacing: 1.5px;
+
+    text-transform: uppercase;
+}
+
+.reverse-error-value {
+    color: #e0b1b1;
+
+    font-family: Inter, sans-serif;
+
+    word-break: break-word;
+}
+
+.reverse-error-details {
+    margin-top: 14px;
+
+    padding: 12px;
+
+    overflow-x: auto;
+
+    border:
+        1px solid rgba(205,169,87,.1);
+
+    border-radius: 10px;
+
+    background:
+        rgba(0,0,0,.25);
+
+    color: #aaa99a;
+
+    font-family:
+        Consolas,
+        Monaco,
+        monospace;
+
+    font-size: 10px;
+
+    line-height: 1.5;
+
+    white-space: pre-wrap;
 }
 
 
@@ -1210,7 +1282,10 @@ body::after {
     box-shadow:
         0 20px 50px rgba(0,0,0,.7);
 
-    z-index: 500;
+    /*
+        Must stay above composer.
+    */
+    z-index: 1100;
 }
 
 .attachment-preview.visible {
@@ -1298,7 +1373,7 @@ body::after {
     right: 0;
     bottom: 0;
 
-    z-index: 400;
+    z-index: 1000;
 
     padding:
         20px 28px 23px;
@@ -1343,7 +1418,7 @@ body::after {
         0 20px 60px rgba(0,0,0,.5),
         inset 0 0 25px rgba(205,169,87,.015);
 
-    z-index: 450;
+    z-index: 1050;
 }
 
 .tool {
@@ -1497,7 +1572,7 @@ textarea::placeholder {
 
     .chat-inner {
         padding:
-            30px 16px 270px;
+            30px 16px 320px;
     }
 
     .message {
@@ -1506,6 +1581,8 @@ textarea::placeholder {
 
     .composer-area {
         padding: 12px;
+
+        z-index: 1000;
     }
 
     .tool {
@@ -1542,14 +1619,16 @@ textarea::placeholder {
 
         bottom: 76px;
 
-        z-index: 500;
+        z-index: 1100;
     }
 
     .reverse-search-results {
         width: 100%;
 
         padding:
-            0 12px 20px;
+            0 0 20px;
+
+        margin-top: 20px;
     }
 
     .reverse-search-grid {
@@ -1559,6 +1638,22 @@ textarea::placeholder {
 
     .reverse-result-image {
         height: 120px;
+    }
+
+    .reverse-search-panel {
+        padding: 13px;
+    }
+
+    .reverse-search-header {
+        align-items: flex-start;
+    }
+
+    .reverse-search-title {
+        font-size: 11px;
+    }
+
+    .reverse-search-error {
+        font-size: 11px;
     }
 }
 
@@ -1775,19 +1870,21 @@ textarea::placeholder {
 
         </div>
 
+
+        <!-- =====================================================
+             REVERSE SEARCH RESULTS
+             NOW INSIDE CHAT-INNER
+        ====================================================== -->
+
+        <div
+            id="reverseSearchResults"
+            class="reverse-search-results">
+        </div>
+
+
     </div>
 
 </section>
-
-
-<!-- =========================================================
-     REVERSE SEARCH RESULTS
-========================================================= -->
-
-<div
-    id="reverseSearchResults"
-    class="reverse-search-results">
-</div>
 
 
 <div class="composer-area">
@@ -2297,6 +2394,22 @@ async function reverseSearch() {
         );
 
 
+    if (!resultsContainer) {
+
+        console.error(
+            "reverseSearchResults element was not found."
+        );
+
+        addMessage(
+            "⚠️ Reverse search interface failed to initialize.",
+            "assistant"
+        );
+
+        return;
+
+    }
+
+
     resultsContainer.classList.add(
         "visible"
     );
@@ -2363,6 +2476,7 @@ async function reverseSearch() {
 
         let data;
 
+
         try {
 
             data =
@@ -2370,8 +2484,13 @@ async function reverseSearch() {
 
         } catch {
 
+            /*
+                If Vercel returns HTML instead of JSON,
+                show the HTTP status and response body.
+            */
+
             throw new Error(
-                "The reverse-search server returned invalid JSON."
+                `Server returned invalid JSON. HTTP ${response.status}. Response: ${responseText.slice(0, 1000)}`
             );
 
         }
@@ -2379,11 +2498,32 @@ async function reverseSearch() {
 
         if (!response.ok) {
 
-            throw new Error(
-                data.error ||
-                data.message ||
-                `Reverse image search failed (${response.status}).`
-            );
+            const error =
+                new Error(
+                    data.error ||
+                    data.message ||
+                    `Reverse image search failed. HTTP ${response.status}.`
+                );
+
+
+            error.status =
+                data.status ||
+                response.status;
+
+
+            error.stage =
+                data.stage ||
+                "reverse-search";
+
+
+            error.details =
+                data.details ||
+                data.response ||
+                data.raw ||
+                null;
+
+
+            throw error;
 
         }
 
@@ -2398,9 +2538,28 @@ async function reverseSearch() {
                 data
             );
 
-            throw new Error(
-                "Reverse search returned an unexpected response."
-            );
+
+            const error =
+                new Error(
+                    "Reverse search returned an unexpected response."
+                );
+
+
+            error.status =
+                data?.status ||
+                response.status;
+
+
+            error.stage =
+                data?.stage ||
+                "response-validation";
+
+
+            error.details =
+                data;
+
+
+            throw error;
 
         }
 
@@ -2418,34 +2577,9 @@ async function reverseSearch() {
         );
 
 
-        resultsContainer.innerHTML = `
-
-            <div class="reverse-search-panel">
-
-                <div class="reverse-search-header">
-
-                    <div class="reverse-search-title">
-                        🔎 REVERSE IMAGE SEARCH
-                    </div>
-
-                    <div class="reverse-search-count">
-                        ERROR
-                    </div>
-
-                </div>
-
-                <div class="reverse-search-error">
-
-                    ⚠️ ${escapeHtml(
-                        error.message ||
-                        "Reverse image search failed."
-                    )}
-
-                </div>
-
-            </div>
-
-        `;
+        renderReverseSearchError(
+            error
+        );
 
     }
 
@@ -2463,6 +2597,151 @@ async function reverseSearch() {
 
 
 /* =========================================================
+   RENDER REVERSE SEARCH ERROR
+========================================================= */
+
+function renderReverseSearchError(error) {
+
+    const container =
+        document.getElementById(
+            "reverseSearchResults"
+        );
+
+
+    if (!container)
+        return;
+
+
+    const status =
+        error?.status ||
+        "UNKNOWN";
+
+
+    const stage =
+        error?.stage ||
+        "frontend";
+
+
+    const message =
+        error?.message ||
+        "Reverse image search failed.";
+
+
+    let details = "";
+
+
+    if (error?.details) {
+
+        try {
+
+            details =
+                JSON.stringify(
+                    error.details,
+                    null,
+                    2
+                );
+
+        } catch {
+
+            details =
+                String(
+                    error.details
+                );
+
+        }
+
+    }
+
+
+    /*
+        If the backend doesn't provide structured details,
+        at least show the actual JavaScript error.
+    */
+
+    container.innerHTML = `
+
+        <div class="reverse-search-panel">
+
+            <div class="reverse-search-header">
+
+                <div class="reverse-search-title">
+                    🔎 REVERSE IMAGE SEARCH
+                </div>
+
+                <div class="reverse-search-count">
+                    ERROR
+                </div>
+
+            </div>
+
+
+            <div class="reverse-search-error">
+
+                <div class="reverse-error-line">
+
+                    <div class="reverse-error-label">
+                        Error
+                    </div>
+
+                    <div class="reverse-error-value">
+                        ⚠️ ${escapeHtml(message)}
+                    </div>
+
+                </div>
+
+
+                <div class="reverse-error-line">
+
+                    <div class="reverse-error-label">
+                        HTTP Status
+                    </div>
+
+                    <div class="reverse-error-value">
+                        ${escapeHtml(String(status))}
+                    </div>
+
+                </div>
+
+
+                <div class="reverse-error-line">
+
+                    <div class="reverse-error-label">
+                        Stage
+                    </div>
+
+                    <div class="reverse-error-value">
+                        ${escapeHtml(String(stage))}
+                    </div>
+
+                </div>
+
+
+                ${
+                    details
+                        ? `
+                            <div class="reverse-error-line">
+
+                                <div class="reverse-error-label">
+                                    API Response
+                                </div>
+
+                                <pre class="reverse-error-details">${escapeHtml(details)}</pre>
+
+                            </div>
+                        `
+                        : ""
+                }
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
    RENDER SEARCH RESULTS
 ========================================================= */
 
@@ -2474,6 +2753,10 @@ function renderReverseSearchResults(
         document.getElementById(
             "reverseSearchResults"
         );
+
+
+    if (!container)
+        return;
 
 
     if (!results.length) {
@@ -3033,19 +3316,10 @@ function newChat() {
         "Speak to Dalbayob...";
 
 
-    const reverseResults =
-        document.getElementById(
-            "reverseSearchResults"
-        );
-
-
-    reverseResults.classList.remove(
-        "visible"
-    );
-
-
-    reverseResults.innerHTML = "";
-
+    /*
+        The reverse-search element now lives inside chatInner,
+        so it must be recreated together with the welcome screen.
+    */
 
     chatInner.innerHTML = `
 
@@ -3129,6 +3403,12 @@ function newChat() {
 
             </div>
 
+        </div>
+
+
+        <div
+            id="reverseSearchResults"
+            class="reverse-search-results">
         </div>
 
     `;
