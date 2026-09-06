@@ -1,344 +1,313 @@
-function errorResponse(res, status, message) {
-    return res.status(status).json({
-        success: false,
-        error: message
-    });
-}
-
-
-function extractBase64(dataUrl) {
-
-    if (
-        typeof dataUrl !== "string" ||
-        !dataUrl.startsWith("data:image/")
-    ) {
-        return null;
+export default async function handler(req, res) {
+    if (req.method !== "POST") {
+        return res.status(405).json({
+            error: "Method not allowed."
+        });
     }
 
+    const apiKey = process.env.QD_API_KEY;
 
-    const comma =
-        dataUrl.indexOf(",");
-
-
-    if (comma === -1) {
-        return null;
+    if (!apiKey) {
+        return res.status(500).json({
+            error: "QD_API_KEY is not configured in Vercel."
+        });
     }
-
-
-    return dataUrl.slice(
-        comma + 1
-    );
-}
-
-
-function getHost(value) {
-
-    if (!value) {
-        return "";
-    }
-
 
     try {
+        const { image } = req.body || {};
 
-        return new URL(value)
-            .hostname
-            .replace(/^www\./, "");
+        if (!image || typeof image !== "string") {
+            return res.status(400).json({
+                error: "No image was provided."
+            });
+        }
 
-    } catch {
+        if (!image.startsWith("data:image/")) {
+            return res.status(400).json({
+                error: "Invalid image format."
+            });
+        }
 
-        return "";
+        /*
+         * Extract MIME type and base64 data
+         */
 
-    }
-
-}
-
-
-export default async function handler(
-    req,
-    res
-) {
-
-    if (req.method !== "POST") {
-
-        return errorResponse(
-            res,
-            405,
-            "Method not allowed."
+        const match = image.match(
+            /^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/
         );
 
-    }
-
-
-    try {
-
-        const body =
-            req.body || {};
-
-
-        const image =
-            body.image;
-
-
-        if (
-            typeof image !== "string" ||
-            !image.startsWith("data:image/")
-        ) {
-
-            return errorResponse(
-                res,
-                400,
-                "A valid image is required."
-            );
-
+        if (!match) {
+            return res.status(400).json({
+                error: "Invalid base64 image."
+            });
         }
 
+        const mimeType = match[1];
+        const base64Data = match[2];
 
-        const base64 =
-            extractBase64(image);
-
-
-        if (!base64) {
-
-            return errorResponse(
-                res,
-                400,
-                "Invalid image data."
-            );
-
-        }
-
+        const imageBuffer = Buffer.from(
+            base64Data,
+            "base64"
+        );
 
         /*
-         * Prevent extremely large requests.
+         * Prevent ridiculously large uploads.
+         * 15 MB is more than enough for normal images.
          */
 
-        if (
-            base64.length >
-            15_000_000
-        ) {
+        const MAX_SIZE = 15 * 1024 * 1024;
 
-            return errorResponse(
-                res,
-                413,
-                "Image is too large. Please use a smaller image."
-            );
-
+        if (imageBuffer.length > MAX_SIZE) {
+            return res.status(413).json({
+                error: "Image is too large. Maximum size is 15 MB."
+            });
         }
-
-
-        const apiKey =
-            process.env.YANDEX_API_KEY;
-
-
-        const folderId =
-            process.env.YANDEX_FOLDER_ID;
-
-
-        if (!apiKey) {
-
-            return errorResponse(
-                res,
-                500,
-                "YANDEX_API_KEY is not configured."
-            );
-
-        }
-
-
-        if (!folderId) {
-
-            return errorResponse(
-                res,
-                500,
-                "YANDEX_FOLDER_ID is not configured."
-            );
-
-        }
-
 
         /*
-         * Yandex Image Search API.
+         * Determine a filename.
          */
 
-        const response =
-            await fetch(
-                "https://searchapi.api.cloud.yandex.net/v2/image/search_by_image",
-                {
-                    method: "POST",
+        let extension = "jpg";
 
-                    headers: {
-
-                        "Authorization":
-                            `Api-Key ${apiKey}`,
-
-                        "Content-Type":
-                            "application/json"
-
-                    },
-
-                    body: JSON.stringify({
-
-                        folderId,
-
-                        data:
-                            base64,
-
-                        page:
-                            "0",
-
-                        familyMode:
-                            "FAMILY_MODE_MODERATE"
-
-                    })
-
-                }
-            );
-
-
-        const raw =
-            await response.text();
-
-
-        if (!response.ok) {
-
-            console.error(
-                "Yandex error:",
-                raw
-            );
-
-
-            return errorResponse(
-                res,
-                response.status,
-                "Yandex reverse image search failed."
-            );
-
+        if (mimeType === "image/png") {
+            extension = "png";
+        } else if (mimeType === "image/webp") {
+            extension = "webp";
+        } else if (mimeType === "image/gif") {
+            extension = "gif";
+        } else if (mimeType === "image/jpeg") {
+            extension = "jpg";
         }
 
+        /*
+         * ----------------------------------------------------
+         * TEMPORARILY UPLOAD IMAGE
+         * ----------------------------------------------------
+         *
+         * Google Lens needs a publicly accessible URL.
+         */
 
-        let data;
+        const formData = new FormData();
 
+        const blob = new Blob(
+            [imageBuffer],
+            {
+                type: mimeType
+            }
+        );
+
+        formData.append(
+            "file",
+            blob,
+            `dalbayob-reverse.${extension}`
+        );
+
+        const uploadResponse = await fetch(
+            "https://tmpfiles.org/api/v1/upload",
+            {
+                method: "POST",
+                body: formData
+            }
+        );
+
+        const uploadText =
+            await uploadResponse.text();
+
+        let uploadData;
 
         try {
-
-            data =
-                JSON.parse(raw);
-
+            uploadData =
+                JSON.parse(uploadText);
         } catch {
+            throw new Error(
+                "Temporary image upload returned invalid data."
+            );
+        }
 
-            return errorResponse(
-                res,
-                502,
-                "Yandex returned invalid data."
+        if (
+            !uploadResponse.ok ||
+            uploadData.status !== "success" ||
+            !uploadData.data?.url
+        ) {
+            console.error(
+                "tmpfiles error:",
+                uploadData
             );
 
+            throw new Error(
+                "Could not temporarily upload the image."
+            );
         }
+
+        /*
+         * tmpfiles returns something like:
+         *
+         * https://tmpfiles.org/1234567/image.jpg
+         *
+         * Convert it to the direct downloadable URL:
+         *
+         * https://tmpfiles.org/dl/1234567/image.jpg
+         */
+
+        const uploadedUrl =
+            uploadData.data.url;
+
+        let publicImageUrl =
+            uploadedUrl.replace(
+                "https://tmpfiles.org/",
+                "https://tmpfiles.org/dl/"
+            );
+
+        /*
+         * ----------------------------------------------------
+         * GOOGLE LENS
+         * ----------------------------------------------------
+         */
+
+        const lensResponse = await fetch(
+            "https://api.quanticdata.io/v1/scraper/collectors/google_lens/run",
+            {
+                method: "POST",
+
+                headers: {
+                    "Authorization":
+                        `Bearer ${apiKey}`,
+
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body: JSON.stringify({
+                    image_url:
+                        publicImageUrl,
+
+                    max_results: 20,
+
+                    lang: "en"
+                })
+            }
+        );
+
+        const lensText =
+            await lensResponse.text();
+
+        let lensData;
+
+        try {
+            lensData =
+                JSON.parse(lensText);
+        } catch {
+            console.error(
+                "QuanticData raw response:",
+                lensText
+            );
+
+            throw new Error(
+                "Google Lens API returned invalid data."
+            );
+        }
+
+        if (!lensResponse.ok) {
+
+            console.error(
+                "QuanticData error:",
+                lensData
+            );
+
+            const apiError =
+                lensData?.message ||
+                lensData?.error ||
+                lensData?.payload?.message ||
+                "Google Lens search failed.";
+
+            throw new Error(apiError);
+        }
+
+        /*
+         * QuanticData has used both an envelope-style response
+         * and payload.results in its API documentation.
+         * Support both so the frontend doesn't break if the
+         * response format differs.
+         */
+
+        const rawResults =
+            lensData?.payload?.results ||
+            lensData?.results ||
+            [];
 
 
         /*
-         * Be defensive about response
-         * formats.
+         * Normalize the results for Dalbayob AI.
          */
 
-        const source =
-            Array.isArray(data.images)
-                ? data.images
-                : Array.isArray(data.results)
-                    ? data.results
-                    : [];
-
-
-        const normalized =
-            source
-                .map(item => {
+        const results =
+            rawResults
+                .map((result) => {
 
                     const pageUrl =
-                        item.pageUrl ||
-                        item.page_url ||
-                        item.url ||
+                        result.link ||
+                        result.url ||
                         "";
-
 
                     const imageUrl =
-                        item.imageUrl ||
-                        item.image_url ||
-                        item.thumbnail ||
-                        item.url ||
+                        result.image ||
+                        result.thumbnail ||
                         "";
 
-
                     const title =
-                        item.pageTitle ||
-                        item.page_title ||
-                        item.title ||
-                        "Image result";
-
+                        result.title ||
+                        "Untitled result";
 
                     const host =
-                        item.host ||
-                        getHost(pageUrl);
-
+                        result.domain ||
+                        result.source ||
+                        "";
 
                     return {
+                        rank:
+                            result.rank ||
+                            null,
 
-                        title:
-                            String(title),
+                        title,
 
-                        host:
-                            String(host),
+                        host,
 
-                        pageUrl:
-                            String(pageUrl),
+                        source:
+                            result.source ||
+                            "",
 
-                        imageUrl:
-                            String(imageUrl),
+                        pageUrl,
 
-                        passage:
-                            item.passage ||
-                            ""
+                        imageUrl,
 
+                        thumbnail:
+                            result.thumbnail ||
+                            "",
+
+                        date:
+                            result.date ||
+                            null,
+
+                        size:
+                            result.size ||
+                            null,
+
+                        exactMatch:
+                            Boolean(
+                                result.exact_match
+                            )
                     };
 
                 })
-
-
-                .filter(item => {
+                .filter(result => {
 
                     return (
-                        item.pageUrl ||
-                        item.imageUrl
+                        result.pageUrl ||
+                        result.imageUrl ||
+                        result.title
                     );
 
                 });
-
-
-        /*
-         * Remove duplicate URLs.
-         */
-
-        const seen =
-            new Set();
-
-
-        const results =
-            normalized.filter(item => {
-
-                const key =
-                    item.pageUrl ||
-                    item.imageUrl;
-
-
-                if (seen.has(key)) {
-                    return false;
-                }
-
-
-                seen.add(key);
-
-
-                return true;
-
-            });
 
 
         return res.status(200).json({
@@ -348,7 +317,13 @@ export default async function handler(
             results,
 
             count:
-                results.length
+                results.length,
+
+            cost:
+                lensData?.cost ??
+                lensData?.payload?.cost ??
+                lensData?.usage?.cost_usd ??
+                null
 
         });
 
@@ -356,18 +331,17 @@ export default async function handler(
     } catch (error) {
 
         console.error(
-            "Reverse search error:",
+            "Reverse image search error:",
             error
         );
 
+        return res.status(500).json({
 
-        return errorResponse(
-            res,
-            500,
-            error?.message ||
-            "Reverse image search failed."
-        );
+            error:
+                error?.message ||
+                "Reverse image search failed."
+
+        });
 
     }
-
 }
