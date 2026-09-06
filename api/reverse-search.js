@@ -3,235 +3,291 @@ import FormData from "form-data";
 export default async function handler(req, res) {
 
     if (req.method !== "POST") {
-
         return res.status(405).json({
-            error: "Method not allowed."
+            error: "Method not allowed.",
+            stage: "request",
+            status: 405
         });
-
     }
 
-
-    const apiKey =
-        process.env.QD_API_KEY;
-
+    const apiKey = process.env.QD_API_KEY;
 
     if (!apiKey) {
-
         return res.status(500).json({
-            error:
-                "QD_API_KEY is not configured in Vercel."
+            error: "QD_API_KEY is not configured in Vercel.",
+            stage: "configuration",
+            status: 500
         });
-
     }
-
 
     try {
 
-        const { image } =
-            req.body || {};
-
+        const { image } = req.body || {};
 
         if (!image) {
-
             return res.status(400).json({
-                error:
-                    "No image was provided."
+                error: "No image was provided.",
+                stage: "input",
+                status: 400
             });
-
         }
 
-
-        if (
-            typeof image !== "string" ||
-            !image.startsWith("data:image/")
-        ) {
-
+        if (typeof image !== "string") {
             return res.status(400).json({
-                error:
-                    "The uploaded image must be a base64 image."
+                error: "Image must be a string.",
+                stage: "input",
+                status: 400
             });
-
         }
 
 
         /*
          * =====================================================
-         * CONVERT DATA URL
+         * PREPARE IMAGE URL
          * =====================================================
          */
 
-        const match =
-            image.match(
-                /^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/
-            );
-
-
-        if (!match) {
-
-            return res.status(400).json({
-                error:
-                    "Invalid image data."
-            });
-
-        }
-
-
-        const mimeType =
-            match[1];
-
-        const base64Data =
-            match[2];
-
-
-        const buffer =
-            Buffer.from(
-                base64Data,
-                "base64"
-            );
-
-
-        if (!buffer.length) {
-
-            return res.status(400).json({
-                error:
-                    "The image appears to be empty."
-            });
-
-        }
-
-
-        if (
-            buffer.length >
-            15 * 1024 * 1024
-        ) {
-
-            return res.status(413).json({
-                error:
-                    "Image is too large. Maximum size is 15 MB."
-            });
-
-        }
-
-
-        const extension =
-            mimeType.split("/")[1] ||
-            "png";
+        let publicImageUrl = "";
 
 
         /*
-         * =====================================================
-         * UPLOAD TO TMPFILES
-         * =====================================================
+         * CASE 1:
+         * Image is already a public HTTP/HTTPS URL
+         *
+         * This is important for generated Pollinations images.
          */
 
-        const form =
-            new FormData();
+        if (
+            image.startsWith("https://") ||
+            image.startsWith("http://")
+        ) {
+
+            publicImageUrl = image;
+
+        }
 
 
-        form.append(
-            "file",
-            buffer,
-            {
-                filename:
-                    `dalbayob.${extension}`,
+        /*
+         * CASE 2:
+         * Image is a base64 data URL
+         */
 
-                contentType:
-                    mimeType
+        else if (image.startsWith("data:image/")) {
+
+            const match =
+                image.match(
+                    /^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/
+                );
+
+            if (!match) {
+
+                return res.status(400).json({
+                    error: "Invalid base64 image data.",
+                    stage: "input",
+                    status: 400
+                });
+
             }
-        );
+
+            const mimeType = match[1];
+            const base64Data = match[2];
+
+            const buffer =
+                Buffer.from(
+                    base64Data,
+                    "base64"
+                );
+
+            if (!buffer.length) {
+
+                return res.status(400).json({
+                    error: "The image appears to be empty.",
+                    stage: "image-processing",
+                    status: 400
+                });
+
+            }
+
+            if (
+                buffer.length >
+                15 * 1024 * 1024
+            ) {
+
+                return res.status(413).json({
+                    error: "Image is too large. Maximum size is 15 MB.",
+                    stage: "image-processing",
+                    status: 413
+                });
+
+            }
+
+            const extension =
+                mimeType.split("/")[1] ||
+                "png";
 
 
-        const uploadResponse =
-            await fetch(
-                "https://tmpfiles.org/api/v1/upload",
+            /*
+             * =================================================
+             * UPLOAD BASE64 IMAGE TO TMPFILES
+             * =================================================
+             */
+
+            const form =
+                new FormData();
+
+            form.append(
+                "file",
+                buffer,
                 {
-                    method: "POST",
+                    filename:
+                        `dalbayob.${extension}`,
 
-                    body: form,
-
-                    headers:
-                        form.getHeaders()
+                    contentType:
+                        mimeType
                 }
             );
 
 
-        const uploadText =
-            await uploadResponse.text();
+            const uploadResponse =
+                await fetch(
+                    "https://tmpfiles.org/api/v1/upload",
+                    {
+                        method: "POST",
+
+                        body: form,
+
+                        headers:
+                            form.getHeaders()
+                    }
+                );
 
 
-        let uploadData;
+            const uploadText =
+                await uploadResponse.text();
 
 
-        try {
+            let uploadData;
 
-            uploadData =
-                JSON.parse(
+            try {
+
+                uploadData =
+                    JSON.parse(
+                        uploadText
+                    );
+
+            } catch {
+
+                console.error(
+                    "tmpfiles invalid response:",
                     uploadText
                 );
 
-        } catch {
+                return res.status(502).json({
 
-            console.error(
-                "tmpfiles invalid response:",
-                uploadText
-            );
+                    error:
+                        "Temporary image hosting returned invalid data.",
 
-            throw new Error(
-                "Temporary image hosting returned invalid data."
-            );
+                    stage:
+                        "tmpfiles",
 
-        }
+                    status:
+                        uploadResponse.status,
+
+                    details:
+                        uploadText
+
+                });
+
+            }
 
 
-        if (
-            !uploadResponse.ok ||
-            uploadData?.status !== "success" ||
-            !uploadData?.data?.url
-        ) {
+            if (
+                !uploadResponse.ok ||
+                uploadData?.status !== "success" ||
+                !uploadData?.data?.url
+            ) {
 
-            console.error(
-                "tmpfiles response:",
-                uploadData
-            );
+                console.error(
+                    "tmpfiles response:",
+                    uploadData
+                );
 
-            throw new Error(
-                "Could not temporarily upload the image."
-            );
+                return res.status(502).json({
+
+                    error:
+                        "Could not temporarily upload the image.",
+
+                    stage:
+                        "tmpfiles",
+
+                    status:
+                        uploadResponse.status,
+
+                    details:
+                        uploadData
+
+                });
+
+            }
+
+
+            publicImageUrl =
+                uploadData.data.url;
+
+
+            /*
+             * Convert:
+             *
+             * https://tmpfiles.org/123/image.png
+             *
+             * Into:
+             *
+             * https://tmpfiles.org/dl/123/image.png
+             */
+
+            if (
+                publicImageUrl.startsWith(
+                    "https://tmpfiles.org/"
+                )
+            ) {
+
+                publicImageUrl =
+                    publicImageUrl.replace(
+                        "https://tmpfiles.org/",
+                        "https://tmpfiles.org/dl/"
+                    );
+
+            }
 
         }
 
 
         /*
-         * tmpfiles returns:
-         *
-         * https://tmpfiles.org/123/image.png
-         *
-         * Convert it into:
-         *
-         * https://tmpfiles.org/dl/123/image.png
+         * =====================================================
+         * INVALID IMAGE FORMAT
+         * =====================================================
          */
 
-        let publicImageUrl =
-            uploadData.data.url;
+        else {
 
+            return res.status(400).json({
 
-        if (
-            publicImageUrl.startsWith(
-                "https://tmpfiles.org/"
-            )
-        ) {
+                error:
+                    "Unsupported image format. Use an uploaded image or a public HTTP/HTTPS image URL.",
 
-            publicImageUrl =
-                publicImageUrl.replace(
-                    "https://tmpfiles.org/",
-                    "https://tmpfiles.org/dl/"
-                );
+                stage:
+                    "input",
+
+                status:
+                    400
+
+            });
 
         }
 
 
         console.log(
-            "Temporary image URL:",
+            "Reverse search image URL:",
             publicImageUrl
         );
 
@@ -278,7 +334,6 @@ export default async function handler(req, res) {
 
         let lensData;
 
-
         try {
 
             lensData =
@@ -293,18 +348,29 @@ export default async function handler(req, res) {
                 lensText
             );
 
-            throw new Error(
-                "Google Lens API returned invalid data."
-            );
+            return res.status(502).json({
+
+                error:
+                    "QuanticData returned invalid JSON.",
+
+                stage:
+                    "quanticdata",
+
+                status:
+                    lensResponse.status,
+
+                details:
+                    lensText
+
+            });
 
         }
 
 
         console.log(
-            "QuanticData status:",
+            "QuanticData HTTP status:",
             lensResponse.status
         );
-
 
         console.log(
             "QuanticData response:",
@@ -318,7 +384,7 @@ export default async function handler(req, res) {
 
         /*
          * =====================================================
-         * API ERROR
+         * QUANTICDATA EXPLICIT ERROR
          * =====================================================
          */
 
@@ -326,24 +392,61 @@ export default async function handler(req, res) {
             lensData?.type === "error"
         ) {
 
-            throw new Error(
-                lensData.message ||
-                "Google Lens API returned an error."
-            );
+            return res.status(
+                lensResponse.status >= 400
+                    ? lensResponse.status
+                    : 502
+            ).json({
+
+                error:
+                    lensData.message ||
+                    lensData.error ||
+                    "Google Lens API returned an error.",
+
+                stage:
+                    "quanticdata",
+
+                status:
+                    lensResponse.status,
+
+                details:
+                    lensData
+
+            });
 
         }
 
+
+        /*
+         * =====================================================
+         * HTTP ERROR
+         * =====================================================
+         */
 
         if (
             !lensResponse.ok &&
             lensResponse.status !== 202
         ) {
 
-            throw new Error(
-                lensData?.message ||
-                lensData?.error ||
-                `Google Lens request failed (${lensResponse.status}).`
-            );
+            return res.status(
+                lensResponse.status
+            ).json({
+
+                error:
+                    lensData?.message ||
+                    lensData?.error ||
+                    "Google Lens request failed.",
+
+                stage:
+                    "quanticdata",
+
+                status:
+                    lensResponse.status,
+
+                details:
+                    lensData
+
+            });
 
         }
 
@@ -373,11 +476,29 @@ export default async function handler(req, res) {
                     lensData
                 );
 
-                throw new Error(
-                    "Google Lens started an asynchronous search but did not return a run ID."
-                );
+                return res.status(502).json({
+
+                    error:
+                        "Google Lens started an asynchronous search but did not return a run ID.",
+
+                    stage:
+                        "quanticdata",
+
+                    status:
+                        202,
+
+                    details:
+                        lensData
+
+                });
 
             }
+
+
+            console.log(
+                "Google Lens run ID:",
+                runId
+            );
 
 
             const results =
@@ -404,7 +525,7 @@ export default async function handler(req, res) {
 
         /*
          * =====================================================
-         * EXTRACT RESULTS
+         * DIRECT RESULTS
          * =====================================================
          */
 
@@ -419,95 +540,33 @@ export default async function handler(req, res) {
         ) {
 
             console.error(
-                "Unexpected response:",
+                "Unexpected QuanticData response:",
                 lensData
             );
 
-            throw new Error(
-                "Google Lens API returned an unexpected response format."
-            );
+            return res.status(502).json({
+
+                error:
+                    "Google Lens API returned an unexpected response format.",
+
+                stage:
+                    "quanticdata",
+
+                status:
+                    lensResponse.status,
+
+                details:
+                    lensData
+
+            });
 
         }
 
 
-        /*
-         * =====================================================
-         * NORMALIZE RESULTS
-         * =====================================================
-         */
-
         const results =
-            rawResults
-                .map(
-                    (result, index) => {
-
-                        if (
-                            !result ||
-                            typeof result !==
-                                "object"
-                        ) {
-
-                            return null;
-
-                        }
-
-
-                        return {
-
-                            rank:
-                                result.rank ??
-                                index + 1,
-
-                            title:
-                                result.title ||
-                                "Untitled result",
-
-                            host:
-                                result.domain ||
-                                result.host ||
-                                result.source ||
-                                "Unknown source",
-
-                            source:
-                                result.source ||
-                                "",
-
-                            pageUrl:
-                                result.link ||
-                                result.url ||
-                                result.page_url ||
-                                "",
-
-                            imageUrl:
-                                result.image ||
-                                result.image_url ||
-                                "",
-
-                            thumbnail:
-                                result.thumbnail ||
-                                result.thumbnail_url ||
-                                "",
-
-                            date:
-                                result.date ||
-                                null,
-
-                            size:
-                                result.size ||
-                                null,
-
-                            exactMatch:
-                                Boolean(
-                                    result.exact_match ??
-                                    result.exactMatch ??
-                                    false
-                                )
-
-                        };
-
-                    }
-                )
-                .filter(Boolean);
+            normalizeResults(
+                rawResults
+            );
 
 
         return res.status(200).json({
@@ -540,11 +599,103 @@ export default async function handler(req, res) {
 
             error:
                 error?.message ||
-                "Reverse image search failed."
+                "Reverse image search failed.",
+
+            stage:
+                "server",
+
+            status:
+                500,
+
+            details:
+                error?.stack ||
+                null
 
         });
 
     }
+
+}
+
+
+/* =========================================================
+   NORMALIZE RESULTS
+========================================================= */
+
+function normalizeResults(
+    rawResults
+) {
+
+    return rawResults
+        .map(
+            (result, index) => {
+
+                if (
+                    !result ||
+                    typeof result !== "object"
+                ) {
+
+                    return null;
+
+                }
+
+
+                return {
+
+                    rank:
+                        result.rank ??
+                        index + 1,
+
+                    title:
+                        result.title ||
+                        "Untitled result",
+
+                    host:
+                        result.domain ||
+                        result.host ||
+                        result.source ||
+                        "Unknown source",
+
+                    source:
+                        result.source ||
+                        "",
+
+                    pageUrl:
+                        result.link ||
+                        result.url ||
+                        result.page_url ||
+                        "",
+
+                    imageUrl:
+                        result.image ||
+                        result.image_url ||
+                        "",
+
+                    thumbnail:
+                        result.thumbnail ||
+                        result.thumbnail_url ||
+                        "",
+
+                    date:
+                        result.date ||
+                        null,
+
+                    size:
+                        result.size ||
+                        null,
+
+                    exactMatch:
+                        Boolean(
+                            result.exact_match ??
+                            result.exactMatch ??
+                            false
+                        )
+
+                };
+
+            }
+        )
+        .filter(Boolean);
 
 }
 
@@ -599,7 +750,6 @@ async function pollQuanticDataRun(
 
         let data;
 
-
         try {
 
             data =
@@ -608,7 +758,7 @@ async function pollQuanticDataRun(
         } catch {
 
             throw new Error(
-                "Google Lens polling returned invalid data."
+                `Google Lens polling returned invalid JSON. HTTP ${response.status}. Response: ${text}`
             );
 
         }
@@ -620,13 +770,31 @@ async function pollQuanticDataRun(
         );
 
 
+        /*
+         * =====================================================
+         * POLLING HTTP ERROR
+         * =====================================================
+         */
+
         if (!response.ok) {
 
-            throw new Error(
-                data?.message ||
-                data?.error ||
-                `Google Lens polling failed (${response.status}).`
-            );
+            const error =
+                new Error(
+                    data?.message ||
+                    data?.error ||
+                    `Google Lens polling failed (${response.status}).`
+                );
+
+            error.stage =
+                "quanticdata-polling";
+
+            error.status =
+                response.status;
+
+            error.details =
+                data;
+
+            throw error;
 
         }
 
@@ -665,77 +833,9 @@ async function pollQuanticDataRun(
             }
 
 
-            return results
-                .map(
-                    (result, index) => {
-
-                        if (
-                            !result ||
-                            typeof result !==
-                                "object"
-                        ) {
-
-                            return null;
-
-                        }
-
-
-                        return {
-
-                            rank:
-                                result.rank ??
-                                index + 1,
-
-                            title:
-                                result.title ||
-                                "Untitled result",
-
-                            host:
-                                result.domain ||
-                                result.host ||
-                                result.source ||
-                                "Unknown source",
-
-                            source:
-                                result.source ||
-                                "",
-
-                            pageUrl:
-                                result.link ||
-                                result.url ||
-                                result.page_url ||
-                                "",
-
-                            imageUrl:
-                                result.image ||
-                                result.image_url ||
-                                "",
-
-                            thumbnail:
-                                result.thumbnail ||
-                                result.thumbnail_url ||
-                                "",
-
-                            date:
-                                result.date ||
-                                null,
-
-                            size:
-                                result.size ||
-                                null,
-
-                            exactMatch:
-                                Boolean(
-                                    result.exact_match ??
-                                    result.exactMatch ??
-                                    false
-                                )
-
-                        };
-
-                    }
-                )
-                .filter(Boolean);
+            return normalizeResults(
+                results
+            );
 
         }
 
@@ -751,11 +851,24 @@ async function pollQuanticDataRun(
             status === "error"
         ) {
 
-            throw new Error(
-                data?.payload?.message ||
-                data?.message ||
-                "Google Lens search failed."
-            );
+            const error =
+                new Error(
+                    data?.payload?.message ||
+                    data?.message ||
+                    data?.error ||
+                    "Google Lens search failed."
+                );
+
+            error.stage =
+                "quanticdata-polling";
+
+            error.status =
+                response.status;
+
+            error.details =
+                data;
+
+            throw error;
 
         }
 
@@ -763,7 +876,7 @@ async function pollQuanticDataRun(
 
 
     throw new Error(
-        "Google Lens search timed out."
+        "Google Lens search timed out after 60 seconds."
     );
 
 }
