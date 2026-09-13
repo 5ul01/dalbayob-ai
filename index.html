@@ -1054,24 +1054,45 @@ button {
    ROACHES
 ========================================================= */
 
+/*
+   Enlarged decorative roaches.
+
+   Previous size:
+       25px × 25px
+
+   New size:
+       90px × 90px
+
+   The opacity is also slightly increased so they remain
+   visible against the dark background.
+*/
+
 .real-roach {
     position: fixed;
 
-    width: 25px;
-    height: 25px;
+    width: 90px;
+    height: 90px;
 
     object-fit: contain;
 
-    opacity: 0.16;
+    opacity: 0.32;
 
     pointer-events: none;
 
     z-index: 2;
 
-    filter: grayscale(0.2) brightness(0.75);
+    filter:
+        grayscale(0.15)
+        brightness(0.85)
+        contrast(1.15)
+        drop-shadow(
+            0 3px 5px rgba(0, 0, 0, 0.55)
+        );
 
     animation-timing-function: linear;
     animation-iteration-count: infinite;
+
+    will-change: transform;
 }
 
 .rr1 {
@@ -1123,54 +1144,127 @@ button {
 }
 
 @keyframes crawl1 {
-    0% { transform: translate(0,0) rotate(0deg); }
-    25% { transform: translate(90px,35px) rotate(25deg); }
-    50% { transform: translate(160px,-25px) rotate(80deg); }
-    75% { transform: translate(50px,100px) rotate(150deg); }
-    100% { transform: translate(0,0) rotate(360deg); }
+    0% {
+        transform: translate(0,0) rotate(0deg);
+    }
+
+    25% {
+        transform: translate(90px,35px) rotate(25deg);
+    }
+
+    50% {
+        transform: translate(160px,-25px) rotate(80deg);
+    }
+
+    75% {
+        transform: translate(50px,100px) rotate(150deg);
+    }
+
+    100% {
+        transform: translate(0,0) rotate(360deg);
+    }
 }
 
 @keyframes crawl2 {
-    0% { transform: translate(0,0) rotate(10deg); }
-    50% { transform: translate(-160px,90px) rotate(180deg); }
-    100% { transform: translate(0,0) rotate(370deg); }
+    0% {
+        transform: translate(0,0) rotate(10deg);
+    }
+
+    50% {
+        transform: translate(-160px,90px) rotate(180deg);
+    }
+
+    100% {
+        transform: translate(0,0) rotate(370deg);
+    }
 }
 
 @keyframes crawl3 {
-    0% { transform: translate(0,0) rotate(0deg); }
-    50% { transform: translate(140px,-100px) rotate(220deg); }
-    100% { transform: translate(0,0) rotate(360deg); }
+    0% {
+        transform: translate(0,0) rotate(0deg);
+    }
+
+    50% {
+        transform: translate(140px,-100px) rotate(220deg);
+    }
+
+    100% {
+        transform: translate(0,0) rotate(360deg);
+    }
 }
 
 @keyframes crawl4 {
-    0% { transform: translate(0,0) rotate(0deg); }
-    40% { transform: translate(-120px,-50px) rotate(130deg); }
-    75% { transform: translate(-40px,-140px) rotate(240deg); }
-    100% { transform: translate(0,0) rotate(360deg); }
+    0% {
+        transform: translate(0,0) rotate(0deg);
+    }
+
+    40% {
+        transform: translate(-120px,-50px) rotate(130deg);
+    }
+
+    75% {
+        transform: translate(-40px,-140px) rotate(240deg);
+    }
+
+    100% {
+        transform: translate(0,0) rotate(360deg);
+    }
 }
 
 @keyframes crawl5 {
-    0% { transform: translate(0,0) rotate(0deg); }
-    50% { transform: translate(120px,120px) rotate(180deg); }
-    100% { transform: translate(0,0) rotate(360deg); }
+    0% {
+        transform: translate(0,0) rotate(0deg);
+    }
+
+    50% {
+        transform: translate(120px,120px) rotate(180deg);
+    }
+
+    100% {
+        transform: translate(0,0) rotate(360deg);
+    }
 }
 
 @keyframes crawl6 {
-    0% { transform: translate(0,0) rotate(0deg); }
-    50% { transform: translate(100px,-90px) rotate(160deg); }
-    100% { transform: translate(0,0) rotate(360deg); }
+    0% {
+        transform: translate(0,0) rotate(0deg);
+    }
+
+    50% {
+        transform: translate(100px,-90px) rotate(160deg);
+    }
+
+    100% {
+        transform: translate(0,0) rotate(360deg);
+    }
 }
 
 @keyframes crawl7 {
-    0% { transform: translate(0,0) rotate(0deg); }
-    50% { transform: translate(-140px,-70px) rotate(190deg); }
-    100% { transform: translate(0,0) rotate(360deg); }
+    0% {
+        transform: translate(0,0) rotate(0deg);
+    }
+
+    50% {
+        transform: translate(-140px,-70px) rotate(190deg);
+    }
+
+    100% {
+        transform: translate(0,0) rotate(360deg);
+    }
 }
 
 @keyframes crawl8 {
-    0% { transform: translate(0,0) rotate(0deg); }
-    50% { transform: translate(-100px,70px) rotate(180deg); }
-    100% { transform: translate(0,0) rotate(360deg); }
+    0% {
+        transform: translate(0,0) rotate(0deg);
+    }
+
+    50% {
+        transform: translate(-100px,70px) rotate(180deg);
+    }
+
+    100% {
+        transform: translate(0,0) rotate(360deg);
+    }
 }
 
 /* =========================================================
@@ -1206,6 +1300,11 @@ button {
 ========================================================= */
 
 @media (max-width: 760px) {
+
+    .real-roach {
+        width: 60px;
+        height: 60px;
+    }
 
     .sidebar {
         width: 62px;
@@ -1319,14 +1418,54 @@ button {
 <div class="background-overlay"></div>
 
 <!-- Decorative roaches -->
-<img class="real-roach rr1" src="/assets/model.png" alt="">
-<img class="real-roach rr2" src="/assets/model.png" alt="">
-<img class="real-roach rr3" src="/assets/model.png" alt="">
-<img class="real-roach rr4" src="/assets/model.png" alt="">
-<img class="real-roach rr5" src="/assets/model.png" alt="">
-<img class="real-roach rr6" src="/assets/model.png" alt="">
-<img class="real-roach rr7" src="/assets/model.png" alt="">
-<img class="real-roach rr8" src="/assets/model.png" alt="">
+
+<img
+    class="real-roach rr1"
+    src="/assets/model.png"
+    alt=""
+>
+
+<img
+    class="real-roach rr2"
+    src="/assets/model.png"
+    alt=""
+>
+
+<img
+    class="real-roach rr3"
+    src="/assets/model.png"
+    alt=""
+>
+
+<img
+    class="real-roach rr4"
+    src="/assets/model.png"
+    alt=""
+>
+
+<img
+    class="real-roach rr5"
+    src="/assets/model.png"
+    alt=""
+>
+
+<img
+    class="real-roach rr6"
+    src="/assets/model.png"
+    alt=""
+>
+
+<img
+    class="real-roach rr7"
+    src="/assets/model.png"
+    alt=""
+>
+
+<img
+    class="real-roach rr8"
+    src="/assets/model.png"
+    alt=""
+>
 
 <div class="app">
 
@@ -1337,7 +1476,10 @@ button {
     <aside class="sidebar">
 
         <div class="brand">
-            <div class="brand-title">DALBAYOB</div>
+
+            <div class="brand-title">
+                DALBAYOB
+            </div>
 
             <div class="brand-subtitle">
                 Intelligence System
@@ -1347,6 +1489,7 @@ button {
                 <span class="online-dot"></span>
                 System Online
             </div>
+
         </div>
 
         <div class="sidebar-content">
@@ -1355,24 +1498,68 @@ button {
                 Workspace
             </div>
 
-            <button class="side-button active" id="chatButton">
-                <span class="side-icon">◈</span>
-                <span>Chat</span>
+            <button
+                class="side-button active"
+                id="chatButton"
+                type="button"
+            >
+
+                <span class="side-icon">
+                    ◈
+                </span>
+
+                <span>
+                    Chat
+                </span>
+
             </button>
 
-            <button class="side-button" id="newChatButton">
-                <span class="side-icon">＋</span>
-                <span>New Chat</span>
+            <button
+                class="side-button"
+                id="newChatButton"
+                type="button"
+            >
+
+                <span class="side-icon">
+                    ＋
+                </span>
+
+                <span>
+                    New Chat
+                </span>
+
             </button>
 
-            <button class="side-button" id="imageButton">
-                <span class="side-icon">◇</span>
-                <span>Image Generation</span>
+            <button
+                class="side-button"
+                id="imageButton"
+                type="button"
+            >
+
+                <span class="side-icon">
+                    ◇
+                </span>
+
+                <span>
+                    Image Generation
+                </span>
+
             </button>
 
-            <button class="side-button" id="reverseButton">
-                <span class="side-icon">⌕</span>
-                <span>Reverse Search</span>
+            <button
+                class="side-button"
+                id="reverseButton"
+                type="button"
+            >
+
+                <span class="side-icon">
+                    ⌕
+                </span>
+
+                <span>
+                    Reverse Search
+                </span>
+
             </button>
 
         </div>
@@ -1380,6 +1567,7 @@ button {
         <div class="sidebar-footer">
 
             <div class="system-box">
+
                 <div class="system-title">
                     Dalbayob Core
                 </div>
@@ -1388,6 +1576,7 @@ button {
                     Multimodal AI interface.
                     Text, images and visual analysis.
                 </div>
+
             </div>
 
         </div>
@@ -1403,6 +1592,7 @@ button {
         <header class="header">
 
             <div>
+
                 <div class="header-title">
                     DALBAYOB AI
                 </div>
@@ -1410,21 +1600,35 @@ button {
                 <div class="header-subtitle">
                     Intelligence / Visual Processing / Generation
                 </div>
+
             </div>
 
             <div class="header-status">
+
                 <span class="online-dot"></span>
+
                 Operational
+
             </div>
 
         </header>
 
-        <div class="chat" id="chat">
+        <div
+            class="chat"
+            id="chat"
+        >
 
-            <div class="chat-inner" id="chatInner">
+            <div
+                class="chat-inner"
+                id="chatInner"
+            >
 
                 <!-- Welcome -->
-                <section class="welcome" id="welcome">
+
+                <section
+                    class="welcome"
+                    id="welcome"
+                >
 
                     <img
                         class="specimen-image"
@@ -1446,7 +1650,9 @@ button {
                         <button
                             class="suggestion"
                             onclick="useSuggestion('What can you do?')"
+                            type="button"
                         >
+
                             <div class="suggestion-title">
                                 What can you do?
                             </div>
@@ -1454,12 +1660,15 @@ button {
                             <div class="suggestion-text">
                                 Explore Dalbayob's capabilities.
                             </div>
+
                         </button>
 
                         <button
                             class="suggestion"
                             onclick="useSuggestion('Explain something complicated to me in a simple way.')"
+                            type="button"
                         >
+
                             <div class="suggestion-title">
                                 Explain something complicated
                             </div>
@@ -1467,12 +1676,15 @@ button {
                             <div class="suggestion-text">
                                 Turn technical nonsense into something understandable.
                             </div>
+
                         </button>
 
                         <button
                             class="suggestion"
                             onclick="useSuggestion('Give me a creative idea.')"
+                            type="button"
                         >
+
                             <div class="suggestion-title">
                                 Give me a creative idea
                             </div>
@@ -1480,12 +1692,15 @@ button {
                             <div class="suggestion-text">
                                 Let the machine cook.
                             </div>
+
                         </button>
 
                         <button
                             class="suggestion"
                             onclick="useSuggestion('Summon a roach.')"
+                            type="button"
                         >
+
                             <div class="suggestion-title">
                                 Summon a roach
                             </div>
@@ -1493,6 +1708,7 @@ button {
                             <div class="suggestion-text">
                                 This is probably a terrible idea.
                             </div>
+
                         </button>
 
                     </div>
@@ -1504,7 +1720,11 @@ button {
         </div>
 
         <!-- Image mode status -->
-        <div class="image-mode-banner" id="imageModeBanner">
+
+        <div
+            class="image-mode-banner"
+            id="imageModeBanner"
+        >
             Image generation mode active. Describe the image you want.
         </div>
 
@@ -1621,18 +1841,26 @@ let isBusy = false;
    ELEMENTS
 ========================================================= */
 
-const chat = document.getElementById("chat");
-const chatInner = document.getElementById("chatInner");
+const chat =
+    document.getElementById("chat");
 
-const welcome = document.getElementById("welcome");
+const chatInner =
+    document.getElementById("chatInner");
 
-const input = document.getElementById("input");
+const welcome =
+    document.getElementById("welcome");
 
-const sendButton = document.getElementById("sendButton");
+const input =
+    document.getElementById("input");
 
-const attachButton = document.getElementById("attachButton");
+const sendButton =
+    document.getElementById("sendButton");
 
-const imageInput = document.getElementById("imageInput");
+const attachButton =
+    document.getElementById("attachButton");
+
+const imageInput =
+    document.getElementById("imageInput");
 
 const attachmentPreview =
     document.getElementById("attachmentPreview");
@@ -1674,12 +1902,14 @@ function escapeHtml(value) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+
 }
 
 
 function escapeAttribute(value) {
 
     return escapeHtml(value);
+
 }
 
 
@@ -1691,20 +1921,29 @@ function safeUrl(url) {
 
     try {
 
-        const parsed = new URL(url, window.location.origin);
+        const parsed =
+            new URL(
+                url,
+                window.location.origin
+            );
 
         if (
             parsed.protocol === "http:" ||
             parsed.protocol === "https:"
         ) {
+
             return parsed.href;
+
         }
 
     } catch (error) {
+
         return "";
+
     }
 
     return "";
+
 }
 
 
@@ -1712,40 +1951,54 @@ function scrollToBottom() {
 
     requestAnimationFrame(() => {
 
-        chat.scrollTop = chat.scrollHeight;
+        chat.scrollTop =
+            chat.scrollHeight;
 
     });
+
 }
 
 
 function autoResize() {
 
-    input.style.height = "auto";
+    input.style.height =
+        "auto";
 
     input.style.height =
-        Math.min(input.scrollHeight, 180) + "px";
+        Math.min(
+            input.scrollHeight,
+            180
+        ) + "px";
+
 }
 
 
 function setBusy(state) {
 
-    isBusy = state;
+    isBusy =
+        state;
 
-    sendButton.disabled = state;
+    sendButton.disabled =
+        state;
 
-    generateButton.disabled = state;
+    generateButton.disabled =
+        state;
 
-    searchImageButton.disabled = state;
+    searchImageButton.disabled =
+        state;
 
     if (state) {
 
-        sendButton.style.opacity = "0.45";
+        sendButton.style.opacity =
+            "0.45";
 
     } else {
 
-        sendButton.style.opacity = "1";
+        sendButton.style.opacity =
+            "1";
 
     }
+
 }
 
 
@@ -1756,16 +2009,24 @@ function setBusy(state) {
 function hideWelcome() {
 
     if (welcome) {
-        welcome.style.display = "none";
+
+        welcome.style.display =
+            "none";
+
     }
+
 }
 
 
 function showWelcome() {
 
     if (welcome) {
-        welcome.style.display = "flex";
+
+        welcome.style.display =
+            "flex";
+
     }
+
 }
 
 
@@ -1773,27 +2034,12 @@ function showWelcome() {
    ATTACHMENTS
 ========================================================= */
 
-/*
-    Multiple-image support
-
-    attachedImages contains every selected/pasted image.
-
-    Example:
-
-    attachedImages = [
-        "data:image/jpeg;base64,...",
-        "data:image/png;base64,...",
-        "data:image/webp;base64,..."
-    ];
-
-    The entire array is sent to /api/chat.
-*/
-
-
 function handleImageUpload(event) {
 
     const files =
-        Array.from(event.target.files || []);
+        Array.from(
+            event.target.files || []
+        );
 
     if (!files.length) {
         return;
@@ -1801,41 +2047,34 @@ function handleImageUpload(event) {
 
     addImageFiles(files);
 
-    /*
-        Reset the input so selecting the same file again
-        will still trigger the change event.
-    */
+    imageInput.value =
+        "";
 
-    imageInput.value = "";
 }
 
 
 function addImageFiles(files) {
 
     const validFiles =
-        files.filter(file =>
-            file &&
-            file.type &&
-            file.type.startsWith("image/")
+        files.filter(
+            file =>
+                file &&
+                file.type &&
+                file.type.startsWith("image/")
         );
 
     if (!validFiles.length) {
         return;
     }
 
-    /*
-        Read every image independently.
+    validFiles.forEach(
+        file => {
 
-        We do NOT replace attachedImages here.
-        This means selecting another batch of images
-        adds them to the existing batch.
-    */
+            readImageFile(file);
 
-    validFiles.forEach(file => {
+        }
+    );
 
-        readImageFile(file);
-
-    });
 }
 
 
@@ -1844,123 +2083,147 @@ function readImageFile(file) {
     const reader =
         new FileReader();
 
-    reader.onload = function(event) {
+    reader.onload =
+        function(event) {
 
-        const result =
-            event.target?.result;
+            const result =
+                event.target?.result;
 
-        if (!result) {
-            return;
-        }
+            if (!result) {
+                return;
+            }
 
-        /*
-            Store the complete data URL.
+            attachedImages.push(
+                result
+            );
 
-            This is important because /api/chat needs
-            the actual image data, not just the filename.
-        */
+            renderAttachmentPreview();
 
-        attachedImages.push(result);
+            updateInputPlaceholder();
 
-        renderAttachmentPreview();
+            input.focus();
 
-        updateInputPlaceholder();
+        };
 
-        input.focus();
+    reader.onerror =
+        function() {
 
-    };
+            console.error(
+                "Could not read image:",
+                file.name
+            );
 
-    reader.onerror = function() {
+        };
 
-        console.error(
-            "Could not read image:",
-            file.name
-        );
+    reader.readAsDataURL(
+        file
+    );
 
-    };
-
-    reader.readAsDataURL(file);
 }
 
 
 function renderAttachmentPreview() {
 
-    attachmentPreview.innerHTML = "";
+    attachmentPreview.innerHTML =
+        "";
 
     if (!attachedImages.length) {
 
-        attachmentPreview.classList.remove("visible");
-
-        return;
-    }
-
-    attachmentPreview.classList.add("visible");
-
-    attachedImages.forEach((image, index) => {
-
-        const wrapper =
-            document.createElement("div");
-
-        wrapper.className =
-            "attachment";
-
-        wrapper.title =
-            "Image " + (index + 1);
-
-
-        const img =
-            document.createElement("img");
-
-        img.src =
-            image;
-
-        img.alt =
-            "Attachment " + (index + 1);
-
-        img.loading =
-            "lazy";
-
-
-        const remove =
-            document.createElement("button");
-
-        remove.className =
-            "remove-attachment";
-
-        remove.type =
-            "button";
-
-        remove.textContent =
-            "×";
-
-        remove.title =
-            "Remove image " + (index + 1);
-
-
-        remove.addEventListener(
-            "click",
-            function() {
-
-                attachedImages.splice(
-                    index,
-                    1
-                );
-
-                renderAttachmentPreview();
-
-                updateInputPlaceholder();
-
-            }
+        attachmentPreview.classList.remove(
+            "visible"
         );
 
+        return;
 
-        wrapper.appendChild(img);
+    }
 
-        wrapper.appendChild(remove);
+    attachmentPreview.classList.add(
+        "visible"
+    );
 
-        attachmentPreview.appendChild(wrapper);
+    attachedImages.forEach(
+        (image, index) => {
 
-    });
+            const wrapper =
+                document.createElement(
+                    "div"
+                );
+
+            wrapper.className =
+                "attachment";
+
+            wrapper.title =
+                "Image " +
+                (index + 1);
+
+
+            const img =
+                document.createElement(
+                    "img"
+                );
+
+            img.src =
+                image;
+
+            img.alt =
+                "Attachment " +
+                (index + 1);
+
+            img.loading =
+                "lazy";
+
+
+            const remove =
+                document.createElement(
+                    "button"
+                );
+
+            remove.className =
+                "remove-attachment";
+
+            remove.type =
+                "button";
+
+            remove.textContent =
+                "×";
+
+            remove.title =
+                "Remove image " +
+                (index + 1);
+
+
+            remove.addEventListener(
+                "click",
+                function() {
+
+                    attachedImages.splice(
+                        index,
+                        1
+                    );
+
+                    renderAttachmentPreview();
+
+                    updateInputPlaceholder();
+
+                }
+            );
+
+
+            wrapper.appendChild(
+                img
+            );
+
+            wrapper.appendChild(
+                remove
+            );
+
+            attachmentPreview.appendChild(
+                wrapper
+            );
+
+        }
+    );
+
 }
 
 
@@ -1973,7 +2236,9 @@ function updateInputPlaceholder() {
             attachedImages.length +
             " images...";
 
-    } else if (attachedImages.length === 1) {
+    } else if (
+        attachedImages.length === 1
+    ) {
 
         input.placeholder =
             "Ask Dalbayob about this image...";
@@ -1989,12 +2254,14 @@ function updateInputPlaceholder() {
             "Message Dalbayob...";
 
     }
+
 }
 
 
 function clearAttachedImages() {
 
-    attachedImages = [];
+    attachedImages =
+        [];
 
     renderAttachmentPreview();
 
@@ -2029,23 +2296,22 @@ document.addEventListener(
             return;
         }
 
-        /*
-            Clipboard can contain multiple image items.
+        imageItems.forEach(
+            item => {
 
-            Read ALL of them instead of returning after
-            the first image.
-        */
+                const file =
+                    item.getAsFile();
 
-        imageItems.forEach(item => {
+                if (file) {
 
-            const file =
-                item.getAsFile();
+                    readImageFile(
+                        file
+                    );
 
-            if (file) {
-                readImageFile(file);
+                }
+
             }
-
-        });
+        );
 
     }
 );
@@ -2083,19 +2349,25 @@ function addUserMessage(
     hideWelcome();
 
     const message =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     message.className =
         "message user";
 
     const card =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     card.className =
         "message-card";
 
     const label =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     label.className =
         "message-label";
@@ -2103,12 +2375,16 @@ function addUserMessage(
     label.textContent =
         "You";
 
-    card.appendChild(label);
+    card.appendChild(
+        label
+    );
 
     if (text) {
 
         const textElement =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         textElement.className =
             "message-text";
@@ -2116,7 +2392,9 @@ function addUserMessage(
         textElement.textContent =
             text;
 
-        card.appendChild(textElement);
+        card.appendChild(
+            textElement
+        );
 
     }
 
@@ -2124,7 +2402,9 @@ function addUserMessage(
     if (images.length) {
 
         const imageGrid =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         imageGrid.className =
             "message-attachments";
@@ -2134,7 +2414,9 @@ function addUserMessage(
             (image, index) => {
 
                 const img =
-                    document.createElement("img");
+                    document.createElement(
+                        "img"
+                    );
 
                 img.src =
                     image;
@@ -2146,20 +2428,28 @@ function addUserMessage(
                 img.loading =
                     "lazy";
 
-                imageGrid.appendChild(img);
+                imageGrid.appendChild(
+                    img
+                );
 
             }
         );
 
 
-        card.appendChild(imageGrid);
+        card.appendChild(
+            imageGrid
+        );
 
     }
 
 
-    message.appendChild(card);
+    message.appendChild(
+        card
+    );
 
-    chatInner.appendChild(message);
+    chatInner.appendChild(
+        message
+    );
 
     scrollToBottom();
 
@@ -2174,19 +2464,25 @@ function addAssistantMessage(
     hideWelcome();
 
     const message =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     message.className =
         "message assistant";
 
     const card =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     card.className =
         "message-card";
 
     const label =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     label.className =
         "message-label";
@@ -2194,13 +2490,17 @@ function addAssistantMessage(
     label.textContent =
         "Dalbayob";
 
-    card.appendChild(label);
+    card.appendChild(
+        label
+    );
 
 
     if (text) {
 
         const textElement =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         textElement.className =
             "message-text";
@@ -2208,7 +2508,9 @@ function addAssistantMessage(
         textElement.textContent =
             text;
 
-        card.appendChild(textElement);
+        card.appendChild(
+            textElement
+        );
 
     }
 
@@ -2216,12 +2518,16 @@ function addAssistantMessage(
     if (image) {
 
         const safeImage =
-            safeUrl(image);
+            safeUrl(
+                image
+            );
 
         if (safeImage) {
 
             const img =
-                document.createElement("img");
+                document.createElement(
+                    "img"
+                );
 
             img.className =
                 "message-image";
@@ -2235,16 +2541,22 @@ function addAssistantMessage(
             img.loading =
                 "lazy";
 
-            card.appendChild(img);
+            card.appendChild(
+                img
+            );
 
         }
 
     }
 
 
-    message.appendChild(card);
+    message.appendChild(
+        card
+    );
 
-    chatInner.appendChild(message);
+    chatInner.appendChild(
+        message
+    );
 
     scrollToBottom();
 
@@ -2256,7 +2568,9 @@ function addLoadingMessage() {
     hideWelcome();
 
     const message =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     message.className =
         "message assistant";
@@ -2265,13 +2579,17 @@ function addLoadingMessage() {
         "loadingMessage";
 
     const card =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     card.className =
         "message-card";
 
     const loading =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     loading.className =
         "loading";
@@ -2285,11 +2603,17 @@ function addLoadingMessage() {
         </span>
     `;
 
-    card.appendChild(loading);
+    card.appendChild(
+        loading
+    );
 
-    message.appendChild(card);
+    message.appendChild(
+        card
+    );
 
-    chatInner.appendChild(message);
+    chatInner.appendChild(
+        message
+    );
 
     scrollToBottom();
 
@@ -2304,7 +2628,9 @@ function removeLoadingMessage() {
         );
 
     if (loading) {
+
         loading.remove();
+
     }
 
 }
@@ -2325,15 +2651,6 @@ async function sendMessage() {
         input.value.trim();
 
 
-    /*
-        IMPORTANT:
-
-        Copy the entire attachment array.
-
-        This preserves ALL images even after we clear
-        the composer attachments below.
-    */
-
     const imagesForThisMessage =
         [...attachedImages];
 
@@ -2342,11 +2659,15 @@ async function sendMessage() {
         !actualMessage &&
         !imagesForThisMessage.length
     ) {
+
         return;
+
     }
 
 
-    setBusy(true);
+    setBusy(
+        true
+    );
 
     hideWelcome();
 
@@ -2358,18 +2679,14 @@ async function sendMessage() {
     );
 
 
-    input.value = "";
+    input.value =
+        "";
 
     autoResize();
 
 
-    /*
-        Clear the composer AFTER making the copy.
-
-        imagesForThisMessage still contains every image.
-    */
-
-    attachedImages = [];
+    attachedImages =
+        [];
 
     renderAttachmentPreview();
 
@@ -2380,15 +2697,6 @@ async function sendMessage() {
 
 
     try {
-
-        /*
-            Build a fresh payload.
-
-            images = ALL attached images.
-
-            image = first image, kept for compatibility
-            with older backend code.
-        */
 
         const payload = {
 
@@ -2402,7 +2710,8 @@ async function sendMessage() {
                 imagesForThisMessage,
 
             image:
-                imagesForThisMessage[0] || null
+                imagesForThisMessage[0] ||
+                null
 
         };
 
@@ -2418,15 +2727,20 @@ async function sendMessage() {
                 "/api/chat",
                 {
 
-                    method: "POST",
+                    method:
+                        "POST",
 
                     headers: {
+
                         "Content-Type":
                             "application/json"
+
                     },
 
                     body:
-                        JSON.stringify(payload)
+                        JSON.stringify(
+                            payload
+                        )
 
                 }
             );
@@ -2442,7 +2756,9 @@ async function sendMessage() {
         try {
 
             data =
-                JSON.parse(raw);
+                JSON.parse(
+                    raw
+                );
 
         } catch (parseError) {
 
@@ -2500,13 +2816,6 @@ async function sendMessage() {
         );
 
 
-        /*
-            Store the COMPLETE image array in history.
-
-            This lets the frontend retain the fact that
-            multiple images were part of the conversation.
-        */
-
         conversationHistory.push({
 
             role:
@@ -2561,7 +2870,9 @@ async function sendMessage() {
 
     } finally {
 
-        setBusy(false);
+        setBusy(
+            false
+        );
 
         input.focus();
 
@@ -2585,15 +2896,6 @@ async function generateImage() {
         input.value.trim();
 
 
-    /*
-        The image-generation endpoint currently accepts
-        one source image.
-
-        Therefore the first attached image is used here.
-
-        Chat still receives ALL attached images.
-    */
-
     const sourceImage =
         attachedImages[0] ||
         currentImage ||
@@ -2614,7 +2916,9 @@ async function generateImage() {
     }
 
 
-    setBusy(true);
+    setBusy(
+        true
+    );
 
     hideWelcome();
 
@@ -2629,12 +2933,14 @@ async function generateImage() {
     );
 
 
-    input.value = "";
+    input.value =
+        "";
 
     autoResize();
 
 
-    attachedImages = [];
+    attachedImages =
+        [];
 
     renderAttachmentPreview();
 
@@ -2651,11 +2957,14 @@ async function generateImage() {
                 "/api/image",
                 {
 
-                    method: "POST",
+                    method:
+                        "POST",
 
                     headers: {
+
                         "Content-Type":
                             "application/json"
+
                     },
 
                     body:
@@ -2683,7 +2992,9 @@ async function generateImage() {
         try {
 
             data =
-                JSON.parse(raw);
+                JSON.parse(
+                    raw
+                );
 
         } catch (parseError) {
 
@@ -2777,7 +3088,9 @@ async function generateImage() {
 
     } finally {
 
-        setBusy(false);
+        setBusy(
+            false
+        );
 
         input.focus();
 
@@ -2813,7 +3126,9 @@ async function reverseImageSearch() {
     }
 
 
-    setBusy(true);
+    setBusy(
+        true
+    );
 
     hideWelcome();
 
@@ -2834,16 +3149,22 @@ async function reverseImageSearch() {
                 "/api/reverse-search",
                 {
 
-                    method: "POST",
+                    method:
+                        "POST",
 
                     headers: {
+
                         "Content-Type":
                             "application/json"
+
                     },
 
                     body:
                         JSON.stringify({
-                            image: image
+
+                            image:
+                                image
+
                         })
 
                 }
@@ -2860,7 +3181,9 @@ async function reverseImageSearch() {
         try {
 
             data =
-                JSON.parse(raw);
+                JSON.parse(
+                    raw
+                );
 
         } catch (parseError) {
 
@@ -2909,7 +3232,9 @@ async function reverseImageSearch() {
 
     } finally {
 
-        setBusy(false);
+        setBusy(
+            false
+        );
 
     }
 
@@ -2933,9 +3258,13 @@ function renderReverseSearchResults(
 ) {
 
     const results =
-        Array.isArray(data.results)
+        Array.isArray(
+            data.results
+        )
             ? data.results
-            : Array.isArray(data.data)
+            : Array.isArray(
+                data.data
+            )
                 ? data.data
                 : [];
 
@@ -2953,21 +3282,27 @@ function renderReverseSearchResults(
 
 
     const message =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     message.className =
         "message assistant";
 
 
     const card =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     card.className =
         "message-card";
 
 
     const label =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     label.className =
         "message-label";
@@ -2976,11 +3311,15 @@ function renderReverseSearchResults(
         "Dalbayob";
 
 
-    card.appendChild(label);
+    card.appendChild(
+        label
+    );
 
 
     const title =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     title.className =
         "reverse-title";
@@ -2989,135 +3328,170 @@ function renderReverseSearchResults(
         "Reverse Image Search";
 
 
-    card.appendChild(title);
+    card.appendChild(
+        title
+    );
 
 
     const grid =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     grid.className =
         "reverse-grid";
 
 
     results
-        .slice(0, 12)
-        .forEach(result => {
+        .slice(
+            0,
+            12
+        )
+        .forEach(
+            result => {
 
-            const url =
-                safeUrl(
-                    result.url ||
-                    result.link ||
-                    result.source ||
-                    ""
-                );
-
-
-            const imageUrl =
-                safeUrl(
-                    result.image ||
-                    result.thumbnail ||
-                    result.imageUrl ||
-                    result.thumbnailUrl ||
-                    ""
-                );
+                const url =
+                    safeUrl(
+                        result.url ||
+                        result.link ||
+                        result.source ||
+                        ""
+                    );
 
 
-            const item =
-                document.createElement("div");
+                const imageUrl =
+                    safeUrl(
+                        result.image ||
+                        result.thumbnail ||
+                        result.imageUrl ||
+                        result.thumbnailUrl ||
+                        ""
+                    );
 
-            item.className =
-                "reverse-result";
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+                item.className =
+                    "reverse-result";
 
 
-            if (imageUrl) {
+                if (imageUrl) {
 
-                const img =
-                    document.createElement("img");
+                    const img =
+                        document.createElement(
+                            "img"
+                        );
 
-                img.src =
-                    imageUrl;
+                    img.src =
+                        imageUrl;
 
-                img.alt =
+                    img.alt =
+                        result.title ||
+                        "Search result";
+
+                    img.loading =
+                        "lazy";
+
+                    img.onerror =
+                        function() {
+
+                            this.style.display =
+                                "none";
+
+                        };
+
+
+                    item.appendChild(
+                        img
+                    );
+
+                }
+
+
+                const content =
+                    document.createElement(
+                        "div"
+                    );
+
+                content.className =
+                    "reverse-result-content";
+
+
+                const name =
+                    document.createElement(
+                        "div"
+                    );
+
+                name.className =
+                    "reverse-result-name";
+
+                name.textContent =
                     result.title ||
-                    "Search result";
-
-                img.loading =
-                    "lazy";
-
-                img.onerror =
-                    function() {
-
-                        this.style.display =
-                            "none";
-
-                    };
+                    result.name ||
+                    "Image result";
 
 
-                item.appendChild(img);
-
-            }
-
-
-            const content =
-                document.createElement("div");
-
-            content.className =
-                "reverse-result-content";
+                content.appendChild(
+                    name
+                );
 
 
-            const name =
-                document.createElement("div");
+                if (url) {
 
-            name.className =
-                "reverse-result-name";
+                    const link =
+                        document.createElement(
+                            "a"
+                        );
 
-            name.textContent =
-                result.title ||
-                result.name ||
-                "Image result";
+                    link.className =
+                        "reverse-result-url";
 
+                    link.href =
+                        url;
 
-            content.appendChild(name);
+                    link.target =
+                        "_blank";
 
+                    link.rel =
+                        "noopener noreferrer";
 
-            if (url) {
-
-                const link =
-                    document.createElement("a");
-
-                link.className =
-                    "reverse-result-url";
-
-                link.href =
-                    url;
-
-                link.target =
-                    "_blank";
-
-                link.rel =
-                    "noopener noreferrer";
-
-                link.textContent =
-                    url;
+                    link.textContent =
+                        url;
 
 
-                content.appendChild(link);
+                    content.appendChild(
+                        link
+                    );
+
+                }
+
+
+                item.appendChild(
+                    content
+                );
+
+                grid.appendChild(
+                    item
+                );
 
             }
+        );
 
 
-            item.appendChild(content);
+    card.appendChild(
+        grid
+    );
 
-            grid.appendChild(item);
+    message.appendChild(
+        card
+    );
 
-        });
-
-
-    card.appendChild(grid);
-
-    message.appendChild(card);
-
-    chatInner.appendChild(message);
+    chatInner.appendChild(
+        message
+    );
 
     scrollToBottom();
 
@@ -3174,7 +3548,9 @@ function setImageMode(
 
 function focusImageMode() {
 
-    setImageMode(true);
+    setImageMode(
+        true
+    );
 
     input.focus();
 
@@ -3205,23 +3581,31 @@ function useSuggestion(
 
 function newChat() {
 
-    conversationHistory = [];
+    conversationHistory =
+        [];
 
-    currentImage = null;
+    currentImage =
+        null;
 
-    attachedImages = [];
+    attachedImages =
+        [];
 
-    imageMode = false;
+    imageMode =
+        false;
 
-    input.value = "";
+    input.value =
+        "";
 
     autoResize();
 
     renderAttachmentPreview();
 
-    setImageMode(false);
+    setImageMode(
+        false
+    );
 
-    chatInner.innerHTML = "";
+    chatInner.innerHTML =
+        "";
 
     chatInner.appendChild(
         createWelcomeElement()
@@ -3237,7 +3621,9 @@ function newChat() {
 function createWelcomeElement() {
 
     const section =
-        document.createElement("section");
+        document.createElement(
+            "section"
+        );
 
     section.className =
         "welcome";
@@ -3267,6 +3653,7 @@ function createWelcomeElement() {
             <button
                 class="suggestion"
                 onclick="useSuggestion('What can you do?')"
+                type="button"
             >
                 <div class="suggestion-title">
                     What can you do?
@@ -3280,6 +3667,7 @@ function createWelcomeElement() {
             <button
                 class="suggestion"
                 onclick="useSuggestion('Explain something complicated to me in a simple way.')"
+                type="button"
             >
                 <div class="suggestion-title">
                     Explain something complicated
@@ -3293,6 +3681,7 @@ function createWelcomeElement() {
             <button
                 class="suggestion"
                 onclick="useSuggestion('Give me a creative idea.')"
+                type="button"
             >
                 <div class="suggestion-title">
                     Give me a creative idea
@@ -3306,6 +3695,7 @@ function createWelcomeElement() {
             <button
                 class="suggestion"
                 onclick="useSuggestion('Summon a roach.')"
+                type="button"
             >
                 <div class="suggestion-title">
                     Summon a roach
@@ -3375,7 +3765,9 @@ chatButton.addEventListener(
     "click",
     function() {
 
-        setImageMode(false);
+        setImageMode(
+            false
+        );
 
         input.focus();
 
