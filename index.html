@@ -1180,40 +1180,44 @@ button {
 
 <aside class="sidebar">
 
-```
 <div class="brand">
     <div class="brand-title">DALBAYOB</div>
     <div class="brand-subtitle">Intelligence System</div>
 
-    <div class="online">
-        <span class="online-dot"></span>
-        System Online
-    </div>
+```
+<div class="online">
+    <span class="online-dot"></span>
+    System Online
+</div>
+```
+
 </div>
 
 <div class="sidebar-content">
 
-    <div class="sidebar-label">Workspace</div>
+```
+<div class="sidebar-label">Workspace</div>
 
-    <button class="side-button active" id="chatButton" type="button">
-        <span class="side-icon">◈</span>
-        <span>Chat</span>
-    </button>
+<button class="side-button active" id="chatButton" type="button">
+    <span class="side-icon">◈</span>
+    <span>Chat</span>
+</button>
 
-    <button class="side-button" id="newChatButton" type="button">
-        <span class="side-icon">＋</span>
-        <span>New Chat</span>
-    </button>
+<button class="side-button" id="newChatButton" type="button">
+    <span class="side-icon">＋</span>
+    <span>New Chat</span>
+</button>
 
-    <button class="side-button" id="imageButton" type="button">
-        <span class="side-icon">◇</span>
-        <span>Image Generation</span>
-    </button>
+<button class="side-button" id="imageButton" type="button">
+    <span class="side-icon">◇</span>
+    <span>Image Generation</span>
+</button>
 
-    <button class="side-button" id="reverseButton" type="button">
-        <span class="side-icon">⌕</span>
-        <span>Reverse Search</span>
-    </button>
+<button class="side-button" id="reverseButton" type="button">
+    <span class="side-icon">⌕</span>
+    <span>Reverse Search</span>
+</button>
+```
 
 </div>
 
@@ -1226,7 +1230,6 @@ button {
         </div>
     </div>
 </div>
-```
 
 </aside>
 
@@ -1234,7 +1237,6 @@ button {
 
 <header class="header">
 
-```
 <div>
     <div class="header-title">DALBAYOB AI</div>
     <div class="header-subtitle">
@@ -1246,93 +1248,92 @@ button {
     <span class="online-dot"></span>
     Operational
 </div>
-```
 
 </header>
 
 <div class="chat" id="chat">
 
-```
 <div class="chat-inner" id="chatInner">
 
-    <section class="welcome" id="welcome">
+```
+<section class="welcome" id="welcome">
 
-        <img
-            class="specimen-image"
-            src="https://avatars.fastly.steamstatic.com/b76a2e69616ae68a574fdc638ab82fdcc3f94161_full.jpg"
-            alt="Dalbayob"
+    <img
+        class="specimen-image"
+        src="https://avatars.fastly.steamstatic.com/b76a2e69616ae68a574fdc638ab82fdcc3f94161_full.jpg"
+        alt="Dalbayob"
+    >
+
+    <h1 class="welcome-title">DALBAYOB</h1>
+
+    <p class="welcome-description">
+        A multimodal AI interface for conversation,
+        image generation, image analysis and visual search.
+    </p>
+
+    <div class="suggestions">
+
+        <button
+            class="suggestion"
+            onclick="useSuggestion('What can you do?')"
+            type="button"
         >
+            <div class="suggestion-title">
+                What can you do?
+            </div>
 
-        <h1 class="welcome-title">DALBAYOB</h1>
+            <div class="suggestion-text">
+                Explore Dalbayob's capabilities.
+            </div>
+        </button>
 
-        <p class="welcome-description">
-            A multimodal AI interface for conversation,
-            image generation, image analysis and visual search.
-        </p>
+        <button
+            class="suggestion"
+            onclick="useSuggestion('Explain something complicated to me in a simple way.')"
+            type="button"
+        >
+            <div class="suggestion-title">
+                Explain something complicated
+            </div>
 
-        <div class="suggestions">
+            <div class="suggestion-text">
+                Turn technical nonsense into something understandable.
+            </div>
+        </button>
 
-            <button
-                class="suggestion"
-                onclick="useSuggestion('What can you do?')"
-                type="button"
-            >
-                <div class="suggestion-title">
-                    What can you do?
-                </div>
+        <button
+            class="suggestion"
+            onclick="useSuggestion('Give me a creative idea.')"
+            type="button"
+        >
+            <div class="suggestion-title">
+                Give me a creative idea
+            </div>
 
-                <div class="suggestion-text">
-                    Explore Dalbayob's capabilities.
-                </div>
-            </button>
+            <div class="suggestion-text">
+                Let the machine cook.
+            </div>
+        </button>
 
-            <button
-                class="suggestion"
-                onclick="useSuggestion('Explain something complicated to me in a simple way.')"
-                type="button"
-            >
-                <div class="suggestion-title">
-                    Explain something complicated
-                </div>
+        <button
+            class="suggestion"
+            onclick="useSuggestion('Summon a roach.')"
+            type="button"
+        >
+            <div class="suggestion-title">
+                Summon a roach
+            </div>
 
-                <div class="suggestion-text">
-                    Turn technical nonsense into something understandable.
-                </div>
-            </button>
+            <div class="suggestion-text">
+                This is probably a terrible idea.
+            </div>
+        </button>
 
-            <button
-                class="suggestion"
-                onclick="useSuggestion('Give me a creative idea.')"
-                type="button"
-            >
-                <div class="suggestion-title">
-                    Give me a creative idea
-                </div>
-
-                <div class="suggestion-text">
-                    Let the machine cook.
-                </div>
-            </button>
-
-            <button
-                class="suggestion"
-                onclick="useSuggestion('Summon a roach.')"
-                type="button"
-            >
-                <div class="suggestion-title">
-                    Summon a roach
-                </div>
-
-                <div class="suggestion-text">
-                    This is probably a terrible idea.
-                </div>
-            </button>
-
-        </div>
-    </section>
+    </div>
+</section>
+```
 
 </div>
-```
 
 </div>
 
@@ -1342,78 +1343,78 @@ button {
 
 <div class="composer-area">
 
-```
 <div class="composer">
 
-    <div
-        class="attachment-preview"
-        id="attachmentPreview"
-    ></div>
+```
+<div
+    class="attachment-preview"
+    id="attachmentPreview"
+></div>
 
-    <div class="composer-row">
+<div class="composer-row">
 
-        <button
-            class="composer-button"
-            id="attachButton"
-            title="Attach images"
-            type="button"
-        >
-            ＋
-        </button>
+    <button
+        class="composer-button"
+        id="attachButton"
+        title="Attach images"
+        type="button"
+    >
+        ＋
+    </button>
 
-        <textarea
-            id="input"
-            rows="1"
-            placeholder="Message Dalbayob..."
-            autocomplete="off"
-            spellcheck="true"
-        ></textarea>
+    <textarea
+        id="input"
+        rows="1"
+        placeholder="Message Dalbayob..."
+        autocomplete="off"
+        spellcheck="true"
+    ></textarea>
 
-        <button
-            class="composer-button send-button"
-            id="sendButton"
-            title="Send"
-            type="button"
-        >
-            ➤
-        </button>
+    <button
+        class="composer-button send-button"
+        id="sendButton"
+        title="Send"
+        type="button"
+    >
+        ➤
+    </button>
 
-    </div>
+</div>
 
-    <div class="composer-tools">
+<div class="composer-tools">
 
-        <button
-            class="tool-button"
-            id="generateButton"
-            type="button"
-        >
-            ✦ Generate Image
-        </button>
+    <button
+        class="tool-button"
+        id="generateButton"
+        type="button"
+    >
+        ✦ Generate Image
+    </button>
 
-        <button
-            class="tool-button"
-            id="searchImageButton"
-            type="button"
-        >
-            ⌕ Reverse Search
-        </button>
+    <button
+        class="tool-button"
+        id="searchImageButton"
+        type="button"
+    >
+        ⌕ Reverse Search
+    </button>
 
-        <button
-            class="tool-button"
-            id="clearImagesButton"
-            type="button"
-        >
-            × Clear Images
-        </button>
+    <button
+        class="tool-button"
+        id="clearImagesButton"
+        type="button"
+    >
+        × Clear Images
+    </button>
 
-    </div>
+</div>
+```
 
 </div>
 
 <div class="composer-hint">
     Enter to send · Shift + Enter for new line · Ctrl + V to paste images
 </div>
-```
 
 </div>
 
@@ -1509,10 +1510,6 @@ function escapeAttribute(value) {
 function renderInlineMarkdown(text) {
     let value = escapeHtml(text);
 
-    /*
-     * Protect inline code first so Markdown syntax inside it
-     * isn't interpreted.
-     */
     const inlineCode = [];
 
     value = value.replace(
@@ -1530,9 +1527,6 @@ function renderInlineMarkdown(text) {
         }
     );
 
-    /*
-     * Links.
-     */
     value = value.replace(
         /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
         (_, label, url) => {
@@ -1553,9 +1547,6 @@ function renderInlineMarkdown(text) {
         }
     );
 
-    /*
-     * Bold.
-     */
     value = value.replace(
         /\*\*([^*]+)\*\*/g,
         "<strong>$1</strong>"
@@ -1566,9 +1557,6 @@ function renderInlineMarkdown(text) {
         "<strong>$1</strong>"
     );
 
-    /*
-     * Italic.
-     */
     value = value.replace(
         /(^|[^\*])\*([^*\n]+)\*(?!\*)/g,
         "$1<em>$2</em>"
@@ -1579,9 +1567,6 @@ function renderInlineMarkdown(text) {
         "$1<em>$2</em>"
     );
 
-    /*
-     * Restore inline code.
-     */
     value = value.replace(
         /\u0000INLINE(\d+)\u0000/g,
         (_, index) => inlineCode[Number(index)]
@@ -1659,9 +1644,6 @@ function renderMarkdown(text) {
         .replace(/\r\n/g, "\n")
         .replace(/\r/g, "\n");
 
-    /*
-     * Split fenced code blocks before processing Markdown.
-     */
     const fenceRegex =
         /```([a-zA-Z0-9_+#.-]*)\n?([\s\S]*?)```/g;
 
@@ -1748,9 +1730,6 @@ function appendMarkdownText(container, text) {
             continue;
         }
 
-        /*
-         * Headings.
-         */
         const heading =
             trimmed.match(/^(#{1,4})\s+(.+)$/);
 
@@ -1776,9 +1755,6 @@ function appendMarkdownText(container, text) {
             continue;
         }
 
-        /*
-         * Horizontal rule.
-         */
         if (
             /^(\*\s*){3,}$/.test(trimmed) ||
             /^(-\s*){3,}$/.test(trimmed) ||
@@ -1794,9 +1770,6 @@ function appendMarkdownText(container, text) {
             continue;
         }
 
-        /*
-         * Blockquote.
-         */
         if (trimmed.startsWith(">")) {
             flushParagraph();
             closeList();
@@ -1817,9 +1790,6 @@ function appendMarkdownText(container, text) {
             continue;
         }
 
-        /*
-         * Unordered list.
-         */
         const unordered =
             trimmed.match(/^[-*+]\s+(.+)$/);
 
@@ -1851,9 +1821,6 @@ function appendMarkdownText(container, text) {
             continue;
         }
 
-        /*
-         * Ordered list.
-         */
         const ordered =
             trimmed.match(/^\d+\.\s+(.+)$/);
 
@@ -1885,9 +1852,6 @@ function appendMarkdownText(container, text) {
             continue;
         }
 
-        /*
-         * Normal text.
-         */
         closeList();
 
         paragraphLines.push(line);
