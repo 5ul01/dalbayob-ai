@@ -2408,8 +2408,9 @@ async function sendMessage() {
 
     if (
         !actualMessage &&
-        !imagesForThisMessage.length
+        imagesForThisMessage.length === 0
     ) {
+        input.focus();
         return;
     }
 
@@ -2417,8 +2418,7 @@ async function sendMessage() {
     hideWelcome();
 
     addUserMessage(
-        actualMessage ||
-            "Analyze these images.",
+        actualMessage,
         imagesForThisMessage
     );
 
@@ -2430,36 +2430,224 @@ async function sendMessage() {
 
     renderAttachmentPreview();
     updateInputPlaceholder();
-    updateEditMode();
 
     addLoadingMessage();
 
     try {
+
+        /*
+         * =====================================================
+         * IMAGE EDIT MODE
+         *
+         * If we already have an image, normal natural-language
+         * messages edit that image instead of asking the chat
+         * model to explain how to edit it.
+         * =====================================================
+         */
+
+        const sourceImage =
+            imagesForThisMessage[0] ||
+            currentImage ||
+            null;
+
+        if (sourceImage) {
+
+            console.log(
+                "Dalbayob: image edit mode"
+            );
+
+            console.log(
+                "Edit instruction:",
+                actualMessage
+            );
+
+            const editInstruction = `
+Edit the existing image.
+
+User request:
+${actualMessage}
+
+Only apply the change requested by the user.
+
+Preserve everything else exactly:
+the character identity, face, eyes, ears, fur,
+body, proportions, pose, hands, legs,
+clothing shapes, clothing materials,
+background, environment, lighting,
+camera angle and composition.
+
+If the user requests a clothing color change,
+change ONLY the requested clothing item's color.
+
+Do not redesign the clothing.
+Do not change the character.
+Do not regenerate unrelated parts of the image.
+`.trim();
+
+            const response =
+                await fetch(
+                    "/api/edit-image",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify({
+                                prompt:
+                                    editInstruction,
+
+                                image:
+                                    sourceImage
+                            })
+                    }
+                );
+
+            const raw =
+                await response.text();
+
+            console.log(
+                "Edit API status:",
+                response.status
+            );
+
+            console.log(
+                "Edit API response:",
+                raw
+            );
+
+            let data;
+
+            try {
+                data =
+                    JSON.parse(raw);
+            } catch {
+                throw new Error(
+                    raw ||
+                    "Image editor returned invalid data."
+                );
+            }
+
+            if (!response.ok) {
+                throw new Error(
+                    data.error ||
+                    data.message ||
+                    "Image editing failed."
+                );
+            }
+
+            const editedImage =
+                data.image ||
+                data.url ||
+                data.imageUrl ||
+                null;
+
+            if (!editedImage) {
+                throw new Error(
+                    "Image editor returned no image."
+                );
+            }
+
+            /*
+             * VERY IMPORTANT:
+             *
+             * The edited image becomes the new
+             * currentImage.
+             *
+             * This means:
+             *
+             * original
+             *   ↓
+             * jacket red
+             *   ↓
+             * nighttime
+             *   ↓
+             * snow
+             *
+             * Each edit works on the previous result.
+             */
+
+            currentImage =
+                editedImage;
+
+            removeLoadingMessage();
+
+            addAssistantMessage(
+                "Done. I edited the image.",
+                editedImage
+            );
+
+            conversationHistory.push({
+                role: "user",
+                content:
+                    actualMessage
+            });
+
+            conversationHistory.push({
+                role: "assistant",
+                content:
+                    "Edited the existing image."
+            });
+
+            return;
+        }
+
+        /*
+         * =====================================================
+         * NORMAL CHAT MODE
+         *
+         * No current image means this is ordinary AI chat.
+         * =====================================================
+         */
+
+        console.log(
+            "Dalbayob: normal chat mode"
+        );
+
         const response =
             await fetch(
                 "/api/chat",
                 {
-                    method:"POST",
-                    headers:{
+                    method: "POST",
+
+                    headers: {
                         "Content-Type":
                             "application/json"
                     },
-                    body:JSON.stringify({
-                        message:
-                            actualMessage,
-                        history:
-                            conversationHistory,
-                        images:
-                            imagesForThisMessage,
-                        image:
-                            imagesForThisMessage[0] ||
-                            null
-                    })
+
+                    body:
+                        JSON.stringify({
+                            message:
+                                actualMessage,
+
+                            history:
+                                conversationHistory,
+
+                            images:
+                                imagesForThisMessage,
+
+                            image:
+                                imagesForThisMessage[0] ||
+                                null
+                        })
                 }
             );
 
         const raw =
             await response.text();
+
+        console.log(
+            "Chat API status:",
+            response.status
+        );
+
+        console.log(
+            "Chat API response:",
+            raw
+        );
 
         let data;
 
@@ -2469,7 +2657,7 @@ async function sendMessage() {
         } catch {
             throw new Error(
                 raw ||
-                "The chat server returned invalid data."
+                "Chat server returned invalid data."
             );
         }
 
@@ -2481,19 +2669,16 @@ async function sendMessage() {
             );
         }
 
-        removeLoadingMessage();
-
         const reply =
             data.reply ||
             data.message ||
             data.content ||
-            data.text ||
             "";
 
         const returnedImage =
             data.image ||
-            data.imageUrl ||
             data.url ||
+            data.imageUrl ||
             null;
 
         if (
@@ -2501,52 +2686,55 @@ async function sendMessage() {
             !returnedImage
         ) {
             throw new Error(
-                "The AI returned an empty response."
+                "Chat server returned an empty response."
             );
         }
 
+        removeLoadingMessage();
+
         addAssistantMessage(
-            reply,
+            reply ||
+            "Done.",
             returnedImage
         );
-
-        conversationHistory.push({
-            role:"user",
-            content:
-                actualMessage ||
-                "Analyze the attached images.",
-            images:
-                imagesForThisMessage
-        });
-
-        conversationHistory.push({
-            role:"assistant",
-            content:reply
-        });
 
         if (returnedImage) {
             currentImage =
                 returnedImage;
-
-            updateEditMode();
-            updateInputPlaceholder();
         }
 
+        conversationHistory.push({
+            role: "user",
+            content:
+                actualMessage
+        });
+
+        conversationHistory.push({
+            role: "assistant",
+            content:
+                reply ||
+                "Done."
+        });
+
     } catch (error) {
+
         removeLoadingMessage();
 
         console.error(
-            "Chat error:",
+            "Dalbayob message error:",
             error
         );
 
         addAssistantMessage(
-            "I couldn't process that request.\n\nError: " +
+            "Something went wrong.\n\n" +
+            "Error: " +
             error.message
         );
 
     } finally {
+
         setBusy(false);
+
         input.focus();
     }
 }
