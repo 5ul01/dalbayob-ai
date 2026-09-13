@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -8,7 +9,6 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -60,7 +60,6 @@ body {
     background-attachment: fixed;
 
     color: var(--cream);
-
     font-family: "Inter", sans-serif;
 
     overflow: hidden;
@@ -1054,191 +1053,217 @@ button {
    ROACHES
 ========================================================= */
 
-against the dark background.
-*/
 .real-roach {
     position: fixed;
+
     width: 250px;
     height: 250px;
+
     object-fit: contain;
+
     opacity: 0.28;
+
     pointer-events: none;
-    z-index: 20;
-    filter: grayscale(0.1) brightness(0.85);
+
+    z-index: 2;
+
+    filter:
+        grayscale(0.1)
+        brightness(0.85);
+
     animation-timing-function: linear;
     animation-iteration-count: infinite;
+
     will-change: transform;
+
+    user-select: none;
 }
 
 .rr1 {
     left: 7%;
     top: 18%;
-    animation: crawl1 31s infinite;
+
+    animation:
+        crawl1 31s linear infinite;
 }
 
 .rr2 {
     left: 74%;
     top: 28%;
-    animation: crawl2 38s infinite;
+
+    animation:
+        crawl2 38s linear infinite;
 }
 
 .rr3 {
     left: 28%;
     top: 75%;
-    animation: crawl3 43s infinite;
+
+    animation:
+        crawl3 43s linear infinite;
 }
 
 .rr4 {
     left: 86%;
     top: 72%;
-    animation: crawl4 36s infinite;
+
+    animation:
+        crawl4 36s linear infinite;
 }
 
 .rr5 {
     left: 46%;
     top: 12%;
-    animation: crawl5 49s infinite;
+
+    animation:
+        crawl5 49s linear infinite;
 }
 
 .rr6 {
     left: 12%;
     top: 60%;
-    animation: crawl6 42s infinite;
+
+    animation:
+        crawl6 42s linear infinite;
 }
 
 .rr7 {
     left: 63%;
     top: 86%;
-    animation: crawl7 35s infinite;
+
+    animation:
+        crawl7 35s linear infinite;
 }
 
 .rr8 {
     left: 92%;
     top: 43%;
-    animation: crawl8 47s infinite;
+
+    animation:
+        crawl8 47s linear infinite;
 }
 
 @keyframes crawl1 {
     0% {
-        transform: translate(0,0) rotate(0deg);
+        transform: translate(0, 0) rotate(0deg);
     }
 
     25% {
-        transform: translate(90px,35px) rotate(25deg);
+        transform: translate(90px, 35px) rotate(25deg);
     }
 
     50% {
-        transform: translate(160px,-25px) rotate(80deg);
+        transform: translate(160px, -25px) rotate(80deg);
     }
 
     75% {
-        transform: translate(50px,100px) rotate(150deg);
+        transform: translate(50px, 100px) rotate(150deg);
     }
 
     100% {
-        transform: translate(0,0) rotate(360deg);
+        transform: translate(0, 0) rotate(360deg);
     }
 }
 
 @keyframes crawl2 {
     0% {
-        transform: translate(0,0) rotate(10deg);
+        transform: translate(0, 0) rotate(10deg);
     }
 
     50% {
-        transform: translate(-160px,90px) rotate(180deg);
+        transform: translate(-160px, 90px) rotate(180deg);
     }
 
     100% {
-        transform: translate(0,0) rotate(370deg);
+        transform: translate(0, 0) rotate(370deg);
     }
 }
 
 @keyframes crawl3 {
     0% {
-        transform: translate(0,0) rotate(0deg);
+        transform: translate(0, 0) rotate(0deg);
     }
 
     50% {
-        transform: translate(140px,-100px) rotate(220deg);
+        transform: translate(140px, -100px) rotate(220deg);
     }
 
     100% {
-        transform: translate(0,0) rotate(360deg);
+        transform: translate(0, 0) rotate(360deg);
     }
 }
 
 @keyframes crawl4 {
     0% {
-        transform: translate(0,0) rotate(0deg);
+        transform: translate(0, 0) rotate(0deg);
     }
 
     40% {
-        transform: translate(-120px,-50px) rotate(130deg);
+        transform: translate(-120px, -50px) rotate(130deg);
     }
 
     75% {
-        transform: translate(-40px,-140px) rotate(240deg);
+        transform: translate(-40px, -140px) rotate(240deg);
     }
 
     100% {
-        transform: translate(0,0) rotate(360deg);
+        transform: translate(0, 0) rotate(360deg);
     }
 }
 
 @keyframes crawl5 {
     0% {
-        transform: translate(0,0) rotate(0deg);
+        transform: translate(0, 0) rotate(0deg);
     }
 
     50% {
-        transform: translate(120px,120px) rotate(180deg);
+        transform: translate(120px, 120px) rotate(180deg);
     }
 
     100% {
-        transform: translate(0,0) rotate(360deg);
+        transform: translate(0, 0) rotate(360deg);
     }
 }
 
 @keyframes crawl6 {
     0% {
-        transform: translate(0,0) rotate(0deg);
+        transform: translate(0, 0) rotate(0deg);
     }
 
     50% {
-        transform: translate(100px,-90px) rotate(160deg);
+        transform: translate(100px, -90px) rotate(160deg);
     }
 
     100% {
-        transform: translate(0,0) rotate(360deg);
+        transform: translate(0, 0) rotate(360deg);
     }
 }
 
 @keyframes crawl7 {
     0% {
-        transform: translate(0,0) rotate(0deg);
+        transform: translate(0, 0) rotate(0deg);
     }
 
     50% {
-        transform: translate(-140px,-70px) rotate(190deg);
+        transform: translate(-140px, -70px) rotate(190deg);
     }
 
     100% {
-        transform: translate(0,0) rotate(360deg);
+        transform: translate(0, 0) rotate(360deg);
     }
 }
 
 @keyframes crawl8 {
     0% {
-        transform: translate(0,0) rotate(0deg);
+        transform: translate(0, 0) rotate(0deg);
     }
 
     50% {
-        transform: translate(-100px,70px) rotate(180deg);
+        transform: translate(-100px, 70px) rotate(180deg);
     }
 
     100% {
-        transform: translate(0,0) rotate(360deg);
+        transform: translate(0, 0) rotate(360deg);
     }
 }
 
@@ -1277,8 +1302,8 @@ against the dark background.
 @media (max-width: 760px) {
 
     .real-roach {
-        width: 60px;
-        height: 60px;
+        width: 250px;
+        height: 250px;
     }
 
     .sidebar {
@@ -1380,12 +1405,13 @@ against the dark background.
     .attachment {
         width: 60px;
         height: 60px;
+
         flex-basis: 60px;
     }
-
 }
 
 </style>
+
 </head>
 
 <body>
@@ -1394,480 +1420,313 @@ against the dark background.
 
 <!-- Decorative roaches -->
 
-<img
-    class="real-roach rr1"
-    src="/assets/model.png"
-    alt=""
->
-
-<img
-    class="real-roach rr2"
-    src="/assets/model.png"
-    alt=""
->
-
-<img
-    class="real-roach rr3"
-    src="/assets/model.png"
-    alt=""
->
-
-<img
-    class="real-roach rr4"
-    src="/assets/model.png"
-    alt=""
->
-
-<img
-    class="real-roach rr5"
-    src="/assets/model.png"
-    alt=""
->
-
-<img
-    class="real-roach rr6"
-    src="/assets/model.png"
-    alt=""
->
-
-<img
-    class="real-roach rr7"
-    src="/assets/model.png"
-    alt=""
->
-
-<img
-    class="real-roach rr8"
-    src="/assets/model.png"
-    alt=""
->
+<img class="real-roach rr1" src="/assets/model.png" alt="">
+<img class="real-roach rr2" src="/assets/model.png" alt="">
+<img class="real-roach rr3" src="/assets/model.png" alt="">
+<img class="real-roach rr4" src="/assets/model.png" alt="">
+<img class="real-roach rr5" src="/assets/model.png" alt="">
+<img class="real-roach rr6" src="/assets/model.png" alt="">
+<img class="real-roach rr7" src="/assets/model.png" alt="">
+<img class="real-roach rr8" src="/assets/model.png" alt="">
 
 <div class="app">
 
-    <!-- =====================================================
-         SIDEBAR
-    ====================================================== -->
+```
+<aside class="sidebar">
 
-    <aside class="sidebar">
+    <div class="brand">
 
-        <div class="brand">
+        <div class="brand-title">
+            DALBAYOB
+        </div>
 
-            <div class="brand-title">
-                DALBAYOB
+        <div class="brand-subtitle">
+            Intelligence System
+        </div>
+
+        <div class="online">
+            <span class="online-dot"></span>
+            System Online
+        </div>
+
+    </div>
+
+    <div class="sidebar-content">
+
+        <div class="sidebar-label">
+            Workspace
+        </div>
+
+        <button class="side-button active" id="chatButton" type="button">
+            <span class="side-icon">◈</span>
+            <span>Chat</span>
+        </button>
+
+        <button class="side-button" id="newChatButton" type="button">
+            <span class="side-icon">＋</span>
+            <span>New Chat</span>
+        </button>
+
+        <button class="side-button" id="imageButton" type="button">
+            <span class="side-icon">◇</span>
+            <span>Image Generation</span>
+        </button>
+
+        <button class="side-button" id="reverseButton" type="button">
+            <span class="side-icon">⌕</span>
+            <span>Reverse Search</span>
+        </button>
+
+    </div>
+
+    <div class="sidebar-footer">
+
+        <div class="system-box">
+
+            <div class="system-title">
+                Dalbayob Core
             </div>
 
-            <div class="brand-subtitle">
-                Intelligence System
-            </div>
-
-            <div class="online">
-                <span class="online-dot"></span>
-                System Online
+            <div class="system-text">
+                Multimodal AI interface.
+                Text, images and visual analysis.
             </div>
 
         </div>
 
-        <div class="sidebar-content">
+    </div>
 
-            <div class="sidebar-label">
-                Workspace
+</aside>
+
+<main class="main">
+
+    <header class="header">
+
+        <div>
+
+            <div class="header-title">
+                DALBAYOB AI
             </div>
 
-            <button
-                class="side-button active"
-                id="chatButton"
-                type="button"
-            >
-
-                <span class="side-icon">
-                    ◈
-                </span>
-
-                <span>
-                    Chat
-                </span>
-
-            </button>
-
-            <button
-                class="side-button"
-                id="newChatButton"
-                type="button"
-            >
-
-                <span class="side-icon">
-                    ＋
-                </span>
-
-                <span>
-                    New Chat
-                </span>
-
-            </button>
-
-            <button
-                class="side-button"
-                id="imageButton"
-                type="button"
-            >
-
-                <span class="side-icon">
-                    ◇
-                </span>
-
-                <span>
-                    Image Generation
-                </span>
-
-            </button>
-
-            <button
-                class="side-button"
-                id="reverseButton"
-                type="button"
-            >
-
-                <span class="side-icon">
-                    ⌕
-                </span>
-
-                <span>
-                    Reverse Search
-                </span>
-
-            </button>
-
-        </div>
-
-        <div class="sidebar-footer">
-
-            <div class="system-box">
-
-                <div class="system-title">
-                    Dalbayob Core
-                </div>
-
-                <div class="system-text">
-                    Multimodal AI interface.
-                    Text, images and visual analysis.
-                </div>
-
+            <div class="header-subtitle">
+                Intelligence / Visual Processing / Generation
             </div>
 
         </div>
 
-    </aside>
+        <div class="header-status">
 
-    <!-- =====================================================
-         MAIN
-    ====================================================== -->
+            <span class="online-dot"></span>
 
-    <main class="main">
+            Operational
 
-        <header class="header">
+        </div>
 
-            <div>
+    </header>
 
-                <div class="header-title">
-                    DALBAYOB AI
-                </div>
+    <div class="chat" id="chat">
 
-                <div class="header-subtitle">
-                    Intelligence / Visual Processing / Generation
-                </div>
+        <div class="chat-inner" id="chatInner">
 
-            </div>
+            <section class="welcome" id="welcome">
 
-            <div class="header-status">
-
-                <span class="online-dot"></span>
-
-                Operational
-
-            </div>
-
-        </header>
-
-        <div
-            class="chat"
-            id="chat"
-        >
-
-            <div
-                class="chat-inner"
-                id="chatInner"
-            >
-
-                <!-- Welcome -->
-
-                <section
-                    class="welcome"
-                    id="welcome"
+                <img
+                    class="specimen-image"
+                    src="https://avatars.fastly.steamstatic.com/b76a2e69616ae68a574fdc638ab82fdcc3f94161_full.jpg"
+                    alt="Dalbayob"
                 >
 
-                    <img
-                        class="specimen-image"
-                        src="https://avatars.fastly.steamstatic.com/b76a2e69616ae68a574fdc638ab82fdcc3f94161_full.jpg"
-                        alt="Dalbayob"
-                    >
+                <h1 class="welcome-title">
+                    DALBAYOB
+                </h1>
 
-                    <h1 class="welcome-title">
-                        DALBAYOB
-                    </h1>
+                <p class="welcome-description">
+                    A multimodal AI interface for conversation,
+                    image generation, image analysis and visual search.
+                </p>
 
-                    <p class="welcome-description">
-                        A multimodal AI interface for conversation,
-                        image generation, image analysis and visual search.
-                    </p>
-
-                    <div class="suggestions">
-
-                        <button
-                            class="suggestion"
-                            onclick="useSuggestion('What can you do?')"
-                            type="button"
-                        >
-
-                            <div class="suggestion-title">
-                                What can you do?
-                            </div>
-
-                            <div class="suggestion-text">
-                                Explore Dalbayob's capabilities.
-                            </div>
-
-                        </button>
-
-                        <button
-                            class="suggestion"
-                            onclick="useSuggestion('Explain something complicated to me in a simple way.')"
-                            type="button"
-                        >
-
-                            <div class="suggestion-title">
-                                Explain something complicated
-                            </div>
-
-                            <div class="suggestion-text">
-                                Turn technical nonsense into something understandable.
-                            </div>
-
-                        </button>
-
-                        <button
-                            class="suggestion"
-                            onclick="useSuggestion('Give me a creative idea.')"
-                            type="button"
-                        >
-
-                            <div class="suggestion-title">
-                                Give me a creative idea
-                            </div>
-
-                            <div class="suggestion-text">
-                                Let the machine cook.
-                            </div>
-
-                        </button>
-
-                        <button
-                            class="suggestion"
-                            onclick="useSuggestion('Summon a roach.')"
-                            type="button"
-                        >
-
-                            <div class="suggestion-title">
-                                Summon a roach
-                            </div>
-
-                            <div class="suggestion-text">
-                                This is probably a terrible idea.
-                            </div>
-
-                        </button>
-
-                    </div>
-
-                </section>
-
-            </div>
-
-        </div>
-
-        <!-- Image mode status -->
-
-        <div
-            class="image-mode-banner"
-            id="imageModeBanner"
-        >
-            Image generation mode active. Describe the image you want.
-        </div>
-
-        <!-- =================================================
-             COMPOSER
-        ================================================== -->
-
-        <div class="composer-area">
-
-            <div class="composer">
-
-                <div
-                    class="attachment-preview"
-                    id="attachmentPreview"
-                ></div>
-
-                <div class="composer-row">
+                <div class="suggestions">
 
                     <button
-                        class="composer-button"
-                        id="attachButton"
-                        title="Attach images"
+                        class="suggestion"
+                        onclick="useSuggestion('What can you do?')"
                         type="button"
                     >
-                        ＋
+                        <div class="suggestion-title">
+                            What can you do?
+                        </div>
+
+                        <div class="suggestion-text">
+                            Explore Dalbayob's capabilities.
+                        </div>
                     </button>
 
-                    <textarea
-                        id="input"
-                        rows="1"
-                        placeholder="Message Dalbayob..."
-                        autocomplete="off"
-                        spellcheck="true"
-                    ></textarea>
-
                     <button
-                        class="composer-button send-button"
-                        id="sendButton"
-                        title="Send"
+                        class="suggestion"
+                        onclick="useSuggestion('Explain something complicated to me in a simple way.')"
                         type="button"
                     >
-                        ➤
+                        <div class="suggestion-title">
+                            Explain something complicated
+                        </div>
+
+                        <div class="suggestion-text">
+                            Turn technical nonsense into something understandable.
+                        </div>
+                    </button>
+
+                    <button
+                        class="suggestion"
+                        onclick="useSuggestion('Give me a creative idea.')"
+                        type="button"
+                    >
+                        <div class="suggestion-title">
+                            Give me a creative idea
+                        </div>
+
+                        <div class="suggestion-text">
+                            Let the machine cook.
+                        </div>
+                    </button>
+
+                    <button
+                        class="suggestion"
+                        onclick="useSuggestion('Summon a roach.')"
+                        type="button"
+                    >
+                        <div class="suggestion-title">
+                            Summon a roach
+                        </div>
+
+                        <div class="suggestion-text">
+                            This is probably a terrible idea.
+                        </div>
                     </button>
 
                 </div>
 
-                <div class="composer-tools">
+            </section>
 
-                    <button
-                        class="tool-button"
-                        id="generateButton"
-                        type="button"
-                    >
-                        ✦ Generate Image
-                    </button>
+        </div>
 
-                    <button
-                        class="tool-button"
-                        id="searchImageButton"
-                        type="button"
-                    >
-                        ⌕ Reverse Search
-                    </button>
+    </div>
 
-                    <button
-                        class="tool-button"
-                        id="clearImagesButton"
-                        type="button"
-                    >
-                        × Clear Images
-                    </button>
+    <div class="image-mode-banner" id="imageModeBanner">
+        Image generation mode active. Describe the image you want.
+    </div>
 
-                </div>
+    <div class="composer-area">
+
+        <div class="composer">
+
+            <div
+                class="attachment-preview"
+                id="attachmentPreview"
+            ></div>
+
+            <div class="composer-row">
+
+                <button
+                    class="composer-button"
+                    id="attachButton"
+                    title="Attach images"
+                    type="button"
+                >
+                    ＋
+                </button>
+
+                <textarea
+                    id="input"
+                    rows="1"
+                    placeholder="Message Dalbayob..."
+                    autocomplete="off"
+                    spellcheck="true"
+                ></textarea>
+
+                <button
+                    class="composer-button send-button"
+                    id="sendButton"
+                    title="Send"
+                    type="button"
+                >
+                    ➤
+                </button>
 
             </div>
 
-            <div class="composer-hint">
-                Enter to send · Shift + Enter for new line · Ctrl + V to paste images
+            <div class="composer-tools">
+
+                <button
+                    class="tool-button"
+                    id="generateButton"
+                    type="button"
+                >
+                    ✦ Generate Image
+                </button>
+
+                <button
+                    class="tool-button"
+                    id="searchImageButton"
+                    type="button"
+                >
+                    ⌕ Reverse Search
+                </button>
+
+                <button
+                    class="tool-button"
+                    id="clearImagesButton"
+                    type="button"
+                >
+                    × Clear Images
+                </button>
+
             </div>
 
         </div>
 
-        <input
-            class="hidden-file"
-            id="imageInput"
-            type="file"
-            accept="image/*"
-            multiple
-        >
+        <div class="composer-hint">
+            Enter to send · Shift + Enter for new line · Ctrl + V to paste images
+        </div>
 
-    </main>
+    </div>
+
+    <input
+        class="hidden-file"
+        id="imageInput"
+        type="file"
+        accept="image/*"
+        multiple
+    >
+
+</main>
+```
 
 </div>
 
 <script>
 
-/* =========================================================
-   DALBAYOB AI
-   Main frontend controller
-========================================================= */
-
 let conversationHistory = [];
-
 let currentImage = null;
-
 let attachedImages = [];
-
 let imageMode = false;
-
 let isBusy = false;
 
-
-/* =========================================================
-   ELEMENTS
-========================================================= */
-
-const chat =
-    document.getElementById("chat");
-
-const chatInner =
-    document.getElementById("chatInner");
-
-const welcome =
-    document.getElementById("welcome");
-
-const input =
-    document.getElementById("input");
-
-const sendButton =
-    document.getElementById("sendButton");
-
-const attachButton =
-    document.getElementById("attachButton");
-
-const imageInput =
-    document.getElementById("imageInput");
-
-const attachmentPreview =
-    document.getElementById("attachmentPreview");
-
-const generateButton =
-    document.getElementById("generateButton");
-
-const searchImageButton =
-    document.getElementById("searchImageButton");
-
-const clearImagesButton =
-    document.getElementById("clearImagesButton");
-
-const newChatButton =
-    document.getElementById("newChatButton");
-
-const chatButton =
-    document.getElementById("chatButton");
-
-const imageButton =
-    document.getElementById("imageButton");
-
-const reverseButton =
-    document.getElementById("reverseButton");
-
-const imageModeBanner =
-    document.getElementById("imageModeBanner");
-
-
-/* =========================================================
-   HELPERS
-========================================================= */
+const chat = document.getElementById("chat");
+const chatInner = document.getElementById("chatInner");
+const welcome = document.getElementById("welcome");
+const input = document.getElementById("input");
+const sendButton = document.getElementById("sendButton");
+const attachButton = document.getElementById("attachButton");
+const imageInput = document.getElementById("imageInput");
+const attachmentPreview = document.getElementById("attachmentPreview");
+const generateButton = document.getElementById("generateButton");
+const searchImageButton = document.getElementById("searchImageButton");
+const clearImagesButton = document.getElementById("clearImagesButton");
+const newChatButton = document.getElementById("newChatButton");
+const chatButton = document.getElementById("chatButton");
+const imageButton = document.getElementById("imageButton");
+const reverseButton = document.getElementById("reverseButton");
+const imageModeBanner = document.getElementById("imageModeBanner");
 
 function escapeHtml(value) {
 
@@ -1880,14 +1739,6 @@ function escapeHtml(value) {
 
 }
 
-
-function escapeAttribute(value) {
-
-    return escapeHtml(value);
-
-}
-
-
 function safeUrl(url) {
 
     if (!url) {
@@ -1896,19 +1747,16 @@ function safeUrl(url) {
 
     try {
 
-        const parsed =
-            new URL(
-                url,
-                window.location.origin
-            );
+        const parsed = new URL(
+            url,
+            window.location.origin
+        );
 
         if (
             parsed.protocol === "http:" ||
             parsed.protocol === "https:"
         ) {
-
             return parsed.href;
-
         }
 
     } catch (error) {
@@ -1921,7 +1769,6 @@ function safeUrl(url) {
 
 }
 
-
 function scrollToBottom() {
 
     requestAnimationFrame(() => {
@@ -1933,11 +1780,9 @@ function scrollToBottom() {
 
 }
 
-
 function autoResize() {
 
-    input.style.height =
-        "auto";
+    input.style.height = "auto";
 
     input.style.height =
         Math.min(
@@ -1947,67 +1792,34 @@ function autoResize() {
 
 }
 
-
 function setBusy(state) {
 
-    isBusy =
-        state;
+    isBusy = state;
 
-    sendButton.disabled =
-        state;
+    sendButton.disabled = state;
+    generateButton.disabled = state;
+    searchImageButton.disabled = state;
 
-    generateButton.disabled =
-        state;
-
-    searchImageButton.disabled =
-        state;
-
-    if (state) {
-
-        sendButton.style.opacity =
-            "0.45";
-
-    } else {
-
-        sendButton.style.opacity =
-            "1";
-
-    }
+    sendButton.style.opacity =
+        state ? "0.45" : "1";
 
 }
-
-
-/* =========================================================
-   WELCOME
-========================================================= */
 
 function hideWelcome() {
 
     if (welcome) {
-
-        welcome.style.display =
-            "none";
-
+        welcome.style.display = "none";
     }
 
 }
-
 
 function showWelcome() {
 
     if (welcome) {
-
-        welcome.style.display =
-            "flex";
-
+        welcome.style.display = "flex";
     }
 
 }
-
-
-/* =========================================================
-   ATTACHMENTS
-========================================================= */
 
 function handleImageUpload(event) {
 
@@ -2022,11 +1834,9 @@ function handleImageUpload(event) {
 
     addImageFiles(files);
 
-    imageInput.value =
-        "";
+    imageInput.value = "";
 
 }
-
 
 function addImageFiles(files) {
 
@@ -2042,65 +1852,51 @@ function addImageFiles(files) {
         return;
     }
 
-    validFiles.forEach(
-        file => {
-
-            readImageFile(file);
-
-        }
-    );
+    validFiles.forEach(file => {
+        readImageFile(file);
+    });
 
 }
-
 
 function readImageFile(file) {
 
     const reader =
         new FileReader();
 
-    reader.onload =
-        function(event) {
+    reader.onload = function(event) {
 
-            const result =
-                event.target?.result;
+        const result =
+            event.target?.result;
 
-            if (!result) {
-                return;
-            }
+        if (!result) {
+            return;
+        }
 
-            attachedImages.push(
-                result
-            );
+        attachedImages.push(result);
 
-            renderAttachmentPreview();
+        renderAttachmentPreview();
+        updateInputPlaceholder();
 
-            updateInputPlaceholder();
+        input.focus();
 
-            input.focus();
+    };
 
-        };
+    reader.onerror = function() {
 
-    reader.onerror =
-        function() {
+        console.error(
+            "Could not read image:",
+            file.name
+        );
 
-            console.error(
-                "Could not read image:",
-                file.name
-            );
+    };
 
-        };
-
-    reader.readAsDataURL(
-        file
-    );
+    reader.readAsDataURL(file);
 
 }
 
-
 function renderAttachmentPreview() {
 
-    attachmentPreview.innerHTML =
-        "";
+    attachmentPreview.innerHTML = "";
 
     if (!attachedImages.length) {
 
@@ -2120,52 +1916,29 @@ function renderAttachmentPreview() {
         (image, index) => {
 
             const wrapper =
-                document.createElement(
-                    "div"
-                );
+                document.createElement("div");
 
-            wrapper.className =
-                "attachment";
-
-            wrapper.title =
-                "Image " +
-                (index + 1);
-
+            wrapper.className = "attachment";
+            wrapper.title = "Image " + (index + 1);
 
             const img =
-                document.createElement(
-                    "img"
-                );
+                document.createElement("img");
 
-            img.src =
-                image;
-
-            img.alt =
-                "Attachment " +
-                (index + 1);
-
-            img.loading =
-                "lazy";
-
+            img.src = image;
+            img.alt = "Attachment " + (index + 1);
+            img.loading = "lazy";
 
             const remove =
-                document.createElement(
-                    "button"
-                );
+                document.createElement("button");
 
             remove.className =
                 "remove-attachment";
 
-            remove.type =
-                "button";
-
-            remove.textContent =
-                "×";
+            remove.type = "button";
+            remove.textContent = "×";
 
             remove.title =
-                "Remove image " +
-                (index + 1);
-
+                "Remove image " + (index + 1);
 
             remove.addEventListener(
                 "click",
@@ -2177,20 +1950,13 @@ function renderAttachmentPreview() {
                     );
 
                     renderAttachmentPreview();
-
                     updateInputPlaceholder();
 
                 }
             );
 
-
-            wrapper.appendChild(
-                img
-            );
-
-            wrapper.appendChild(
-                remove
-            );
+            wrapper.appendChild(img);
+            wrapper.appendChild(remove);
 
             attachmentPreview.appendChild(
                 wrapper
@@ -2201,7 +1967,6 @@ function renderAttachmentPreview() {
 
 }
 
-
 function updateInputPlaceholder() {
 
     if (attachedImages.length > 1) {
@@ -2211,9 +1976,7 @@ function updateInputPlaceholder() {
             attachedImages.length +
             " images...";
 
-    } else if (
-        attachedImages.length === 1
-    ) {
+    } else if (attachedImages.length === 1) {
 
         input.placeholder =
             "Ask Dalbayob about this image...";
@@ -2232,24 +1995,16 @@ function updateInputPlaceholder() {
 
 }
 
-
 function clearAttachedImages() {
 
-    attachedImages =
-        [];
+    attachedImages = [];
 
     renderAttachmentPreview();
-
     updateInputPlaceholder();
 
     input.focus();
 
 }
-
-
-/* =========================================================
-   CLIPBOARD IMAGE PASTE
-========================================================= */
 
 document.addEventListener(
     "paste",
@@ -2271,50 +2026,31 @@ document.addEventListener(
             return;
         }
 
-        imageItems.forEach(
-            item => {
+        imageItems.forEach(item => {
 
-                const file =
-                    item.getAsFile();
+            const file =
+                item.getAsFile();
 
-                if (file) {
-
-                    readImageFile(
-                        file
-                    );
-
-                }
-
+            if (file) {
+                readImageFile(file);
             }
-        );
+
+        });
 
     }
 );
-
-
-/* =========================================================
-   FILE BUTTON
-========================================================= */
 
 attachButton.addEventListener(
     "click",
     function() {
-
         imageInput.click();
-
     }
 );
-
 
 imageInput.addEventListener(
     "change",
     handleImageUpload
 );
-
-
-/* =========================================================
-   MESSAGES
-========================================================= */
 
 function addUserMessage(
     text,
@@ -2324,25 +2060,19 @@ function addUserMessage(
     hideWelcome();
 
     const message =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     message.className =
         "message user";
 
     const card =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     card.className =
         "message-card";
 
     const label =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     label.className =
         "message-label";
@@ -2350,16 +2080,12 @@ function addUserMessage(
     label.textContent =
         "You";
 
-    card.appendChild(
-        label
-    );
+    card.appendChild(label);
 
     if (text) {
 
         const textElement =
-            document.createElement(
-                "div"
-            );
+            document.createElement("div");
 
         textElement.className =
             "message-text";
@@ -2373,43 +2099,31 @@ function addUserMessage(
 
     }
 
-
     if (images.length) {
 
         const imageGrid =
-            document.createElement(
-                "div"
-            );
+            document.createElement("div");
 
         imageGrid.className =
             "message-attachments";
-
 
         images.forEach(
             (image, index) => {
 
                 const img =
-                    document.createElement(
-                        "img"
-                    );
+                    document.createElement("img");
 
-                img.src =
-                    image;
-
+                img.src = image;
                 img.alt =
                     "Attached image " +
                     (index + 1);
 
-                img.loading =
-                    "lazy";
+                img.loading = "lazy";
 
-                imageGrid.appendChild(
-                    img
-                );
+                imageGrid.appendChild(img);
 
             }
         );
-
 
         card.appendChild(
             imageGrid
@@ -2417,19 +2131,12 @@ function addUserMessage(
 
     }
 
-
-    message.appendChild(
-        card
-    );
-
-    chatInner.appendChild(
-        message
-    );
+    message.appendChild(card);
+    chatInner.appendChild(message);
 
     scrollToBottom();
 
 }
-
 
 function addAssistantMessage(
     text,
@@ -2439,25 +2146,19 @@ function addAssistantMessage(
     hideWelcome();
 
     const message =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     message.className =
         "message assistant";
 
     const card =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     card.className =
         "message-card";
 
     const label =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     label.className =
         "message-label";
@@ -2465,17 +2166,12 @@ function addAssistantMessage(
     label.textContent =
         "Dalbayob";
 
-    card.appendChild(
-        label
-    );
-
+    card.appendChild(label);
 
     if (text) {
 
         const textElement =
-            document.createElement(
-                "div"
-            );
+            document.createElement("div");
 
         textElement.className =
             "message-text";
@@ -2489,20 +2185,15 @@ function addAssistantMessage(
 
     }
 
-
     if (image) {
 
         const safeImage =
-            safeUrl(
-                image
-            );
+            safeUrl(image);
 
         if (safeImage) {
 
             const img =
-                document.createElement(
-                    "img"
-                );
+                document.createElement("img");
 
             img.className =
                 "message-image";
@@ -2516,36 +2207,25 @@ function addAssistantMessage(
             img.loading =
                 "lazy";
 
-            card.appendChild(
-                img
-            );
+            card.appendChild(img);
 
         }
 
     }
 
-
-    message.appendChild(
-        card
-    );
-
-    chatInner.appendChild(
-        message
-    );
+    message.appendChild(card);
+    chatInner.appendChild(message);
 
     scrollToBottom();
 
 }
-
 
 function addLoadingMessage() {
 
     hideWelcome();
 
     const message =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     message.className =
         "message assistant";
@@ -2554,17 +2234,13 @@ function addLoadingMessage() {
         "loadingMessage";
 
     const card =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     card.className =
         "message-card";
 
     const loading =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     loading.className =
         "loading";
@@ -2578,22 +2254,14 @@ function addLoadingMessage() {
         </span>
     `;
 
-    card.appendChild(
-        loading
-    );
+    card.appendChild(loading);
+    message.appendChild(card);
 
-    message.appendChild(
-        card
-    );
-
-    chatInner.appendChild(
-        message
-    );
+    chatInner.appendChild(message);
 
     scrollToBottom();
 
 }
-
 
 function removeLoadingMessage() {
 
@@ -2603,17 +2271,10 @@ function removeLoadingMessage() {
         );
 
     if (loading) {
-
         loading.remove();
-
     }
 
 }
-
-
-/* =========================================================
-   CHAT API
-========================================================= */
 
 async function sendMessage() {
 
@@ -2621,31 +2282,21 @@ async function sendMessage() {
         return;
     }
 
-
     const actualMessage =
         input.value.trim();
 
-
     const imagesForThisMessage =
         [...attachedImages];
-
 
     if (
         !actualMessage &&
         !imagesForThisMessage.length
     ) {
-
         return;
-
     }
 
-
-    setBusy(
-        true
-    );
-
+    setBusy(true);
     hideWelcome();
-
 
     addUserMessage(
         actualMessage ||
@@ -2653,23 +2304,16 @@ async function sendMessage() {
         imagesForThisMessage
     );
 
-
-    input.value =
-        "";
+    input.value = "";
 
     autoResize();
 
-
-    attachedImages =
-        [];
+    attachedImages = [];
 
     renderAttachmentPreview();
-
     updateInputPlaceholder();
 
-
     addLoadingMessage();
-
 
     try {
 
@@ -2690,50 +2334,36 @@ async function sendMessage() {
 
         };
 
-
         console.log(
             "Sending images to /api/chat:",
             imagesForThisMessage.length
         );
 
-
         const response =
             await fetch(
                 "/api/chat",
                 {
-
-                    method:
-                        "POST",
+                    method: "POST",
 
                     headers: {
-
                         "Content-Type":
                             "application/json"
-
                     },
 
                     body:
-                        JSON.stringify(
-                            payload
-                        )
-
+                        JSON.stringify(payload)
                 }
             );
-
 
         const raw =
             await response.text();
 
-
         let data;
-
 
         try {
 
             data =
-                JSON.parse(
-                    raw
-                );
+                JSON.parse(raw);
 
         } catch (parseError) {
 
@@ -2743,7 +2373,6 @@ async function sendMessage() {
             );
 
         }
-
 
         if (!response.ok) {
 
@@ -2755,9 +2384,7 @@ async function sendMessage() {
 
         }
 
-
         removeLoadingMessage();
-
 
         const reply =
             data.reply ||
@@ -2766,12 +2393,10 @@ async function sendMessage() {
             data.text ||
             "";
 
-
         const returnedImage =
             data.image ||
             data.imageUrl ||
             null;
-
 
         if (
             !reply &&
@@ -2784,17 +2409,14 @@ async function sendMessage() {
 
         }
 
-
         addAssistantMessage(
             reply,
             returnedImage
         );
 
-
         conversationHistory.push({
 
-            role:
-                "user",
+            role: "user",
 
             content:
                 actualMessage ||
@@ -2805,17 +2427,14 @@ async function sendMessage() {
 
         });
 
-
         conversationHistory.push({
 
-            role:
-                "assistant",
+            role: "assistant",
 
             content:
                 reply
 
         });
-
 
         if (returnedImage) {
 
@@ -2824,17 +2443,14 @@ async function sendMessage() {
 
         }
 
-
     } catch (error) {
 
         removeLoadingMessage();
-
 
         console.error(
             "Chat error:",
             error
         );
-
 
         addAssistantMessage(
             "I couldn't process that request.\n\n" +
@@ -2842,23 +2458,14 @@ async function sendMessage() {
             error.message
         );
 
-
     } finally {
 
-        setBusy(
-            false
-        );
-
+        setBusy(false);
         input.focus();
 
     }
 
 }
-
-
-/* =========================================================
-   IMAGE GENERATION
-========================================================= */
 
 async function generateImage() {
 
@@ -2866,16 +2473,13 @@ async function generateImage() {
         return;
     }
 
-
     const prompt =
         input.value.trim();
-
 
     const sourceImage =
         attachedImages[0] ||
         currentImage ||
         null;
-
 
     if (!prompt) {
 
@@ -2890,40 +2494,27 @@ async function generateImage() {
 
     }
 
-
-    setBusy(
-        true
-    );
-
+    setBusy(true);
     hideWelcome();
-
 
     const imagesForMessage =
         [...attachedImages];
-
 
     addUserMessage(
         prompt,
         imagesForMessage
     );
 
-
-    input.value =
-        "";
+    input.value = "";
 
     autoResize();
 
-
-    attachedImages =
-        [];
+    attachedImages = [];
 
     renderAttachmentPreview();
-
     updateInputPlaceholder();
 
-
     addLoadingMessage();
-
 
     try {
 
@@ -2931,45 +2522,33 @@ async function generateImage() {
             await fetch(
                 "/api/image",
                 {
-
-                    method:
-                        "POST",
+                    method: "POST",
 
                     headers: {
-
                         "Content-Type":
                             "application/json"
-
                     },
 
                     body:
                         JSON.stringify({
-
                             prompt:
                                 prompt,
 
                             image:
                                 sourceImage
-
                         })
-
                 }
             );
-
 
         const raw =
             await response.text();
 
-
         let data;
-
 
         try {
 
             data =
-                JSON.parse(
-                    raw
-                );
+                JSON.parse(raw);
 
         } catch (parseError) {
 
@@ -2979,7 +2558,6 @@ async function generateImage() {
             );
 
         }
-
 
         if (!response.ok) {
 
@@ -2991,13 +2569,11 @@ async function generateImage() {
 
         }
 
-
         const image =
             data.image ||
             data.url ||
             data.imageUrl ||
             null;
-
 
         if (!image) {
 
@@ -3007,52 +2583,42 @@ async function generateImage() {
 
         }
 
-
         currentImage =
             image;
 
-
         removeLoadingMessage();
-
 
         addAssistantMessage(
             "Image generated successfully.",
             image
         );
 
-
         conversationHistory.push({
 
-            role:
-                "user",
+            role: "user",
 
             content:
                 prompt
 
         });
 
-
         conversationHistory.push({
 
-            role:
-                "assistant",
+            role: "assistant",
 
             content:
                 "Generated an image."
 
         });
 
-
     } catch (error) {
 
         removeLoadingMessage();
-
 
         console.error(
             "Image generation error:",
             error
         );
-
 
         addAssistantMessage(
             "I couldn't generate the image.\n\n" +
@@ -3060,23 +2626,14 @@ async function generateImage() {
             error.message
         );
 
-
     } finally {
 
-        setBusy(
-            false
-        );
-
+        setBusy(false);
         input.focus();
 
     }
 
 }
-
-
-/* =========================================================
-   REVERSE IMAGE SEARCH
-========================================================= */
 
 async function reverseImageSearch() {
 
@@ -3084,11 +2641,9 @@ async function reverseImageSearch() {
         return;
     }
 
-
     const image =
         attachedImages[0] ||
         currentImage;
-
 
     if (!image) {
 
@@ -3100,22 +2655,15 @@ async function reverseImageSearch() {
 
     }
 
-
-    setBusy(
-        true
-    );
-
+    setBusy(true);
     hideWelcome();
-
 
     addUserMessage(
         "Reverse search this image.",
         [image]
     );
 
-
     addLoadingMessage();
-
 
     try {
 
@@ -3123,42 +2671,30 @@ async function reverseImageSearch() {
             await fetch(
                 "/api/reverse-search",
                 {
-
-                    method:
-                        "POST",
+                    method: "POST",
 
                     headers: {
-
                         "Content-Type":
                             "application/json"
-
                     },
 
                     body:
                         JSON.stringify({
-
                             image:
                                 image
-
                         })
-
                 }
             );
-
 
         const raw =
             await response.text();
 
-
         let data;
-
 
         try {
 
             data =
-                JSON.parse(
-                    raw
-                );
+                JSON.parse(raw);
 
         } catch (parseError) {
 
@@ -3168,7 +2704,6 @@ async function reverseImageSearch() {
             );
 
         }
-
 
         if (!response.ok) {
 
@@ -3180,41 +2715,32 @@ async function reverseImageSearch() {
 
         }
 
-
         removeLoadingMessage();
-
 
         renderReverseSearchResults(
             data
         );
 
-
     } catch (error) {
 
         removeLoadingMessage();
-
 
         console.error(
             "Reverse search error:",
             error
         );
 
-
         renderReverseSearchError(
             error.message
         );
 
-
     } finally {
 
-        setBusy(
-            false
-        );
+        setBusy(false);
 
     }
 
 }
-
 
 function renderReverseSearchError(
     message
@@ -3227,22 +2753,16 @@ function renderReverseSearchError(
 
 }
 
-
 function renderReverseSearchResults(
     data
 ) {
 
     const results =
-        Array.isArray(
-            data.results
-        )
+        Array.isArray(data.results)
             ? data.results
-            : Array.isArray(
-                data.data
-            )
+            : Array.isArray(data.data)
                 ? data.data
                 : [];
-
 
     if (!results.length) {
 
@@ -3255,29 +2775,20 @@ function renderReverseSearchResults(
 
     }
 
-
     const message =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     message.className =
         "message assistant";
 
-
     const card =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     card.className =
         "message-card";
 
-
     const label =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     label.className =
         "message-label";
@@ -3285,16 +2796,10 @@ function renderReverseSearchResults(
     label.textContent =
         "Dalbayob";
 
-
-    card.appendChild(
-        label
-    );
-
+    card.appendChild(label);
 
     const title =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     title.className =
         "reverse-title";
@@ -3302,188 +2807,127 @@ function renderReverseSearchResults(
     title.textContent =
         "Reverse Image Search";
 
-
-    card.appendChild(
-        title
-    );
-
+    card.appendChild(title);
 
     const grid =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     grid.className =
         "reverse-grid";
 
-
     results
-        .slice(
-            0,
-            12
-        )
-        .forEach(
-            result => {
+        .slice(0, 12)
+        .forEach(result => {
 
-                const url =
-                    safeUrl(
-                        result.url ||
-                        result.link ||
-                        result.source ||
-                        ""
-                    );
+            const url =
+                safeUrl(
+                    result.url ||
+                    result.link ||
+                    result.source ||
+                    ""
+                );
 
+            const imageUrl =
+                safeUrl(
+                    result.image ||
+                    result.thumbnail ||
+                    result.imageUrl ||
+                    result.thumbnailUrl ||
+                    ""
+                );
 
-                const imageUrl =
-                    safeUrl(
-                        result.image ||
-                        result.thumbnail ||
-                        result.imageUrl ||
-                        result.thumbnailUrl ||
-                        ""
-                    );
+            const item =
+                document.createElement("div");
 
+            item.className =
+                "reverse-result";
 
-                const item =
-                    document.createElement(
-                        "div"
-                    );
+            if (imageUrl) {
 
-                item.className =
-                    "reverse-result";
+                const img =
+                    document.createElement("img");
 
+                img.src =
+                    imageUrl;
 
-                if (imageUrl) {
-
-                    const img =
-                        document.createElement(
-                            "img"
-                        );
-
-                    img.src =
-                        imageUrl;
-
-                    img.alt =
-                        result.title ||
-                        "Search result";
-
-                    img.loading =
-                        "lazy";
-
-                    img.onerror =
-                        function() {
-
-                            this.style.display =
-                                "none";
-
-                        };
-
-
-                    item.appendChild(
-                        img
-                    );
-
-                }
-
-
-                const content =
-                    document.createElement(
-                        "div"
-                    );
-
-                content.className =
-                    "reverse-result-content";
-
-
-                const name =
-                    document.createElement(
-                        "div"
-                    );
-
-                name.className =
-                    "reverse-result-name";
-
-                name.textContent =
+                img.alt =
                     result.title ||
-                    result.name ||
-                    "Image result";
+                    "Search result";
 
+                img.loading =
+                    "lazy";
 
-                content.appendChild(
-                    name
-                );
+                img.onerror =
+                    function() {
+                        this.style.display =
+                            "none";
+                    };
 
-
-                if (url) {
-
-                    const link =
-                        document.createElement(
-                            "a"
-                        );
-
-                    link.className =
-                        "reverse-result-url";
-
-                    link.href =
-                        url;
-
-                    link.target =
-                        "_blank";
-
-                    link.rel =
-                        "noopener noreferrer";
-
-                    link.textContent =
-                        url;
-
-
-                    content.appendChild(
-                        link
-                    );
-
-                }
-
-
-                item.appendChild(
-                    content
-                );
-
-                grid.appendChild(
-                    item
-                );
+                item.appendChild(img);
 
             }
-        );
 
+            const content =
+                document.createElement("div");
 
-    card.appendChild(
-        grid
-    );
+            content.className =
+                "reverse-result-content";
 
-    message.appendChild(
-        card
-    );
+            const name =
+                document.createElement("div");
 
-    chatInner.appendChild(
-        message
-    );
+            name.className =
+                "reverse-result-name";
+
+            name.textContent =
+                result.title ||
+                result.name ||
+                "Image result";
+
+            content.appendChild(name);
+
+            if (url) {
+
+                const link =
+                    document.createElement("a");
+
+                link.className =
+                    "reverse-result-url";
+
+                link.href =
+                    url;
+
+                link.target =
+                    "_blank";
+
+                link.rel =
+                    "noopener noreferrer";
+
+                link.textContent =
+                    url;
+
+                content.appendChild(link);
+
+            }
+
+            item.appendChild(content);
+            grid.appendChild(item);
+
+        });
+
+    card.appendChild(grid);
+    message.appendChild(card);
+
+    chatInner.appendChild(message);
 
     scrollToBottom();
 
 }
 
-
-/* =========================================================
-   IMAGE MODE
-========================================================= */
-
-function setImageMode(
-    enabled
-) {
+function setImageMode(enabled) {
 
     imageMode =
         enabled;
-
 
     if (enabled) {
 
@@ -3515,30 +2959,19 @@ function setImageMode(
 
     }
 
-
     updateInputPlaceholder();
 
 }
 
-
 function focusImageMode() {
 
-    setImageMode(
-        true
-    );
+    setImageMode(true);
 
     input.focus();
 
 }
 
-
-/* =========================================================
-   SUGGESTIONS
-========================================================= */
-
-function useSuggestion(
-    text
-) {
+function useSuggestion(text) {
 
     input.value =
         text;
@@ -3549,38 +2982,22 @@ function useSuggestion(
 
 }
 
-
-/* =========================================================
-   NEW CHAT
-========================================================= */
-
 function newChat() {
 
-    conversationHistory =
-        [];
+    conversationHistory = [];
+    currentImage = null;
+    attachedImages = [];
+    imageMode = false;
 
-    currentImage =
-        null;
-
-    attachedImages =
-        [];
-
-    imageMode =
-        false;
-
-    input.value =
-        "";
+    input.value = "";
 
     autoResize();
 
     renderAttachmentPreview();
 
-    setImageMode(
-        false
-    );
+    setImageMode(false);
 
-    chatInner.innerHTML =
-        "";
+    chatInner.innerHTML = "";
 
     chatInner.appendChild(
         createWelcomeElement()
@@ -3592,20 +3009,16 @@ function newChat() {
 
 }
 
-
 function createWelcomeElement() {
 
     const section =
-        document.createElement(
-            "section"
-        );
+        document.createElement("section");
 
     section.className =
         "welcome";
 
     section.id =
         "welcome";
-
 
     section.innerHTML = `
         <img
@@ -3684,81 +3097,60 @@ function createWelcomeElement() {
         </div>
     `;
 
-
     return section;
 
 }
-
-
-/* =========================================================
-   BUTTON EVENTS
-========================================================= */
 
 sendButton.addEventListener(
     "click",
     sendMessage
 );
 
-
 generateButton.addEventListener(
     "click",
     generateImage
 );
-
 
 searchImageButton.addEventListener(
     "click",
     reverseImageSearch
 );
 
-
 clearImagesButton.addEventListener(
     "click",
     clearAttachedImages
 );
-
 
 newChatButton.addEventListener(
     "click",
     newChat
 );
 
-
 imageButton.addEventListener(
     "click",
     focusImageMode
 );
-
 
 reverseButton.addEventListener(
     "click",
     reverseImageSearch
 );
 
-
 chatButton.addEventListener(
     "click",
     function() {
 
-        setImageMode(
-            false
-        );
+        setImageMode(false);
 
         input.focus();
 
     }
 );
 
-
-/* =========================================================
-   KEYBOARD
-========================================================= */
-
 input.addEventListener(
     "input",
     autoResize
 );
-
 
 input.addEventListener(
     "keydown",
@@ -3778,15 +3170,8 @@ input.addEventListener(
     }
 );
 
-
-/* =========================================================
-   STARTUP
-========================================================= */
-
 autoResize();
-
 updateInputPlaceholder();
-
 input.focus();
 
 </script>
