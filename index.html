@@ -6,8 +6,9 @@
 <meta charset="UTF-8">
 
 <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+
 >
 
 <title>Dalbayob AI</title>
@@ -681,12 +682,7 @@ body::after {
 
     margin: auto;
 
-    /*
-        Extra bottom space is intentional.
-        It keeps search results and messages above
-        the fixed composer instead of hiding behind it.
-    */
-    padding: 50px 35px 340px;
+    padding: 50px 35px 390px;
 }
 
 
@@ -983,16 +979,44 @@ body::after {
 
 
 /* =========================================================
-   REVERSE IMAGE SEARCH
+   MULTI IMAGE MESSAGE
 ========================================================= */
 
-/*
-    IMPORTANT:
-    This is now INSIDE .chat-inner.
+.message-images {
+    display: grid;
 
-    Therefore it becomes normal scrollable chat content
-    and can no longer be trapped underneath the composer.
-*/
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(120px, 1fr)
+        );
+
+    gap: 8px;
+
+    margin-top: 10px;
+
+    max-width: 520px;
+}
+
+.message-images img {
+    width: 100%;
+    height: 150px;
+
+    object-fit: cover;
+
+    border-radius: 12px;
+
+    border:
+        1px solid rgba(205,169,87,.25);
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.3);
+}
+
+
+/* =========================================================
+   REVERSE IMAGE SEARCH
+========================================================= */
 
 .reverse-search-results {
     width: 100%;
@@ -1249,7 +1273,7 @@ body::after {
 
 
 /* =========================================================
-   IMAGE ATTACHMENT PREVIEW
+   MULTI ATTACHMENT PREVIEW
 ========================================================= */
 
 .attachment-preview {
@@ -1282,9 +1306,6 @@ body::after {
     box-shadow:
         0 20px 50px rgba(0,0,0,.7);
 
-    /*
-        Must stay above composer.
-    */
     z-index: 1100;
 }
 
@@ -1296,11 +1317,44 @@ body::after {
     gap: 12px;
 }
 
-.attachment-preview img {
+.attachment-list {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    flex: 1;
+
+    min-width: 0;
+
+    overflow-x: auto;
+
+    scrollbar-width: thin;
+
+    scrollbar-color:
+        #354332
+        transparent;
+
+    padding: 2px;
+}
+
+.attachment-item {
+    position: relative;
+
+    flex: 0 0 58px;
+
+    width: 58px;
+    height: 58px;
+}
+
+.attachment-item img {
     width: 58px;
     height: 58px;
 
     object-fit: cover;
+
+    display: block;
 
     border-radius: 11px;
 
@@ -1308,10 +1362,81 @@ body::after {
         1px solid rgba(205,169,87,.3);
 }
 
-.attachment-info {
-    flex: 1;
+.attachment-index {
+    position: absolute;
 
-    min-width: 0;
+    left: 4px;
+    bottom: 4px;
+
+    min-width: 17px;
+    height: 17px;
+
+    display: grid;
+    place-items: center;
+
+    padding: 0 4px;
+
+    border-radius: 6px;
+
+    background:
+        rgba(0,0,0,.75);
+
+    color: var(--gold-light);
+
+    font-size: 8px;
+
+    font-weight: 700;
+}
+
+.attachment-item-remove {
+    position: absolute;
+
+    top: -6px;
+    right: -6px;
+
+    width: 20px;
+    height: 20px;
+
+    display: grid;
+    place-items: center;
+
+    padding: 0;
+
+    border-radius: 50%;
+
+    border:
+        1px solid rgba(205,169,87,.35);
+
+    background:
+        #090d08;
+
+    color: #aaa99a;
+
+    font-size: 12px;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    z-index: 2;
+
+    transition: .2s;
+}
+
+.attachment-item-remove:hover {
+    color: var(--gold-light);
+
+    border-color:
+        rgba(205,169,87,.7);
+
+    background:
+        #182317;
+}
+
+.attachment-info {
+    flex: 0 0 auto;
+
+    min-width: 95px;
 }
 
 .attachment-title {
@@ -1328,11 +1453,15 @@ body::after {
     color: #72796d;
 
     font-size: 9px;
+
+    line-height: 1.4;
 }
 
 .attachment-remove {
     width: 34px;
     height: 34px;
+
+    flex: 0 0 34px;
 
     border-radius: 10px;
 
@@ -1532,6 +1661,20 @@ textarea::placeholder {
     border-radius: 20px;
 }
 
+.attachment-list::-webkit-scrollbar {
+    height: 4px;
+}
+
+.attachment-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.attachment-list::-webkit-scrollbar-thumb {
+    background: #263126;
+
+    border-radius: 20px;
+}
+
 
 /* =========================================================
    MOBILE
@@ -1572,11 +1715,20 @@ textarea::placeholder {
 
     .chat-inner {
         padding:
-            30px 16px 320px;
+            30px 16px 350px;
     }
 
     .message {
         max-width: 90%;
+    }
+
+    .message-images {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .message-images img {
+        height: 120px;
     }
 
     .composer-area {
@@ -1620,6 +1772,34 @@ textarea::placeholder {
         bottom: 76px;
 
         z-index: 1100;
+
+        gap: 7px;
+    }
+
+    .attachment-list {
+        gap: 6px;
+    }
+
+    .attachment-item,
+    .attachment-item img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .attachment-item {
+        flex-basis: 50px;
+    }
+
+    .attachment-info {
+        min-width: 72px;
+    }
+
+    .attachment-title {
+        font-size: 9px;
+    }
+
+    .attachment-sub {
+        font-size: 8px;
     }
 
     .reverse-search-results {
@@ -1661,9 +1841,7 @@ textarea::placeholder {
 
 </head>
 
-
 <body>
-
 
 <!-- =========================================================
      REAL COCKROACHES
@@ -1701,309 +1879,311 @@ textarea::placeholder {
     <img src="/assets/model.png" alt="">
 </div>
 
-
 <div class="app">
-
 
 <aside class="sidebar">
 
-    <div class="brand-mark">
-        ✦
-    </div>
+```
+<div class="brand-mark">
+    ✦
+</div>
 
-    <div class="nav">
+<div class="nav">
 
-        <button
-            class="active"
-            title="Chat"
-            type="button">
-            ◈
-        </button>
+    <button
+        class="active"
+        title="Chat"
+        type="button">
+        ◈
+    </button>
 
-        <button
-            title="New chat"
-            type="button"
-            onclick="newChat()">
-            ☰
-        </button>
+    <button
+        title="New chat"
+        type="button"
+        onclick="newChat()">
+        ☰
+    </button>
 
-        <button
-            title="Image generation"
-            type="button"
-            onclick="focusImageMode()">
-            ☪
-        </button>
+    <button
+        title="Image generation"
+        type="button"
+        onclick="focusImageMode()">
+        ☪
+    </button>
 
-    </div>
+</div>
 
-    <div class="sidebar-bottom">
-        DALBAYOB
-    </div>
+<div class="sidebar-bottom">
+    DALBAYOB
+</div>
+```
 
 </aside>
 
-
 <main class="main">
-
 
 <header class="header">
 
-    <div class="header-left">
+```
+<div class="header-left">
 
-        <div class="header-symbol">
-            ☪
+    <div class="header-symbol">
+        ☪
+    </div>
+
+    <div>
+
+        <div class="header-title">
+            DALBAYOB AI
         </div>
 
-        <div>
-
-            <div class="header-title">
-                DALBAYOB AI
-            </div>
-
-            <div class="header-sub">
-                INTELLIGENCE SYSTEM
-            </div>
-
+        <div class="header-sub">
+            INTELLIGENCE SYSTEM
         </div>
 
     </div>
 
+</div>
 
-    <div class="status">
 
-        <div class="status-dot"></div>
+<div class="status">
 
-        SYSTEM ONLINE
+    <div class="status-dot"></div>
 
-    </div>
+    SYSTEM ONLINE
+
+</div>
+```
 
 </header>
 
-
 <section id="chat">
 
+```
+<div
+    class="chat-inner"
+    id="chat-inner">
+
+
     <div
-        class="chat-inner"
-        id="chat-inner">
+        class="welcome"
+        id="welcome">
 
 
-        <div
-            class="welcome"
-            id="welcome">
+        <div class="welcome-emblem">
 
-
-            <div class="welcome-emblem">
-
-                <div class="crescent">
-                    ☪
-                </div>
-
-            </div>
-
-
-            <h1>
-                Welcome to Dalbayob.
-            </h1>
-
-
-            <p>
-                Intelligence with a slightly questionable pest problem.
-            </p>
-
-
-            <div class="roach-gallery">
-
-                <img
-                    src="https://avatars.fastly.steamstatic.com/b76a2e69616ae68a574fdc638ab82fdcc3f94161_full.jpg"
-                    alt="Dalbayob specimen"
-                >
-
-                <div class="roach-gallery-caption">
-                    DALBAYOB SPECIMEN ARCHIVE · ROACH DIVISION
-                </div>
-
-            </div>
-
-
-            <div class="suggestions">
-
-                <button
-                    class="suggestion"
-                    type="button"
-                    onclick="useSuggestion('What can you do?')">
-
-                    What can you do?
-
-                </button>
-
-
-                <button
-                    class="suggestion"
-                    type="button"
-                    onclick="useSuggestion('Explain something complicated')">
-
-                    Explain something complicated
-
-                </button>
-
-
-                <button
-                    class="suggestion"
-                    type="button"
-                    onclick="useSuggestion('Give me a creative idea')">
-
-                    Give me a creative idea
-
-                </button>
-
-
-                <button
-                    class="suggestion"
-                    type="button"
-                    onclick="useSuggestion('Generate an image of a giant cockroach')">
-
-                    🪳 Summon a roach
-
-                </button>
-
+            <div class="crescent">
+                ☪
             </div>
 
         </div>
 
 
-        <!-- =====================================================
-             REVERSE SEARCH RESULTS
-             NOW INSIDE CHAT-INNER
-        ====================================================== -->
+        <h1>
+            Welcome to Dalbayob.
+        </h1>
 
-        <div
-            id="reverseSearchResults"
-            class="reverse-search-results">
+
+        <p>
+            Intelligence with a slightly questionable pest problem.
+        </p>
+
+
+        <div class="roach-gallery">
+
+            <img
+                src="https://avatars.fastly.steamstatic.com/b76a2e69616ae68a574fdc638ab82fdcc3f94161_full.jpg"
+                alt="Dalbayob specimen"
+            >
+
+            <div class="roach-gallery-caption">
+                DALBAYOB SPECIMEN ARCHIVE · ROACH DIVISION
+            </div>
+
         </div>
 
+
+        <div class="suggestions">
+
+            <button
+                class="suggestion"
+                type="button"
+                onclick="useSuggestion('What can you do?')">
+
+                What can you do?
+
+            </button>
+
+
+            <button
+                class="suggestion"
+                type="button"
+                onclick="useSuggestion('Explain something complicated')">
+
+                Explain something complicated
+
+            </button>
+
+
+            <button
+                class="suggestion"
+                type="button"
+                onclick="useSuggestion('Give me a creative idea')">
+
+                Give me a creative idea
+
+            </button>
+
+
+            <button
+                class="suggestion"
+                type="button"
+                onclick="useSuggestion('Generate an image of a giant cockroach')">
+
+                🪳 Summon a roach
+
+            </button>
+
+        </div>
 
     </div>
+
+
+    <div
+        id="reverseSearchResults"
+        class="reverse-search-results">
+    </div>
+
+
+</div>
+```
 
 </section>
 
-
 <div class="composer-area">
+
+```
+<div
+    class="attachment-preview"
+    id="attachmentPreview">
 
 
     <div
-        class="attachment-preview"
-        id="attachmentPreview">
+        class="attachment-list"
+        id="attachmentList">
+    </div>
 
 
-        <img
-            id="attachmentPreviewImage"
-            src=""
-            alt="Attached image"
-        >
+    <div class="attachment-info">
 
+        <div
+            class="attachment-title"
+            id="attachmentTitle">
 
-        <div class="attachment-info">
-
-            <div class="attachment-title">
-                IMAGE ATTACHED
-            </div>
-
-            <div class="attachment-sub">
-                Dalbayob can analyze or reverse-search this image.
-            </div>
+            IMAGES ATTACHED
 
         </div>
 
+        <div
+            class="attachment-sub"
+            id="attachmentSub">
 
-        <button
-            class="attachment-remove"
-            type="button"
-            title="Remove image"
-            onclick="clearAttachment()">
+            Dalbayob can analyze multiple images.
 
-            ×
-
-        </button>
-
+        </div>
 
     </div>
 
 
-    <div class="composer">
+    <button
+        class="attachment-remove"
+        type="button"
+        title="Remove all images"
+        onclick="clearAttachment()">
+
+        ×
+
+    </button>
 
 
-        <input
-            id="imageInput"
-            type="file"
-            accept="image/*"
-            onchange="handleImageUpload(event)"
-        >
+</div>
 
 
-        <button
-            class="tool"
-            title="Attach image"
-            type="button"
-            onclick="openImagePicker()">
-
-            ✡
-
-        </button>
+<div class="composer">
 
 
-        <textarea
-            id="input"
-            rows="1"
-            placeholder="Speak to Dalbayob..."></textarea>
+    <input
+        id="imageInput"
+        type="file"
+        accept="image/*"
+        multiple
+        onchange="handleImageUpload(event)"
+    >
 
 
-        <button
-            class="tool"
-            title="Generate image"
-            type="button"
-            onclick="generateImage()">
+    <button
+        class="tool"
+        title="Attach images"
+        type="button"
+        onclick="openImagePicker()">
 
-            ☪
+        ✡
 
-        </button>
-
-
-        <button
-            class="tool"
-            title="Reverse image search"
-            type="button"
-            onclick="reverseSearch()">
-
-            🔎
-
-        </button>
+    </button>
 
 
-        <button
-            class="tool send"
-            title="Send"
-            type="button"
-            onclick="sendMessage()">
-
-            ↑
-
-        </button>
+    <textarea
+        id="input"
+        rows="1"
+        placeholder="Speak to Dalbayob..."></textarea>
 
 
-    </div>
+    <button
+        class="tool"
+        title="Generate image"
+        type="button"
+        onclick="generateImage()">
+
+        ☪
+
+    </button>
 
 
-    <div class="note">
-        Dalbayob AI can make mistakes. Check important information.
-    </div>
+    <button
+        class="tool"
+        title="Reverse image search"
+        type="button"
+        onclick="reverseSearch()">
 
+        🔎
+
+    </button>
+
+
+    <button
+        class="tool send"
+        title="Send"
+        type="button"
+        onclick="sendMessage()">
+
+        ↑
+
+    </button>
+
+
+</div>
+
+
+<div class="note">
+    Dalbayob AI can make mistakes. Check important information.
+</div>
+```
 
 </div>
 
 </main>
 
 </div>
-
 
 <script>
 
@@ -2027,8 +2207,14 @@ const imageInput =
 const attachmentPreview =
     document.getElementById("attachmentPreview");
 
-const attachmentPreviewImage =
-    document.getElementById("attachmentPreviewImage");
+const attachmentList =
+    document.getElementById("attachmentList");
+
+const attachmentTitle =
+    document.getElementById("attachmentTitle");
+
+const attachmentSub =
+    document.getElementById("attachmentSub");
 
 
 /* =========================================================
@@ -2042,9 +2228,37 @@ let conversationHistory = [];
    IMAGE MEMORY
 ========================================================= */
 
+/*
+    currentImage stores the latest generated image.
+
+    attachedImages stores ALL images currently waiting
+    to be sent to Dalbayob.
+
+    Each item is a data URL.
+*/
+
 let currentImage = null;
 
-let attachedImage = null;
+let attachedImages = [];
+
+
+/* =========================================================
+   COMPATIBILITY ALIAS
+========================================================= */
+
+/*
+    Some older code referred to "attachedImage".
+
+    This helper returns the first attached image.
+*/
+
+function getFirstAttachedImage() {
+
+    return attachedImages.length
+        ? attachedImages[0]
+        : null;
+
+}
 
 
 /* =========================================================
@@ -2085,7 +2299,7 @@ input.addEventListener("keydown", event => {
 
 
 /* =========================================================
-   PASTE IMAGE
+   PASTE IMAGES
 ========================================================= */
 
 document.addEventListener("paste", event => {
@@ -2095,6 +2309,9 @@ document.addEventListener("paste", event => {
 
     if (!items)
         return;
+
+
+    let foundImage = false;
 
 
     for (const item of items) {
@@ -2107,20 +2324,23 @@ document.addEventListener("paste", event => {
         }
 
 
-        event.preventDefault();
-
-
         const file =
             item.getAsFile();
 
         if (!file)
-            return;
+            continue;
 
+
+        foundImage = true;
 
         readImageFile(file);
 
+    }
 
-        break;
+
+    if (foundImage) {
+
+        event.preventDefault();
 
     }
 
@@ -2128,7 +2348,7 @@ document.addEventListener("paste", event => {
 
 
 /* =========================================================
-   READ IMAGE
+   READ IMAGE FILE
 ========================================================= */
 
 function readImageFile(file) {
@@ -2150,21 +2370,22 @@ function readImageFile(file) {
 
     reader.onload = () => {
 
-        attachedImage =
+        const image =
             reader.result;
 
 
-        attachmentPreviewImage.src =
-            attachedImage;
-
-
-        attachmentPreview.classList.add(
-            "visible"
+        attachedImages.push(
+            image
         );
 
 
+        renderAttachmentPreview();
+
+
         input.placeholder =
-            "Ask Dalbayob about this image...";
+            attachedImages.length > 1
+                ? "Ask Dalbayob about these images..."
+                : "Ask Dalbayob about this image...";
 
 
         input.focus();
@@ -2234,7 +2455,7 @@ function addMessage(text, type) {
 ========================================================= */
 
 function addImageMessage(
-    image,
+    images,
     text
 ) {
 
@@ -2277,21 +2498,39 @@ function addImageMessage(
     }
 
 
-    const imageElement =
-        document.createElement("img");
+    const imageContainer =
+        document.createElement("div");
 
-    imageElement.src =
-        image;
+    imageContainer.className =
+        "message-images";
 
-    imageElement.alt =
-        "Uploaded image";
 
-    imageElement.className =
-        "chat-image-preview";
+    images.forEach(
+        (image, index) => {
+
+            const imageElement =
+                document.createElement("img");
+
+            imageElement.src =
+                image;
+
+            imageElement.alt =
+                `Uploaded image ${index + 1}`;
+
+            imageElement.loading =
+                "lazy";
+
+
+            imageContainer.appendChild(
+                imageElement
+            );
+
+        }
+    );
 
 
     message.appendChild(
-        imageElement
+        imageContainer
     );
 
 
@@ -2331,28 +2570,215 @@ function openImagePicker() {
 
 function handleImageUpload(event) {
 
-    const file =
-        event.target.files?.[0];
+    const files =
+        Array.from(
+            event.target.files || []
+        );
 
-    if (!file)
+
+    if (!files.length)
         return;
 
-    readImageFile(file);
+
+    files.forEach(
+        file => {
+
+            if (
+                file.type &&
+                file.type.startsWith("image/")
+            ) {
+
+                readImageFile(file);
+
+            }
+
+        }
+    );
+
+
+    /*
+        Reset the input so selecting the same files
+        again still triggers the change event.
+    */
+
+    imageInput.value = "";
 
 }
 
 
 /* =========================================================
-   CLEAR ATTACHMENT
+   RENDER ATTACHMENT PREVIEW
+========================================================= */
+
+function renderAttachmentPreview() {
+
+    if (!attachmentList)
+        return;
+
+
+    attachmentList.innerHTML = "";
+
+
+    if (!attachedImages.length) {
+
+        attachmentPreview.classList.remove(
+            "visible"
+        );
+
+        return;
+
+    }
+
+
+    attachedImages.forEach(
+        (image, index) => {
+
+            const item =
+                document.createElement("div");
+
+            item.className =
+                "attachment-item";
+
+
+            const imageElement =
+                document.createElement("img");
+
+            imageElement.src =
+                image;
+
+            imageElement.alt =
+                `Attachment ${index + 1}`;
+
+
+            const indexBadge =
+                document.createElement("div");
+
+            indexBadge.className =
+                "attachment-index";
+
+            indexBadge.textContent =
+                index + 1;
+
+
+            const removeButton =
+                document.createElement("button");
+
+            removeButton.type =
+                "button";
+
+            removeButton.className =
+                "attachment-item-remove";
+
+            removeButton.title =
+                "Remove image";
+
+            removeButton.textContent =
+                "×";
+
+
+            removeButton.addEventListener(
+                "click",
+                () => {
+
+                    removeAttachment(
+                        index
+                    );
+
+                }
+            );
+
+
+            item.appendChild(
+                imageElement
+            );
+
+            item.appendChild(
+                indexBadge
+            );
+
+            item.appendChild(
+                removeButton
+            );
+
+
+            attachmentList.appendChild(
+                item
+            );
+
+        }
+    );
+
+
+    attachmentTitle.textContent =
+        attachedImages.length === 1
+            ? "IMAGE ATTACHED"
+            : `${attachedImages.length} IMAGES ATTACHED`;
+
+
+    attachmentSub.textContent =
+        attachedImages.length === 1
+            ? "Dalbayob can analyze or reverse-search this image."
+            : "Dalbayob can analyze all attached images.";
+
+
+    attachmentPreview.classList.add(
+        "visible"
+    );
+
+}
+
+
+/* =========================================================
+   REMOVE ONE ATTACHMENT
+========================================================= */
+
+function removeAttachment(index) {
+
+    if (
+        index < 0 ||
+        index >= attachedImages.length
+    ) {
+        return;
+    }
+
+
+    attachedImages.splice(
+        index,
+        1
+    );
+
+
+    renderAttachmentPreview();
+
+
+    if (!attachedImages.length) {
+
+        input.placeholder =
+            "Speak to Dalbayob...";
+
+    } else {
+
+        input.placeholder =
+            attachedImages.length > 1
+                ? "Ask Dalbayob about these images..."
+                : "Ask Dalbayob about this image...";
+
+    }
+
+}
+
+
+/* =========================================================
+   CLEAR ALL ATTACHMENTS
 ========================================================= */
 
 function clearAttachment() {
 
-    attachedImage = null;
+    attachedImages = [];
 
     imageInput.value = "";
 
-    attachmentPreviewImage.src = "";
+    attachmentList.innerHTML = "";
 
     attachmentPreview.classList.remove(
         "visible"
@@ -2371,7 +2797,7 @@ function clearAttachment() {
 async function reverseSearch() {
 
     const image =
-        attachedImage ||
+        getFirstAttachedImage() ||
         currentImage ||
         null;
 
@@ -2483,11 +2909,6 @@ async function reverseSearch() {
                 JSON.parse(responseText);
 
         } catch {
-
-            /*
-                If Vercel returns HTML instead of JSON,
-                show the HTTP status and response body.
-            */
 
             throw new Error(
                 `Server returned invalid JSON. HTTP ${response.status}. Response: ${responseText.slice(0, 1000)}`
@@ -2653,11 +3074,6 @@ function renderReverseSearchError(error) {
     }
 
 
-    /*
-        If the backend doesn't provide structured details,
-        at least show the actual JavaScript error.
-    */
-
     container.innerHTML = `
 
         <div class="reverse-search-panel">
@@ -2727,154 +3143,41 @@ function renderReverseSearchError(error) {
 
                                 <pre class="reverse-error-details">${escapeHtml(details)}</pre>
 
-                            </div>
-                        `
-                        : ""
-                }
-
-            </div>
+```
+                        </div>
+                    `
+                    : ""
+            }
 
         </div>
 
-    `;
+    </div>
+
+`;
+```
 
 }
 
-
 /* =========================================================
-   RENDER SEARCH RESULTS
+RENDER SEARCH RESULTS
 ========================================================= */
 
 function renderReverseSearchResults(
-    results
+results
 ) {
 
-    const container =
-        document.getElementById(
-            "reverseSearchResults"
-        );
+```
+const container =
+    document.getElementById(
+        "reverseSearchResults"
+    );
 
 
-    if (!container)
-        return;
+if (!container)
+    return;
 
 
-    if (!results.length) {
-
-        container.innerHTML = `
-
-            <div class="reverse-search-panel">
-
-                <div class="reverse-search-header">
-
-                    <div class="reverse-search-title">
-                        🔎 REVERSE IMAGE SEARCH
-                    </div>
-
-                    <div class="reverse-search-count">
-                        0 MATCHES
-                    </div>
-
-                </div>
-
-                <div class="reverse-search-loading">
-                    No indexed matches were found.
-                </div>
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    const cards =
-        results
-            .map(result => {
-
-                const title =
-                    escapeHtml(
-                        result.title ||
-                        "Untitled result"
-                    );
-
-
-                const host =
-                    escapeHtml(
-                        result.host ||
-                        result.source ||
-                        "Unknown source"
-                    );
-
-
-                const imageUrl =
-                    safeUrl(
-                        result.imageUrl ||
-                        result.thumbnail
-                    );
-
-
-                const pageUrl =
-                    safeUrl(
-                        result.pageUrl
-                    );
-
-
-                return `
-
-                    <article class="reverse-result">
-
-                        ${
-                            imageUrl
-                                ? `
-                                    <img
-                                        class="reverse-result-image"
-                                        src="${imageUrl}"
-                                        alt=""
-                                        loading="lazy"
-                                        referrerpolicy="no-referrer"
-                                        onerror="this.style.display='none'"
-                                    >
-                                `
-                                : ""
-                        }
-
-                        <div class="reverse-result-body">
-
-                            <div class="reverse-result-title">
-                                ${title}
-                            </div>
-
-                            <div class="reverse-result-host">
-                                ${host}
-                            </div>
-
-                            ${
-                                pageUrl
-                                    ? `
-                                        <a
-                                            class="reverse-result-link"
-                                            href="${pageUrl}"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            Open source ↗
-                                        </a>
-                                    `
-                                    : ""
-                            }
-
-                        </div>
-
-                    </article>
-
-                `;
-
-            })
-            .join("");
-
+if (!results.length) {
 
     container.innerHTML = `
 
@@ -2887,578 +3190,733 @@ function renderReverseSearchResults(
                 </div>
 
                 <div class="reverse-search-count">
-                    ${results.length}
-                    ${
-                        results.length === 1
-                            ? " MATCH"
-                            : " MATCHES"
-                    }
+                    0 MATCHES
                 </div>
 
             </div>
 
-
-            <div class="reverse-search-grid">
-
-                ${cards}
-
+            <div class="reverse-search-loading">
+                No indexed matches were found.
             </div>
 
         </div>
 
     `;
 
+    return;
+
 }
 
 
+const cards =
+    results
+        .map(result => {
+
+            const title =
+                escapeHtml(
+                    result.title ||
+                    "Untitled result"
+                );
+
+
+            const host =
+                escapeHtml(
+                    result.host ||
+                    result.source ||
+                    "Unknown source"
+                );
+
+
+            const imageUrl =
+                safeUrl(
+                    result.imageUrl ||
+                    result.thumbnail
+                );
+
+
+            const pageUrl =
+                safeUrl(
+                    result.pageUrl
+                );
+
+
+            return `
+
+                <article class="reverse-result">
+
+                    ${
+                        imageUrl
+                            ? `
+                                <img
+                                    class="reverse-result-image"
+                                    src="${imageUrl}"
+                                    alt=""
+                                    loading="lazy"
+                                    referrerpolicy="no-referrer"
+                                    onerror="this.style.display='none'"
+                                >
+                            `
+                            : ""
+                    }
+
+                    <div class="reverse-result-body">
+
+                        <div class="reverse-result-title">
+                            ${title}
+                        </div>
+
+                        <div class="reverse-result-host">
+                            ${host}
+                        </div>
+
+                        ${
+                            pageUrl
+                                ? `
+                                    <a
+                                        class="reverse-result-link"
+                                        href="${pageUrl}"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        Open source ↗
+                                    </a>
+                                `
+                                : ""
+                        }
+
+                    </div>
+
+                </article>
+
+            `;
+
+        })
+        .join("");
+
+
+container.innerHTML = `
+
+    <div class="reverse-search-panel">
+
+        <div class="reverse-search-header">
+
+            <div class="reverse-search-title">
+                🔎 REVERSE IMAGE SEARCH
+            </div>
+
+            <div class="reverse-search-count">
+                ${results.length}
+                ${
+                    results.length === 1
+                        ? " MATCH"
+                        : " MATCHES"
+                }
+            </div>
+
+        </div>
+
+
+        <div class="reverse-search-grid">
+
+            ${cards}
+
+        </div>
+
+    </div>
+
+`;
+```
+
+}
+
 /* =========================================================
-   URL SECURITY
+URL SECURITY
 ========================================================= */
 
 function safeUrl(value) {
 
-    if (!value)
-        return "";
+```
+if (!value)
+    return "";
 
 
-    try {
+try {
 
-        const url =
-            new URL(value);
-
-
-        if (
-            url.protocol !== "http:" &&
-            url.protocol !== "https:"
-        ) {
-
-            return "";
-
-        }
+    const url =
+        new URL(value);
 
 
-        return escapeAttribute(
-            url.href
-        );
-
-
-    } catch {
+    if (
+        url.protocol !== "http:" &&
+        url.protocol !== "https:"
+    ) {
 
         return "";
 
     }
 
-}
 
+    return escapeAttribute(
+        url.href
+    );
+
+
+} catch {
+
+    return "";
+
+}
+```
+
+}
 
 function escapeHtml(value) {
 
-    return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+```
+return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+```
 
 }
-
 
 function escapeAttribute(value) {
 
-    return escapeHtml(value);
+```
+return escapeHtml(value);
+```
 
 }
 
-
 /* =========================================================
-   CHAT
+CHAT
 ========================================================= */
 
 async function sendMessage() {
 
-    const text =
-        input.value.trim();
+```
+const text =
+    input.value.trim();
 
 
-    const imageForThisMessage =
-        attachedImage || null;
+const imagesForThisMessage =
+    [...attachedImages];
 
 
-    if (
-        !text &&
-        !imageForThisMessage
-    ) {
-        return;
-    }
+if (
+    !text &&
+    !imagesForThisMessage.length
+) {
+    return;
+}
 
 
-    const actualMessage =
-        text ||
-        "Analyze this image and tell me what you see.";
+const actualMessage =
+    text ||
+    "Analyze these images and tell me what you see.";
 
 
-    if (imageForThisMessage) {
+if (imagesForThisMessage.length) {
 
-        addImageMessage(
-            imageForThisMessage,
-            text
-        );
-
-    } else {
-
-        addMessage(
-            text,
-            "user"
-        );
-
-    }
-
-
-    attachedImage = null;
-
-    imageInput.value = "";
-
-    attachmentPreviewImage.src = "";
-
-    attachmentPreview.classList.remove(
-        "visible"
+    addImageMessage(
+        imagesForThisMessage,
+        text
     );
 
-    input.placeholder =
-        "Speak to Dalbayob...";
+} else {
 
-
-    input.value = "";
-
-    input.style.height =
-        "auto";
-
-
-    const reply =
-        addMessage(
-            "Thinking...",
-            "assistant"
-        );
-
-
-    try {
-
-        const response =
-            await fetch(
-                "/api/chat",
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body: JSON.stringify({
-
-                        message:
-                            actualMessage,
-
-                        history:
-                            conversationHistory,
-
-                        image:
-                            imageForThisMessage
-
-                    })
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                data.error ||
-                "AI request failed."
-            );
-
-        }
-
-
-        reply.textContent =
-            data.reply;
-
-
-        conversationHistory.push({
-
-            role: "user",
-
-            content:
-                imageForThisMessage
-                    ? "[Image attached] " +
-                      actualMessage
-                    : actualMessage
-
-        });
-
-
-        conversationHistory.push({
-
-            role: "assistant",
-
-            content:
-                data.reply
-
-        });
-
-
-    } catch (error) {
-
-        reply.textContent =
-            "⚠️ " + error.message;
-
-    }
-
-
-    chat.scrollTop =
-        chat.scrollHeight;
+    addMessage(
+        text,
+        "user"
+    );
 
 }
 
 
+/*
+    Keep a copy before clearing the UI.
+*/
+
+attachedImages = [];
+
+imageInput.value = "";
+
+renderAttachmentPreview();
+
+input.placeholder =
+    "Speak to Dalbayob...";
+
+
+input.value = "";
+
+input.style.height =
+    "auto";
+
+
+const reply =
+    addMessage(
+        "Thinking...",
+        "assistant"
+    );
+
+
+try {
+
+    const response =
+        await fetch(
+            "/api/chat",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    message:
+                        actualMessage,
+
+                    history:
+                        conversationHistory,
+
+                    /*
+                        New multi-image field.
+                    */
+
+                    images:
+                        imagesForThisMessage,
+
+                    /*
+                        Old field kept for
+                        compatibility with
+                        your current backend.
+                    */
+
+                    image:
+                        imagesForThisMessage[0] ||
+                        null
+
+                })
+            }
+        );
+
+
+    const responseText =
+        await response.text();
+
+
+    let data;
+
+
+    try {
+
+        data =
+            JSON.parse(responseText);
+
+    } catch {
+
+        throw new Error(
+            `Server returned invalid JSON. HTTP ${response.status}.`
+        );
+
+    }
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            data.error ||
+            "AI request failed."
+        );
+
+    }
+
+
+    reply.textContent =
+        data.reply;
+
+
+    conversationHistory.push({
+
+        role: "user",
+
+        content:
+            imagesForThisMessage.length
+                ? `[${imagesForThisMessage.length} image${imagesForThisMessage.length === 1 ? "" : "s"} attached] ${actualMessage}`
+                : actualMessage
+
+    });
+
+
+    conversationHistory.push({
+
+        role: "assistant",
+
+        content:
+            data.reply
+
+    });
+
+
+} catch (error) {
+
+    reply.textContent =
+        "⚠️ " + error.message;
+
+}
+
+
+chat.scrollTop =
+    chat.scrollHeight;
+```
+
+}
+
 /* =========================================================
-   IMAGE GENERATION
+IMAGE GENERATION
 ========================================================= */
 
 async function generateImage() {
 
-    const prompt =
-        input.value.trim();
+```
+const prompt =
+    input.value.trim();
 
 
-    const sourceImage =
-        currentImage ||
-        attachedImage ||
-        null;
+const sourceImage =
+    currentImage ||
+    getFirstAttachedImage() ||
+    null;
 
 
-    if (!prompt) {
+if (!prompt) {
 
-        input.focus();
+    input.focus();
 
-        return;
+    return;
 
-    }
+}
 
 
+addMessage(
+    "☪ " + prompt,
+    "user"
+);
+
+
+input.value = "";
+
+input.style.height =
+    "auto";
+
+
+if (attachedImages.length) {
+
+    clearAttachment();
+
+}
+
+
+const statusText =
+    sourceImage
+        ? "✏️ Editing the latest specimen..."
+        : "🪳 Generating specimen...";
+
+
+const message =
     addMessage(
-        "☪ " + prompt,
-        "user"
+        statusText,
+        "assistant"
     );
 
 
-    input.value = "";
+try {
 
-    input.style.height =
-        "auto";
+    const response =
+        await fetch(
+            "/api/image",
+            {
+                method: "POST",
 
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
 
-    if (attachedImage) {
+                body: JSON.stringify({
 
-        attachedImage = null;
+                    prompt,
 
-        imageInput.value = "";
+                    image:
+                        sourceImage
 
-        attachmentPreviewImage.src = "";
-
-        attachmentPreview.classList.remove(
-            "visible"
+                })
+            }
         );
 
-        input.placeholder =
-            "Speak to Dalbayob...";
 
-    }
-
-
-    const statusText =
-        sourceImage
-            ? "✏️ Editing the latest specimen..."
-            : "🪳 Generating specimen...";
+    const responseText =
+        await response.text();
 
 
-    const message =
-        addMessage(
-            statusText,
-            "assistant"
-        );
+    let data;
 
 
     try {
 
-        const response =
-            await fetch(
-                "/api/image",
-                {
-                    method: "POST",
+        data =
+            JSON.parse(responseText);
 
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
+    } catch {
 
-                    body: JSON.stringify({
-
-                        prompt,
-
-                        image:
-                            sourceImage
-
-                    })
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                data.error ||
-                "Image generation failed."
-            );
-
-        }
-
-
-        currentImage =
-            data.image;
-
-
-        message.textContent =
-            "";
-
-
-        const image =
-            document.createElement("img");
-
-
-        image.src =
-            currentImage;
-
-
-        image.alt =
-            prompt;
-
-
-        message.appendChild(
-            image
+        throw new Error(
+            `Server returned invalid JSON. HTTP ${response.status}.`
         );
-
-
-        conversationHistory.push({
-
-            role: "user",
-
-            content:
-                "[Image request] " +
-                prompt
-
-        });
-
-
-        conversationHistory.push({
-
-            role: "assistant",
-
-            content:
-                "[Generated an image]"
-
-        });
-
-
-    } catch (error) {
-
-        message.textContent =
-            "⚠️ " + error.message;
 
     }
 
 
-    chat.scrollTop =
-        chat.scrollHeight;
+    if (!response.ok) {
+
+        throw new Error(
+            data.error ||
+            "Image generation failed."
+        );
+
+    }
+
+
+    currentImage =
+        data.image;
+
+
+    message.textContent =
+        "";
+
+
+    const image =
+        document.createElement("img");
+
+
+    image.src =
+        currentImage;
+
+
+    image.alt =
+        prompt;
+
+
+    message.appendChild(
+        image
+    );
+
+
+    conversationHistory.push({
+
+        role: "user",
+
+        content:
+            "[Image request] " +
+            prompt
+
+    });
+
+
+    conversationHistory.push({
+
+        role: "assistant",
+
+        content:
+            "[Generated an image]"
+
+    });
+
+
+} catch (error) {
+
+    message.textContent =
+        "⚠️ " + error.message;
 
 }
 
 
+chat.scrollTop =
+    chat.scrollHeight;
+```
+
+}
+
 /* =========================================================
-   NEW CHAT
+NEW CHAT
 ========================================================= */
 
 function newChat() {
 
-    conversationHistory = [];
+```
+conversationHistory = [];
 
-    currentImage = null;
+currentImage = null;
 
-    attachedImage = null;
+attachedImages = [];
 
-    imageInput.value = "";
+imageInput.value = "";
 
-    attachmentPreviewImage.src = "";
+attachmentList.innerHTML = "";
 
-    attachmentPreview.classList.remove(
-        "visible"
-    );
+attachmentPreview.classList.remove(
+    "visible"
+);
 
-    input.placeholder =
-        "Speak to Dalbayob...";
-
-
-    /*
-        The reverse-search element now lives inside chatInner,
-        so it must be recreated together with the welcome screen.
-    */
-
-    chatInner.innerHTML = `
-
-        <div
-            class="welcome"
-            id="welcome">
-
-            <div class="welcome-emblem">
-
-                <div class="crescent">
-                    ☪
-                </div>
-
-            </div>
+input.placeholder =
+    "Speak to Dalbayob...";
 
 
-            <h1>
-                Welcome to Dalbayob.
-            </h1>
+chatInner.innerHTML = `
 
+    <div
+        class="welcome"
+        id="welcome">
 
-            <p>
-                Intelligence with a slightly questionable pest problem.
-            </p>
+        <div class="welcome-emblem">
 
-
-            <div class="roach-gallery">
-
-                <img
-                    src="https://avatars.fastly.steamstatic.com/b76a2e69616ae68a574fdc638ab82fdcc3f94161_full.jpg"
-                    alt="Dalbayob specimen"
-                >
-
-                <div class="roach-gallery-caption">
-                    DALBAYOB SPECIMEN ARCHIVE · ROACH DIVISION
-                </div>
-
-            </div>
-
-
-            <div class="suggestions">
-
-                <button
-                    class="suggestion"
-                    type="button"
-                    onclick="useSuggestion('What can you do?')">
-
-                    What can you do?
-
-                </button>
-
-
-                <button
-                    class="suggestion"
-                    type="button"
-                    onclick="useSuggestion('Explain something complicated')">
-
-                    Explain something complicated
-
-                </button>
-
-
-                <button
-                    class="suggestion"
-                    type="button"
-                    onclick="useSuggestion('Give me a creative idea')">
-
-                    Give me a creative idea
-
-                </button>
-
-
-                <button
-                    class="suggestion"
-                    type="button"
-                    onclick="useSuggestion('Generate an image of a giant cockroach')">
-
-                    🪳 Summon a roach
-
-                </button>
-
+            <div class="crescent">
+                ☪
             </div>
 
         </div>
 
 
-        <div
-            id="reverseSearchResults"
-            class="reverse-search-results">
+        <h1>
+            Welcome to Dalbayob.
+        </h1>
+
+
+        <p>
+            Intelligence with a slightly questionable pest problem.
+        </p>
+
+
+        <div class="roach-gallery">
+
+            <img
+                src="https://avatars.fastly.steamstatic.com/b76a2e69616ae68a574fdc638ab82fdcc3f94161_full.jpg"
+                alt="Dalbayob specimen"
+            >
+
+            <div class="roach-gallery-caption">
+                DALBAYOB SPECIMEN ARCHIVE · ROACH DIVISION
+            </div>
+
         </div>
 
-    `;
+
+        <div class="suggestions">
+
+            <button
+                class="suggestion"
+                type="button"
+                onclick="useSuggestion('What can you do?')">
+
+                What can you do?
+
+            </button>
 
 
-    input.focus();
+            <button
+                class="suggestion"
+                type="button"
+                onclick="useSuggestion('Explain something complicated')">
+
+                Explain something complicated
+
+            </button>
+
+
+            <button
+                class="suggestion"
+                type="button"
+                onclick="useSuggestion('Give me a creative idea')">
+
+                Give me a creative idea
+
+            </button>
+
+
+            <button
+                class="suggestion"
+                type="button"
+                onclick="useSuggestion('Generate an image of a giant cockroach')">
+
+                🪳 Summon a roach
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="reverseSearchResults"
+        class="reverse-search-results">
+    </div>
+
+`;
+
+
+input.focus();
+```
 
 }
 
-
 /* =========================================================
-   SUGGESTIONS
+SUGGESTIONS
 ========================================================= */
 
 function useSuggestion(text) {
 
-    input.value =
-        text;
+```
+input.value =
+    text;
 
 
-    input.dispatchEvent(
-        new Event("input")
-    );
+input.dispatchEvent(
+    new Event("input")
+);
 
 
-    input.focus();
+input.focus();
+```
 
 }
 
-
 /* =========================================================
-   IMAGE MODE
+IMAGE MODE
 ========================================================= */
 
 function focusImageMode() {
 
-    input.value =
-        currentImage
-            ? "Edit the latest image: "
-            : attachedImage
-                ? "Edit this image: "
-                : "Generate an image of ";
+```
+input.value =
+    currentImage
+        ? "Edit the latest image: "
+        : attachedImages.length
+            ? "Edit the attached image: "
+            : "Generate an image of ";
 
 
-    input.dispatchEvent(
-        new Event("input")
-    );
+input.dispatchEvent(
+    new Event("input")
+);
 
 
-    input.focus();
+input.focus();
+```
 
 }
 
