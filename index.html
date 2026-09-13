@@ -822,6 +822,24 @@ button {
     gap: 8px;
 
     flex-wrap: wrap;
+
+    max-height: 190px;
+
+    overflow-y: auto;
+}
+
+.attachment-preview::-webkit-scrollbar {
+    width: 5px;
+}
+
+.attachment-preview::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.attachment-preview::-webkit-scrollbar-thumb {
+    background: rgba(205, 169, 87, 0.14);
+
+    border-radius: 10px;
 }
 
 .attachment-preview.visible {
@@ -833,6 +851,8 @@ button {
 
     width: 70px;
     height: 70px;
+
+    flex: 0 0 70px;
 }
 
 .attachment img {
@@ -844,6 +864,8 @@ button {
     border-radius: 9px;
 
     border: 1px solid rgba(205, 169, 87, 0.25);
+
+    display: block;
 }
 
 .remove-attachment {
@@ -980,6 +1002,8 @@ button {
     gap: 6px;
 
     padding: 0 10px 10px;
+
+    flex-wrap: wrap;
 }
 
 .tool-button {
@@ -1274,6 +1298,17 @@ button {
     .reverse-grid {
         grid-template-columns: 1fr;
     }
+
+    .attachment-preview {
+        max-height: 150px;
+    }
+
+    .attachment {
+        width: 60px;
+        height: 60px;
+        flex-basis: 60px;
+    }
+
 }
 
 </style>
@@ -1738,6 +1773,23 @@ function showWelcome() {
    ATTACHMENTS
 ========================================================= */
 
+/*
+    Multiple-image support
+
+    attachedImages contains every selected/pasted image.
+
+    Example:
+
+    attachedImages = [
+        "data:image/jpeg;base64,...",
+        "data:image/png;base64,...",
+        "data:image/webp;base64,..."
+    ];
+
+    The entire array is sent to /api/chat.
+*/
+
+
 function handleImageUpload(event) {
 
     const files =
@@ -1747,31 +1799,68 @@ function handleImageUpload(event) {
         return;
     }
 
-    files.forEach(file => {
+    addImageFiles(files);
 
-        if (!file.type.startsWith("image/")) {
-            return;
-        }
-
-        readImageFile(file);
-
-    });
+    /*
+        Reset the input so selecting the same file again
+        will still trigger the change event.
+    */
 
     imageInput.value = "";
 }
 
 
+function addImageFiles(files) {
+
+    const validFiles =
+        files.filter(file =>
+            file &&
+            file.type &&
+            file.type.startsWith("image/")
+        );
+
+    if (!validFiles.length) {
+        return;
+    }
+
+    /*
+        Read every image independently.
+
+        We do NOT replace attachedImages here.
+        This means selecting another batch of images
+        adds them to the existing batch.
+    */
+
+    validFiles.forEach(file => {
+
+        readImageFile(file);
+
+    });
+}
+
+
 function readImageFile(file) {
 
-    const reader = new FileReader();
+    const reader =
+        new FileReader();
 
-    reader.onload = function() {
+    reader.onload = function(event) {
 
-        if (!reader.result) {
+        const result =
+            event.target?.result;
+
+        if (!result) {
             return;
         }
 
-        attachedImages.push(reader.result);
+        /*
+            Store the complete data URL.
+
+            This is important because /api/chat needs
+            the actual image data, not just the filename.
+        */
+
+        attachedImages.push(result);
 
         renderAttachmentPreview();
 
@@ -1783,7 +1872,10 @@ function readImageFile(file) {
 
     reader.onerror = function() {
 
-        console.error("Could not read image:", file.name);
+        console.error(
+            "Could not read image:",
+            file.name
+        );
 
     };
 
@@ -1809,35 +1901,58 @@ function renderAttachmentPreview() {
         const wrapper =
             document.createElement("div");
 
-        wrapper.className = "attachment";
+        wrapper.className =
+            "attachment";
+
+        wrapper.title =
+            "Image " + (index + 1);
+
 
         const img =
             document.createElement("img");
 
-        img.src = image;
+        img.src =
+            image;
 
-        img.alt = "Attachment " + (index + 1);
+        img.alt =
+            "Attachment " + (index + 1);
+
+        img.loading =
+            "lazy";
+
 
         const remove =
             document.createElement("button");
 
-        remove.className = "remove-attachment";
+        remove.className =
+            "remove-attachment";
 
-        remove.type = "button";
+        remove.type =
+            "button";
 
-        remove.textContent = "×";
+        remove.textContent =
+            "×";
 
-        remove.title = "Remove image";
+        remove.title =
+            "Remove image " + (index + 1);
 
-        remove.addEventListener("click", function() {
 
-            attachedImages.splice(index, 1);
+        remove.addEventListener(
+            "click",
+            function() {
 
-            renderAttachmentPreview();
+                attachedImages.splice(
+                    index,
+                    1
+                );
 
-            updateInputPlaceholder();
+                renderAttachmentPreview();
 
-        });
+                updateInputPlaceholder();
+
+            }
+        );
+
 
         wrapper.appendChild(img);
 
@@ -1854,7 +1969,9 @@ function updateInputPlaceholder() {
     if (attachedImages.length > 1) {
 
         input.placeholder =
-            "Ask Dalbayob about these images...";
+            "Ask Dalbayob about these " +
+            attachedImages.length +
+            " images...";
 
     } else if (attachedImages.length === 1) {
 
@@ -1884,6 +2001,7 @@ function clearAttachedImages() {
     updateInputPlaceholder();
 
     input.focus();
+
 }
 
 
@@ -1891,43 +2009,60 @@ function clearAttachedImages() {
    CLIPBOARD IMAGE PASTE
 ========================================================= */
 
-document.addEventListener("paste", function(event) {
+document.addEventListener(
+    "paste",
+    function(event) {
 
-    const items =
-        Array.from(event.clipboardData?.items || []);
+        const items =
+            Array.from(
+                event.clipboardData?.items || []
+            );
 
-    const imageItems =
-        items.filter(item =>
-            item.kind === "file" &&
-            item.type.startsWith("image/")
-        );
+        const imageItems =
+            items.filter(
+                item =>
+                    item.kind === "file" &&
+                    item.type.startsWith("image/")
+            );
 
-    if (!imageItems.length) {
-        return;
-    }
-
-    imageItems.forEach(item => {
-
-        const file = item.getAsFile();
-
-        if (file) {
-            readImageFile(file);
+        if (!imageItems.length) {
+            return;
         }
 
-    });
+        /*
+            Clipboard can contain multiple image items.
 
-});
+            Read ALL of them instead of returning after
+            the first image.
+        */
+
+        imageItems.forEach(item => {
+
+            const file =
+                item.getAsFile();
+
+            if (file) {
+                readImageFile(file);
+            }
+
+        });
+
+    }
+);
 
 
 /* =========================================================
    FILE BUTTON
 ========================================================= */
 
-attachButton.addEventListener("click", function() {
+attachButton.addEventListener(
+    "click",
+    function() {
 
-    imageInput.click();
+        imageInput.click();
 
-});
+    }
+);
 
 
 imageInput.addEventListener(
@@ -1940,7 +2075,10 @@ imageInput.addEventListener(
    MESSAGES
 ========================================================= */
 
-function addUserMessage(text, images = []) {
+function addUserMessage(
+    text,
+    images = []
+) {
 
     hideWelcome();
 
@@ -1979,7 +2117,9 @@ function addUserMessage(text, images = []) {
             text;
 
         card.appendChild(textElement);
+
     }
+
 
     if (images.length) {
 
@@ -1989,31 +2129,47 @@ function addUserMessage(text, images = []) {
         imageGrid.className =
             "message-attachments";
 
-        images.forEach(image => {
 
-            const img =
-                document.createElement("img");
+        images.forEach(
+            (image, index) => {
 
-            img.src = image;
+                const img =
+                    document.createElement("img");
 
-            img.alt = "Attached image";
+                img.src =
+                    image;
 
-            imageGrid.appendChild(img);
+                img.alt =
+                    "Attached image " +
+                    (index + 1);
 
-        });
+                img.loading =
+                    "lazy";
+
+                imageGrid.appendChild(img);
+
+            }
+        );
+
 
         card.appendChild(imageGrid);
+
     }
+
 
     message.appendChild(card);
 
     chatInner.appendChild(message);
 
     scrollToBottom();
+
 }
 
 
-function addAssistantMessage(text, image = null) {
+function addAssistantMessage(
+    text,
+    image = null
+) {
 
     hideWelcome();
 
@@ -2040,6 +2196,7 @@ function addAssistantMessage(text, image = null) {
 
     card.appendChild(label);
 
+
     if (text) {
 
         const textElement =
@@ -2054,6 +2211,7 @@ function addAssistantMessage(text, image = null) {
         card.appendChild(textElement);
 
     }
+
 
     if (image) {
 
@@ -2080,13 +2238,16 @@ function addAssistantMessage(text, image = null) {
             card.appendChild(img);
 
         }
+
     }
+
 
     message.appendChild(card);
 
     chatInner.appendChild(message);
 
     scrollToBottom();
+
 }
 
 
@@ -2131,17 +2292,21 @@ function addLoadingMessage() {
     chatInner.appendChild(message);
 
     scrollToBottom();
+
 }
 
 
 function removeLoadingMessage() {
 
     const loading =
-        document.getElementById("loadingMessage");
+        document.getElementById(
+            "loadingMessage"
+        );
 
     if (loading) {
         loading.remove();
     }
+
 }
 
 
@@ -2155,28 +2320,54 @@ async function sendMessage() {
         return;
     }
 
+
     const actualMessage =
         input.value.trim();
+
+
+    /*
+        IMPORTANT:
+
+        Copy the entire attachment array.
+
+        This preserves ALL images even after we clear
+        the composer attachments below.
+    */
 
     const imagesForThisMessage =
         [...attachedImages];
 
-    if (!actualMessage && !imagesForThisMessage.length) {
+
+    if (
+        !actualMessage &&
+        !imagesForThisMessage.length
+    ) {
         return;
     }
+
 
     setBusy(true);
 
     hideWelcome();
 
+
     addUserMessage(
-        actualMessage || "Analyze these images.",
+        actualMessage ||
+        "Analyze these images.",
         imagesForThisMessage
     );
+
 
     input.value = "";
 
     autoResize();
+
+
+    /*
+        Clear the composer AFTER making the copy.
+
+        imagesForThisMessage still contains every image.
+    */
 
     attachedImages = [];
 
@@ -2184,36 +2375,61 @@ async function sendMessage() {
 
     updateInputPlaceholder();
 
+
     addLoadingMessage();
+
 
     try {
 
+        /*
+            Build a fresh payload.
+
+            images = ALL attached images.
+
+            image = first image, kept for compatibility
+            with older backend code.
+        */
+
+        const payload = {
+
+            message:
+                actualMessage,
+
+            history:
+                conversationHistory,
+
+            images:
+                imagesForThisMessage,
+
+            image:
+                imagesForThisMessage[0] || null
+
+        };
+
+
+        console.log(
+            "Sending images to /api/chat:",
+            imagesForThisMessage.length
+        );
+
+
         const response =
-            await fetch("/api/chat", {
+            await fetch(
+                "/api/chat",
+                {
 
-                method: "POST",
+                    method: "POST",
 
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
 
-                body: JSON.stringify({
+                    body:
+                        JSON.stringify(payload)
 
-                    message:
-                        actualMessage,
-
-                    history:
-                        conversationHistory,
-
-                    images:
-                        imagesForThisMessage,
-
-                    image:
-                        imagesForThisMessage[0] || null
-
-                })
-
-            });
+                }
+            );
 
 
         const raw =
@@ -2221,6 +2437,7 @@ async function sendMessage() {
 
 
         let data;
+
 
         try {
 
@@ -2265,7 +2482,10 @@ async function sendMessage() {
             null;
 
 
-        if (!reply && !returnedImage) {
+        if (
+            !reply &&
+            !returnedImage
+        ) {
 
             throw new Error(
                 "The AI returned an empty response."
@@ -2280,9 +2500,17 @@ async function sendMessage() {
         );
 
 
+        /*
+            Store the COMPLETE image array in history.
+
+            This lets the frontend retain the fact that
+            multiple images were part of the conversation.
+        */
+
         conversationHistory.push({
 
-            role: "user",
+            role:
+                "user",
 
             content:
                 actualMessage ||
@@ -2296,7 +2524,8 @@ async function sendMessage() {
 
         conversationHistory.push({
 
-            role: "assistant",
+            role:
+                "assistant",
 
             content:
                 reply
@@ -2311,20 +2540,24 @@ async function sendMessage() {
 
         }
 
+
     } catch (error) {
 
         removeLoadingMessage();
+
 
         console.error(
             "Chat error:",
             error
         );
 
+
         addAssistantMessage(
             "I couldn't process that request.\n\n" +
             "Error: " +
             error.message
         );
+
 
     } finally {
 
@@ -2333,6 +2566,7 @@ async function sendMessage() {
         input.focus();
 
     }
+
 }
 
 
@@ -2346,13 +2580,25 @@ async function generateImage() {
         return;
     }
 
+
     const prompt =
         input.value.trim();
+
+
+    /*
+        The image-generation endpoint currently accepts
+        one source image.
+
+        Therefore the first attached image is used here.
+
+        Chat still receives ALL attached images.
+    */
 
     const sourceImage =
         attachedImages[0] ||
         currentImage ||
         null;
+
 
     if (!prompt) {
 
@@ -2364,23 +2610,29 @@ async function generateImage() {
                 : "Describe the image you want...";
 
         return;
+
     }
+
 
     setBusy(true);
 
     hideWelcome();
 
+
     const imagesForMessage =
         [...attachedImages];
+
 
     addUserMessage(
         prompt,
         imagesForMessage
     );
 
+
     input.value = "";
 
     autoResize();
+
 
     attachedImages = [];
 
@@ -2388,30 +2640,37 @@ async function generateImage() {
 
     updateInputPlaceholder();
 
+
     addLoadingMessage();
+
 
     try {
 
         const response =
-            await fetch("/api/image", {
+            await fetch(
+                "/api/image",
+                {
 
-                method: "POST",
+                    method: "POST",
 
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
 
-                body: JSON.stringify({
+                    body:
+                        JSON.stringify({
 
-                    prompt:
-                        prompt,
+                            prompt:
+                                prompt,
 
-                    image:
-                        sourceImage
+                            image:
+                                sourceImage
 
-                })
+                        })
 
-            });
+                }
+            );
 
 
         const raw =
@@ -2419,6 +2678,7 @@ async function generateImage() {
 
 
         let data;
+
 
         try {
 
@@ -2468,6 +2728,7 @@ async function generateImage() {
 
         removeLoadingMessage();
 
+
         addAssistantMessage(
             "Image generated successfully.",
             image
@@ -2476,7 +2737,8 @@ async function generateImage() {
 
         conversationHistory.push({
 
-            role: "user",
+            role:
+                "user",
 
             content:
                 prompt
@@ -2486,27 +2748,32 @@ async function generateImage() {
 
         conversationHistory.push({
 
-            role: "assistant",
+            role:
+                "assistant",
 
             content:
                 "Generated an image."
 
         });
 
+
     } catch (error) {
 
         removeLoadingMessage();
+
 
         console.error(
             "Image generation error:",
             error
         );
 
+
         addAssistantMessage(
             "I couldn't generate the image.\n\n" +
             "Error: " +
             error.message
         );
+
 
     } finally {
 
@@ -2515,6 +2782,7 @@ async function generateImage() {
         input.focus();
 
     }
+
 }
 
 
@@ -2528,6 +2796,7 @@ async function reverseImageSearch() {
         return;
     }
 
+
     const image =
         attachedImages[0] ||
         currentImage;
@@ -2540,6 +2809,7 @@ async function reverseImageSearch() {
         );
 
         return;
+
     }
 
 
@@ -2547,10 +2817,12 @@ async function reverseImageSearch() {
 
     hideWelcome();
 
+
     addUserMessage(
         "Reverse search this image.",
         [image]
     );
+
 
     addLoadingMessage();
 
@@ -2565,12 +2837,14 @@ async function reverseImageSearch() {
                     method: "POST",
 
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type":
+                            "application/json"
                     },
 
-                    body: JSON.stringify({
-                        image: image
-                    })
+                    body:
+                        JSON.stringify({
+                            image: image
+                        })
 
                 }
             );
@@ -2581,6 +2855,7 @@ async function reverseImageSearch() {
 
 
         let data;
+
 
         try {
 
@@ -2610,42 +2885,52 @@ async function reverseImageSearch() {
 
         removeLoadingMessage();
 
-        renderReverseSearchResults(data);
+
+        renderReverseSearchResults(
+            data
+        );
+
 
     } catch (error) {
 
         removeLoadingMessage();
+
 
         console.error(
             "Reverse search error:",
             error
         );
 
+
         renderReverseSearchError(
             error.message
         );
+
 
     } finally {
 
         setBusy(false);
 
     }
+
 }
 
 
-function renderReverseSearchError(message) {
-
-    const safeMessage =
-        escapeHtml(message);
+function renderReverseSearchError(
+    message
+) {
 
     addAssistantMessage(
         "Reverse image search failed.\n\n" +
         message
     );
+
 }
 
 
-function renderReverseSearchResults(data) {
+function renderReverseSearchResults(
+    data
+) {
 
     const results =
         Array.isArray(data.results)
@@ -2663,6 +2948,7 @@ function renderReverseSearchResults(data) {
         );
 
         return;
+
     }
 
 
@@ -2713,112 +2999,118 @@ function renderReverseSearchResults(data) {
         "reverse-grid";
 
 
-    results.slice(0, 12).forEach(result => {
+    results
+        .slice(0, 12)
+        .forEach(result => {
 
-        const url =
-            safeUrl(
-                result.url ||
-                result.link ||
-                result.source ||
-                ""
-            );
-
-
-        const imageUrl =
-            safeUrl(
-                result.image ||
-                result.thumbnail ||
-                result.imageUrl ||
-                result.thumbnailUrl ||
-                ""
-            );
+            const url =
+                safeUrl(
+                    result.url ||
+                    result.link ||
+                    result.source ||
+                    ""
+                );
 
 
-        const item =
-            document.createElement("div");
+            const imageUrl =
+                safeUrl(
+                    result.image ||
+                    result.thumbnail ||
+                    result.imageUrl ||
+                    result.thumbnailUrl ||
+                    ""
+                );
 
-        item.className =
-            "reverse-result";
+
+            const item =
+                document.createElement("div");
+
+            item.className =
+                "reverse-result";
 
 
-        if (imageUrl) {
+            if (imageUrl) {
 
-            const img =
-                document.createElement("img");
+                const img =
+                    document.createElement("img");
 
-            img.src =
-                imageUrl;
+                img.src =
+                    imageUrl;
 
-            img.alt =
+                img.alt =
+                    result.title ||
+                    "Search result";
+
+                img.loading =
+                    "lazy";
+
+                img.onerror =
+                    function() {
+
+                        this.style.display =
+                            "none";
+
+                    };
+
+
+                item.appendChild(img);
+
+            }
+
+
+            const content =
+                document.createElement("div");
+
+            content.className =
+                "reverse-result-content";
+
+
+            const name =
+                document.createElement("div");
+
+            name.className =
+                "reverse-result-name";
+
+            name.textContent =
                 result.title ||
-                "Search result";
-
-            img.loading =
-                "lazy";
-
-            img.onerror =
-                function() {
-                    this.style.display = "none";
-                };
-
-            item.appendChild(img);
-
-        }
+                result.name ||
+                "Image result";
 
 
-        const content =
-            document.createElement("div");
-
-        content.className =
-            "reverse-result-content";
+            content.appendChild(name);
 
 
-        const name =
-            document.createElement("div");
+            if (url) {
 
-        name.className =
-            "reverse-result-name";
+                const link =
+                    document.createElement("a");
 
-        name.textContent =
-            result.title ||
-            result.name ||
-            "Image result";
+                link.className =
+                    "reverse-result-url";
 
+                link.href =
+                    url;
 
-        content.appendChild(name);
+                link.target =
+                    "_blank";
 
+                link.rel =
+                    "noopener noreferrer";
 
-        if (url) {
-
-            const link =
-                document.createElement("a");
-
-            link.className =
-                "reverse-result-url";
-
-            link.href =
-                url;
-
-            link.target =
-                "_blank";
-
-            link.rel =
-                "noopener noreferrer";
-
-            link.textContent =
-                url;
+                link.textContent =
+                    url;
 
 
-            content.appendChild(link);
+                content.appendChild(link);
 
-        }
+            }
 
 
-        item.appendChild(content);
+            item.appendChild(content);
 
-        grid.appendChild(item);
+            grid.appendChild(item);
 
-    });
+        });
 
 
     card.appendChild(grid);
@@ -2836,10 +3128,13 @@ function renderReverseSearchResults(data) {
    IMAGE MODE
 ========================================================= */
 
-function setImageMode(enabled) {
+function setImageMode(
+    enabled
+) {
 
     imageMode =
         enabled;
+
 
     if (enabled) {
 
@@ -2871,6 +3166,7 @@ function setImageMode(enabled) {
 
     }
 
+
     updateInputPlaceholder();
 
 }
@@ -2889,7 +3185,9 @@ function focusImageMode() {
    SUGGESTIONS
 ========================================================= */
 
-function useSuggestion(text) {
+function useSuggestion(
+    text
+) {
 
     input.value =
         text;
@@ -3021,7 +3319,9 @@ function createWelcomeElement() {
         </div>
     `;
 
+
     return section;
+
 }
 
 
