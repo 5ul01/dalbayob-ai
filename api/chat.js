@@ -1,347 +1,229 @@
-export default async function handler(
-    req,
-    res
-) {
-
+export default async function handler(req, res) {
     if (req.method !== "POST") {
-
         return res.status(405).json({
-            error: "Method not allowed."
+            error: "Method not allowed"
         });
-
     }
 
-
     try {
+        const {
+            message = "",
+            history = [],
+            images = [],
+            image = null
+        } = req.body || {};
 
-        const body =
-            req.body || {};
-
-
-        const message =
-            typeof body.message === "string"
-                ? body.message.trim()
-                : "";
-
-
-        const history =
-            Array.isArray(body.history)
-                ? body.history
-                : [];
-
-
-        const image =
-            typeof body.image === "string" &&
-            body.image.startsWith("data:image/")
-                ? body.image
-                : null;
-
-
-        if (!message && !image) {
-
-            return res.status(400).json({
-                error:
-                    "No message or image provided."
-            });
-
-        }
-
-
-        const apiKey =
-            process.env.POLLINATIONS_API_KEY;
-
+        const apiKey = process.env.POLLINATIONS_API_KEY;
 
         if (!apiKey) {
-
             return res.status(500).json({
-                error:
-                    "POLLINATIONS_API_KEY is not configured."
+                error: "POLLINATIONS_API_KEY is not configured."
             });
-
         }
 
-
-        const systemPrompt = `
-You are Dalbayob AI.
-
-You are a multimodal AI assistant.
-
-PERSONALITY:
-
-- Natural.
-- Intelligent.
-- Conversational.
-- Understand slang and casual language.
-- Match the user's tone.
-- Do not sound like corporate customer support.
-- Do not unnecessarily repeat questions.
-- Keep simple answers concise.
-- Give detail when useful.
-- Be honest when uncertain.
-
-IMAGE UNDERSTANDING:
-
-When an image is supplied:
-
-- Inspect it carefully.
-- Identify visible objects.
-- Read visible text when possible.
-- Identify logos and brands when reasonably clear.
-- Identify vehicles and models when possible.
-- Identify locations when evidence supports it.
-- Describe artwork and screenshots accurately.
-- Separate observations from guesses.
-- Never invent details that are not visible.
-
-REVERSE IMAGE SEARCH:
-
-You are not the reverse-image-search engine.
-
-The application has a separate reverse-search feature.
-
-If the user asks for an exact source or internet match,
-do not pretend that visual analysis itself proves the source.
-
-CODING:
-
-When asked for code:
-
-- Provide complete code when practical.
-- Preserve the user's existing architecture.
-- Do not unnecessarily replace unrelated code.
-- Explain important setup requirements.
-
-GENERAL:
-
-Be useful.
-Be direct.
-Do not claim to have searched the internet unless
-the application actually provided search results.
-`;
-
-
-        const messages = [
-
-            {
-                role: "system",
-                content:
-                    systemPrompt
-            }
-
-        ];
-
-
         /*
-         * Keep the most recent conversation
-         * context without allowing gigantic
-         * histories to grow forever.
+         * Normalize images.
+         *
+         * The frontend sends:
+         *
+         * images: [
+         *   "data:image/png;base64,...",
+         *   "data:image/jpeg;base64,...",
+         *   "data:image/webp;base64,..."
+         * ]
+         *
+         * We keep ALL of them.
          */
 
-        const recentHistory =
-            history.slice(-20);
+        let imageList = Array.isArray(images)
+            ? images.filter(Boolean)
+            : [];
 
+        /*
+         * Backwards compatibility:
+         * If an older frontend only sends `image`,
+         * add it if it isn't already present.
+         */
 
-        for (
-            const item of recentHistory
-        ) {
+        if (image && !imageList.includes(image)) {
+            imageList.unshift(image);
+        }
 
+        /*
+         * Build the user's multimodal message.
+         *
+         * OpenAI-compatible vision format:
+         *
+         * content: [
+         *   { type: "text", text: "..." },
+         *   {
+         *      type: "image_url",
+         *      image_url: { url: "..." }
+         *   }
+         * ]
+         */
+
+        const content = [];
+
+        if (message.trim()) {
+            content.push({
+                type: "text",
+                text: message.trim()
+            });
+        } else if (imageList.length) {
+            content.push({
+                type: "text",
+                text: "Analyze the attached images."
+            });
+        }
+
+        /*
+         * IMPORTANT:
+         * Add EVERY image, not just imageList[0].
+         */
+
+        for (const imageUrl of imageList) {
             if (
-                !item ||
-                (
-                    item.role !== "user" &&
-                    item.role !== "assistant"
-                ) ||
-                typeof item.content !== "string"
+                typeof imageUrl === "string" &&
+                imageUrl.length > 0
             ) {
-                continue;
+                content.push({
+                    type: "image_url",
+                    image_url: {
+                        url: imageUrl
+                    }
+                });
             }
-
-
-            messages.push({
-
-                role:
-                    item.role,
-
-                content:
-                    item.content
-
-            });
-
         }
-
-
-        const userText =
-            message ||
-            "Analyze this image carefully and tell me what you can determine.";
-
 
         /*
-         * Multimodal request.
+         * Build conversation history.
+         *
+         * We deliberately don't blindly forward the frontend's
+         * history because it may contain data URLs and unnecessary
+         * frontend-only properties.
          */
 
-        if (image) {
+        const messages = [];
 
-            messages.push({
-
-                role: "user",
-
-                content: [
-
-                    {
-                        type: "text",
-
-                        text:
-                            userText
-
-                    },
-
-                    {
-                        type: "image_url",
-
-                        image_url: {
-
-                            url:
-                                image
-
-                        }
-
-                    }
-
-                ]
-
-            });
-
-        } else {
-
-            messages.push({
-
-                role: "user",
-
-                content:
-                    userText
-
-            });
-
-        }
-
-
-        const response =
-            await fetch(
-                "https://gen.pollinations.ai/v1/chat/completions",
-                {
-
-                    method: "POST",
-
-                    headers: {
-
-                        "Content-Type":
-                            "application/json",
-
-                        "Authorization":
-                            `Bearer ${apiKey}`
-
-                    },
-
-                    body: JSON.stringify({
-
-                        model:
-                            "gpt-5.6-luna",
-
-                        messages
-
-                    })
-
+        if (Array.isArray(history)) {
+            for (const item of history) {
+                if (!item || !item.role) {
+                    continue;
                 }
-            );
 
+                /*
+                 * Keep normal text history.
+                 */
 
-        const raw =
-            await response.text();
+                if (
+                    item.role === "assistant" &&
+                    typeof item.content === "string"
+                ) {
+                    messages.push({
+                        role: "assistant",
+                        content: item.content
+                    });
 
+                    continue;
+                }
 
-        if (!response.ok) {
+                if (
+                    item.role === "user" &&
+                    typeof item.content === "string"
+                ) {
+                    /*
+                     * Don't resend old images from history.
+                     *
+                     * The current request already contains the
+                     * images the user is asking about.
+                     */
 
-            console.error(
-                "Pollinations error:",
-                raw
-            );
-
-
-            return res.status(
-                response.status
-            ).json({
-
-                error:
-                    "AI request failed."
-
-            });
-
+                    messages.push({
+                        role: "user",
+                        content: item.content
+                    });
+                }
+            }
         }
 
+        /*
+         * Add the CURRENT user request containing all images.
+         */
+
+        messages.push({
+            role: "user",
+            content: content
+        });
+
+        /*
+         * Send to Pollinations.
+         */
+
+        const response = await fetch(
+            "https://gen.pollinations.ai/v1/chat/completions",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${apiKey}`
+                },
+
+                body: JSON.stringify({
+                    model: "openai",
+
+                    messages: messages,
+
+                    temperature: 1.0,
+
+                    max_tokens: 2000
+                })
+            }
+        );
+
+        const raw = await response.text();
 
         let data;
 
-
         try {
-
-            data =
-                JSON.parse(raw);
-
+            data = JSON.parse(raw);
         } catch {
-
-            return res.status(502).json({
-
-                error:
-                    "AI returned invalid JSON."
-
+            return res.status(response.status || 500).json({
+                error: raw || "Invalid response from Pollinations."
             });
-
         }
 
+        if (!response.ok) {
+            return res.status(response.status).json({
+                error:
+                    data?.error?.message ||
+                    data?.error ||
+                    data?.message ||
+                    "Pollinations request failed."
+            });
+        }
 
         const reply =
-            data?.choices?.[0]?.message?.content;
-
+            data?.choices?.[0]?.message?.content ||
+            data?.choices?.[0]?.text ||
+            "";
 
         if (!reply) {
-
-            return res.status(502).json({
-
-                error:
-                    "The AI returned no response."
-
+            return res.status(500).json({
+                error: "Pollinations returned an empty response."
             });
-
         }
 
-
         return res.status(200).json({
-
-            type:
-                "text",
-
-            reply:
-                String(reply)
-
+            reply: reply
         });
-
 
     } catch (error) {
-
-        console.error(
-            "Chat error:",
-            error
-        );
-
+        console.error("CHAT API ERROR:", error);
 
         return res.status(500).json({
-
-            error:
-                error?.message ||
-                "Chat request failed."
-
+            error: error?.message || "Internal server error."
         });
-
     }
-
 }
