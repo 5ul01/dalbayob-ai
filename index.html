@@ -1056,32 +1056,17 @@ button {
 
 against the dark background.
 */
-
 .real-roach {
     position: fixed;
-
     width: 250px;
     height: 250px;
-
     object-fit: contain;
-
-    opacity: 0.35;
-
+    opacity: 0.28;
     pointer-events: none;
-
-    z-index: 2;
-
-    filter:
-        grayscale(0.15)
-        brightness(0.85)
-        contrast(1.15)
-        drop-shadow(
-            0 3px 5px rgba(0, 0, 0, 0.55)
-        );
-
+    z-index: 20;
+    filter: grayscale(0.1) brightness(0.85);
     animation-timing-function: linear;
     animation-iteration-count: infinite;
-
     will-change: transform;
 }
 
