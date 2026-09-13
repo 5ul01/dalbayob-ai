@@ -1,32 +1,40 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
-
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Dalbayob AI</title>
 
-<style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
 
 :root {
     --black: #050604;
-    --black2: #090d08;
-    --green: #102719;
-    --green2: #193722;
-    --green3: #284b31;
+    --black2: #080b07;
+    --panel: rgba(10, 15, 10, 0.86);
+    --panel2: rgba(14, 20, 14, 0.92);
+
+    --green: #4e8c52;
+    --green-light: #7bb879;
+    --green-dark: #274d2b;
+
     --gold: #cda957;
-    --gold-light: #f0d78c;
-    --cream: #eee8d6;
-    --muted: #858b7e;
+    --gold-light: #e7c97b;
+
+    --cream: #e7e2d4;
+    --muted: #858b80;
+
+    --border: rgba(205, 169, 87, 0.18);
+    --border-green: rgba(123, 184, 121, 0.16);
+
+    --danger: #c65d5d;
+
+    --radius: 16px;
 }
 
 * {
@@ -35,1197 +43,250 @@ content="width=device-width, initial-scale=1.0"
 
 html,
 body {
+    margin: 0;
+    padding: 0;
     width: 100%;
     height: 100%;
-    margin: 0;
-    overflow: hidden;
 }
 
 body {
-    font-family: Inter, sans-serif;
+    background:
+        radial-gradient(circle at 50% 40%, rgba(46, 82, 48, 0.16), transparent 35%),
+        linear-gradient(rgba(4, 7, 4, 0.88), rgba(4, 7, 4, 0.94)),
+        url("https://avatars.fastly.steamstatic.com/b76a2e69616ae68a574fdc638ab82fdcc3f94161_full.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+
     color: var(--cream);
 
-    background:
-        radial-gradient(
-            circle at 50% 40%,
-            rgba(39, 86, 48, .24),
-            transparent 42%
-        ),
-        radial-gradient(
-            circle at 15% 90%,
-            rgba(205, 169, 87, .08),
-            transparent 30%
-        ),
-        var(--black);
+    font-family: "Inter", sans-serif;
+
+    overflow: hidden;
 }
 
-body::before {
-    content: "";
-
-    position: fixed;
-    inset: 0;
-
-    pointer-events: none;
-
-    opacity: .16;
-
-    background-image:
-        linear-gradient(
-            30deg,
-            rgba(205,169,87,.15) 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            150deg,
-            rgba(205,169,87,.15) 1px,
-            transparent 1px
-        );
-
-    background-size: 72px 72px;
-
-    z-index: 0;
+button,
+input,
+textarea {
+    font-family: inherit;
 }
 
-body::after {
-    content: "";
-
-    position: fixed;
-    inset: 0;
-
-    pointer-events: none;
-
-    box-shadow:
-        inset 0 0 180px rgba(0,0,0,.9);
-
-    z-index: 9999;
+button {
+    border: 0;
 }
-
-
-/* =========================================================
-   REAL COCKROACHES
-========================================================= */
-
-.real-roach {
-    position: fixed;
-
-    width: 190px;
-    height: 190px;
-
-    pointer-events: none;
-
-    z-index: 50;
-
-    filter:
-        drop-shadow(0 18px 15px rgba(0,0,0,.78))
-        saturate(1.08)
-        contrast(1.05);
-}
-
-.real-roach img {
-    width: 100%;
-    height: 100%;
-
-    display: block;
-
-    object-fit: contain;
-}
-
-.rr1 {
-    left: -240px;
-    top: 8%;
-
-    width: 210px;
-    height: 210px;
-
-    animation: crawlAcross 25s linear infinite;
-}
-
-.rr2 {
-    right: -250px;
-    top: 30%;
-
-    width: 235px;
-    height: 235px;
-
-    transform: scaleX(-1);
-
-    animation: crawlReverse 30s linear infinite;
-}
-
-.rr3 {
-    left: 12%;
-    top: -230px;
-
-    width: 180px;
-    height: 180px;
-
-    transform: rotate(82deg);
-
-    animation: crawlDown 22s linear infinite;
-}
-
-.rr4 {
-    right: 4%;
-    bottom: -280px;
-
-    width: 270px;
-    height: 270px;
-
-    transform: rotate(-58deg);
-
-    animation: crawlUp 27s linear infinite;
-}
-
-.rr5 {
-    left: -180px;
-    top: 75%;
-
-    width: 150px;
-    height: 150px;
-
-    animation: crawlFast 18s linear infinite;
-}
-
-.rr6 {
-    right: -230px;
-    top: 11%;
-
-    width: 220px;
-    height: 220px;
-
-    transform: rotate(180deg);
-
-    animation: crawlHeader 34s linear infinite;
-}
-
-.rr7 {
-    left: 53%;
-    top: -210px;
-
-    width: 165px;
-    height: 165px;
-
-    transform: rotate(110deg);
-
-    animation: crawlDrop 36s linear infinite;
-}
-
-.rr8 {
-    left: -210px;
-    top: 45%;
-
-    width: 175px;
-    height: 175px;
-
-    animation: crawlSide 39s linear infinite;
-}
-
-
-/* =========================================================
-   ROACH ANIMATIONS
-========================================================= */
-
-@keyframes crawlAcross {
-    0% {
-        left: -250px;
-        top: 8%;
-        transform: rotate(-10deg);
-    }
-
-    20% {
-        top: 13%;
-        transform: rotate(5deg);
-    }
-
-    40% {
-        top: 6%;
-        transform: rotate(-4deg);
-    }
-
-    60% {
-        top: 15%;
-        transform: rotate(7deg);
-    }
-
-    80% {
-        top: 8%;
-    }
-
-    100% {
-        left: calc(100% + 250px);
-        top: 12%;
-        transform: rotate(-10deg);
-    }
-}
-
-@keyframes crawlReverse {
-    0% {
-        right: -260px;
-        top: 30%;
-        transform: scaleX(-1) rotate(-12deg);
-    }
-
-    25% {
-        top: 24%;
-    }
-
-    50% {
-        top: 35%;
-    }
-
-    75% {
-        top: 27%;
-    }
-
-    100% {
-        right: calc(100% + 260px);
-        top: 32%;
-        transform: scaleX(-1) rotate(-12deg);
-    }
-}
-
-@keyframes crawlDown {
-    0% {
-        top: -230px;
-        left: 12%;
-    }
-
-    25% {
-        left: 17%;
-    }
-
-    50% {
-        left: 10%;
-    }
-
-    75% {
-        left: 15%;
-    }
-
-    100% {
-        top: calc(100% + 230px);
-        left: 8%;
-    }
-}
-
-@keyframes crawlUp {
-    0% {
-        bottom: -290px;
-        right: 4%;
-    }
-
-    25% {
-        right: 10%;
-    }
-
-    50% {
-        right: 3%;
-    }
-
-    75% {
-        right: 13%;
-    }
-
-    100% {
-        bottom: calc(100% + 290px);
-        right: 7%;
-    }
-}
-
-@keyframes crawlFast {
-    0% {
-        left: -190px;
-        top: 75%;
-    }
-
-    20% {
-        top: 69%;
-    }
-
-    40% {
-        top: 79%;
-    }
-
-    60% {
-        top: 71%;
-    }
-
-    80% {
-        top: 78%;
-    }
-
-    100% {
-        left: calc(100% + 190px);
-        top: 73%;
-    }
-}
-
-@keyframes crawlHeader {
-    0% {
-        right: -240px;
-        top: 11%;
-        transform: rotate(180deg);
-    }
-
-    25% {
-        top: 17%;
-    }
-
-    50% {
-        top: 8%;
-    }
-
-    75% {
-        top: 15%;
-    }
-
-    100% {
-        right: calc(100% + 240px);
-        top: 11%;
-        transform: rotate(180deg);
-    }
-}
-
-@keyframes crawlDrop {
-    0% {
-        top: -220px;
-        left: 53%;
-    }
-
-    30% {
-        left: 59%;
-    }
-
-    65% {
-        left: 48%;
-    }
-
-    100% {
-        top: calc(100% + 220px);
-        left: 54%;
-    }
-}
-
-@keyframes crawlSide {
-    0% {
-        left: -220px;
-        top: 45%;
-    }
-
-    30% {
-        top: 39%;
-    }
-
-    60% {
-        top: 51%;
-    }
-
-    100% {
-        left: calc(100% + 220px);
-        top: 44%;
-    }
-}
-
-
-/* =========================================================
-   APP
-========================================================= */
 
 .app {
-    position: relative;
-    z-index: 100;
+    width: 100%;
+    height: 100vh;
 
     display: flex;
 
-    width: 100%;
-    height: 100vh;
+    position: relative;
 }
 
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+.background-overlay {
+    position: fixed;
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle at center,
+            transparent 0%,
+            rgba(0, 0, 0, 0.18) 45%,
+            rgba(0, 0, 0, 0.72) 100%
+        );
+
+    z-index: 0;
+}
 
 /* =========================================================
    SIDEBAR
 ========================================================= */
 
 .sidebar {
+    width: 250px;
+    min-width: 250px;
+
+    height: 100vh;
+
+    background: rgba(5, 8, 5, 0.94);
+
+    border-right: 1px solid var(--border);
+
+    display: flex;
+    flex-direction: column;
+
     position: relative;
-    z-index: 300;
+    z-index: 20;
 
-    width: 86px;
-    height: 100%;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    padding: 20px 0;
-
-    background: rgba(5,8,5,.9);
-
-    border-right:
-        1px solid rgba(205,169,87,.18);
-
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
 }
 
-.brand-mark {
-    width: 50px;
-    height: 50px;
+.brand {
+    padding: 26px 22px 24px;
 
-    display: grid;
-    place-items: center;
+    border-bottom: 1px solid var(--border);
 
-    border-radius: 16px;
-
-    border:
-        1px solid rgba(205,169,87,.5);
-
-    color: var(--gold-light);
-
-    font-size: 25px;
-
-    box-shadow:
-        0 0 30px rgba(205,169,87,.08);
-
-    margin-bottom: 45px;
+    position: relative;
 }
 
+.brand-title {
+    font-family: "Cinzel", serif;
 
-/* =========================================================
-   NAV
-========================================================= */
+    color: var(--gold);
 
-.nav {
-    display: flex;
-    flex-direction: column;
+    font-size: 22px;
+    font-weight: 700;
 
-    gap: 15px;
+    letter-spacing: 3px;
 }
 
-.nav button {
-    width: 48px;
-    height: 48px;
+.brand-subtitle {
+    margin-top: 5px;
 
-    border-radius: 14px;
-
-    border:
-        1px solid rgba(205,169,87,.14);
-
-    background:
-        rgba(255,255,255,.025);
-
-    color: #8d927f;
-
-    font-size: 20px;
-
-    cursor: pointer;
-
-    transition:
-        transform .2s,
-        color .2s,
-        border-color .2s,
-        background .2s;
-}
-
-.nav button:hover,
-.nav button.active {
-    color: var(--gold-light);
-
-    border-color:
-        rgba(205,169,87,.5);
-
-    background:
-        rgba(205,169,87,.08);
-
-    transform:
-        translateY(-2px);
-}
-
-.sidebar-bottom {
-    margin-top: auto;
-
-    writing-mode: vertical-rl;
-
-    color: #555c51;
+    color: var(--muted);
 
     font-size: 9px;
-
-    letter-spacing: 4px;
-}
-
-
-/* =========================================================
-   MAIN
-========================================================= */
-
-.main {
-    position: relative;
-
-    flex: 1;
-
-    min-width: 0;
-
-    display: flex;
-    flex-direction: column;
-
-    overflow: hidden;
-}
-
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-.header {
-    position: relative;
-    z-index: 300;
-
-    height: 78px;
-
-    flex: 0 0 78px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 0 32px;
-
-    background:
-        rgba(4,7,4,.78);
-
-    border-bottom:
-        1px solid rgba(205,169,87,.12);
-
-    backdrop-filter: blur(20px);
-}
-
-.header-left {
-    display: flex;
-    align-items: center;
-
-    gap: 14px;
-}
-
-.header-symbol {
-    color: var(--gold-light);
-    font-size: 25px;
-}
-
-.header-title {
-    font-family: Cinzel, serif;
-
-    font-size: 16px;
-
-    letter-spacing: 4px;
-}
-
-.header-sub {
-    margin-top: 3px;
-
-    color: #666d61;
-
-    font-size: 9px;
-
     letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
-.status {
+.online {
     display: flex;
     align-items: center;
 
-    gap: 9px;
+    gap: 7px;
 
-    color: #7f8979;
+    margin-top: 14px;
+
+    color: #7fbd7d;
 
     font-size: 9px;
-
-    letter-spacing: 2px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
 }
 
-.status-dot {
+.online-dot {
     width: 7px;
     height: 7px;
 
     border-radius: 50%;
 
-    background: #a8c174;
+    background: #75ba73;
 
-    box-shadow:
-        0 0 12px #a8c174;
+    box-shadow: 0 0 10px rgba(117, 186, 115, 0.8);
 }
 
-
-/* =========================================================
-   CHAT
-========================================================= */
-
-#chat {
-    position: relative;
-    z-index: 120;
-
-    flex: 1;
-
-    min-height: 0;
-
-    overflow-y: auto;
-
-    scrollbar-width: thin;
-
-    scrollbar-color:
-        #354332
-        transparent;
-}
-
-.chat-inner {
-    width: min(1050px, 100%);
-
-    min-height: 100%;
-
-    margin: auto;
-
-    padding: 50px 35px 390px;
-}
-
-
-/* =========================================================
-   WELCOME
-========================================================= */
-
-.welcome {
-    min-height: 60vh;
+.sidebar-content {
+    padding: 18px 12px;
 
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
 
-    text-align: center;
+    gap: 7px;
 }
 
-.welcome-emblem {
-    width: 105px;
-    height: 105px;
+.sidebar-label {
+    padding: 10px 11px 7px;
 
-    display: grid;
-    place-items: center;
-
-    margin-bottom: 25px;
-
-    border-radius: 50%;
-
-    border:
-        1px solid rgba(205,169,87,.42);
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(205,169,87,.1),
-            transparent 68%
-        );
-
-    box-shadow:
-        0 0 60px rgba(205,169,87,.07),
-        inset 0 0 30px rgba(205,169,87,.04);
-}
-
-.crescent {
-    color: var(--gold-light);
-    font-size: 50px;
-}
-
-.welcome h1 {
-    margin: 0;
-
-    font-family: Cinzel, serif;
-
-    font-size:
-        clamp(28px, 4vw, 48px);
-
-    font-weight: 600;
-
-    letter-spacing: 1px;
-}
-
-.welcome > p {
-    margin-top: 12px;
-
-    color: #858b7e;
-
-    font-size: 14px;
-}
-
-
-/* =========================================================
-   SPECIMEN IMAGE
-========================================================= */
-
-.roach-gallery {
-    position: relative;
-
-    width: min(390px, 90%);
-
-    margin: 25px auto 5px;
-}
-
-.roach-gallery::before {
-    content: "SPECIMEN // 001";
-
-    position: absolute;
-
-    left: 17px;
-    top: -12px;
-
-    z-index: 5;
-
-    padding: 4px 8px;
-
-    color: var(--gold-light);
-
-    background: var(--black);
-
-    font-size: 8px;
-
-    letter-spacing: 3px;
-}
-
-.roach-gallery img {
-    width: 100%;
-
-    display: block;
-
-    aspect-ratio: 1 / 1;
-
-    object-fit: cover;
-
-    border-radius: 20px;
-
-    border:
-        1px solid rgba(205,169,87,.35);
-
-    box-shadow:
-        0 20px 70px rgba(0,0,0,.7),
-        0 0 35px rgba(205,169,87,.07);
-
-    filter:
-        saturate(.88)
-        contrast(1.06);
-}
-
-.roach-gallery-caption {
-    position: absolute;
-
-    left: 14px;
-    right: 14px;
-    bottom: 14px;
-
-    padding: 12px 14px;
-
-    border-radius: 12px;
-
-    background:
-        rgba(3,5,3,.82);
-
-    border:
-        1px solid rgba(205,169,87,.18);
-
-    backdrop-filter: blur(12px);
-
-    color: #b9b5a1;
-
-    text-align: left;
+    color: #626960;
 
     font-size: 9px;
 
-    letter-spacing: 2px;
+    letter-spacing: 1.8px;
+
+    text-transform: uppercase;
 }
 
+.side-button {
+    width: 100%;
 
-/* =========================================================
-   SUGGESTIONS
-========================================================= */
-
-.suggestions {
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
 
-    justify-content: center;
+    gap: 11px;
 
-    gap: 9px;
+    padding: 11px 13px;
 
-    max-width: 700px;
+    border-radius: 10px;
 
-    margin-top: 27px;
-}
+    background: transparent;
 
-.suggestion {
-    padding: 10px 16px;
-
-    border-radius: 100px;
-
-    border:
-        1px solid rgba(205,169,87,.16);
-
-    background:
-        rgba(255,255,255,.025);
-
-    color: #aaa99a;
-
-    font-family: Inter, sans-serif;
-
-    font-size: 11px;
+    color: #aaaFA5;
 
     cursor: pointer;
 
-    transition: .2s;
-}
+    text-align: left;
 
-.suggestion:hover {
-    color: var(--gold-light);
-
-    border-color:
-        rgba(205,169,87,.45);
-
-    background:
-        rgba(205,169,87,.07);
-
-    transform:
-        translateY(-1px);
-}
-
-
-/* =========================================================
-   MESSAGES
-========================================================= */
-
-.message-row {
-    display: flex;
-
-    margin: 22px 0;
-}
-
-.message-row.user {
-    justify-content: flex-end;
-}
-
-.message {
-    max-width: 78%;
-
-    padding: 15px 18px;
-
-    border-radius: 17px;
-
-    line-height: 1.65;
-
-    font-size: 14px;
-
-    white-space: pre-wrap;
-}
-
-.message.user {
-    color: #e7eadc;
-
-    background:
-        linear-gradient(
-            135deg,
-            #183522,
-            #102417
-        );
-
-    border:
-        1px solid rgba(111,160,110,.18);
-
-    border-bottom-right-radius: 5px;
-}
-
-.message.assistant {
-    color: #d3d2c5;
-
-    background:
-        rgba(255,255,255,.025);
-
-    border:
-        1px solid rgba(205,169,87,.12);
-
-    border-left:
-        2px solid rgba(205,169,87,.6);
-
-    border-bottom-left-radius: 5px;
-}
-
-.message.assistant img,
-.message.user img {
-    max-width: 100%;
-
-    display: block;
-
-    border-radius: 14px;
-
-    border:
-        1px solid rgba(205,169,87,.3);
-}
-
-.chat-image-preview {
-    max-width: 260px;
-
-    margin-top: 10px;
-
-    border-radius: 13px;
-
-    border:
-        1px solid rgba(205,169,87,.25);
-
-    box-shadow:
-        0 10px 35px rgba(0,0,0,.35);
-}
-
-
-/* =========================================================
-   MULTI IMAGE MESSAGE
-========================================================= */
-
-.message-images {
-    display: grid;
-
-    grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(120px, 1fr)
-        );
-
-    gap: 8px;
-
-    margin-top: 10px;
-
-    max-width: 520px;
-}
-
-.message-images img {
-    width: 100%;
-    height: 150px;
-
-    object-fit: cover;
-
-    border-radius: 12px;
-
-    border:
-        1px solid rgba(205,169,87,.25);
-
-    box-shadow:
-        0 8px 25px rgba(0,0,0,.3);
-}
-
-
-/* =========================================================
-   REVERSE IMAGE SEARCH
-========================================================= */
-
-.reverse-search-results {
-    width: 100%;
-
-    margin: 30px 0 0;
-
-    padding: 0;
-
-    display: none;
-}
-
-.reverse-search-results.visible {
-    display: block;
-}
-
-.reverse-search-panel {
-    padding: 18px;
-
-    border:
-        1px solid rgba(205,169,87,.22);
-
-    border-radius: 18px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(18,30,20,.96),
-            rgba(5,8,5,.98)
-        );
-
-    box-shadow:
-        0 20px 60px rgba(0,0,0,.45);
-
-    backdrop-filter: blur(18px);
-}
-
-.reverse-search-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 15px;
-
-    margin-bottom: 16px;
-}
-
-.reverse-search-title {
-    color: var(--gold-light);
-
-    font-family: Cinzel, serif;
-
-    font-size: 13px;
-
-    letter-spacing: 2px;
-}
-
-.reverse-search-count {
-    color: var(--muted);
-
-    font-size: 10px;
-}
-
-.reverse-search-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(
-            auto-fill,
-            minmax(210px, 1fr)
-        );
-
-    gap: 12px;
-}
-
-.reverse-result {
-    min-width: 0;
-
-    overflow: hidden;
-
-    border:
-        1px solid rgba(205,169,87,.12);
-
-    border-radius: 14px;
-
-    background:
-        rgba(255,255,255,.025);
+    font-size: 12px;
 
     transition:
-        transform .2s,
-        border-color .2s,
-        background .2s;
+        background 0.18s ease,
+        color 0.18s ease,
+        transform 0.18s ease;
 }
 
-.reverse-result:hover {
-    transform: translateY(-3px);
-
-    border-color:
-        rgba(205,169,87,.35);
-
-    background:
-        rgba(205,169,87,.05);
-}
-
-.reverse-result-image {
-    width: 100%;
-    height: 150px;
-
-    display: block;
-
-    object-fit: cover;
-
-    background: #050604;
-}
-
-.reverse-result-body {
-    padding: 13px;
-}
-
-.reverse-result-title {
-    margin-bottom: 6px;
+.side-button:hover {
+    background: rgba(123, 184, 121, 0.08);
 
     color: var(--cream);
 
-    font-size: 12px;
-
-    font-weight: 600;
-
-    line-height: 1.4;
-
-    display: -webkit-box;
-
-    -webkit-line-clamp: 2;
-
-    -webkit-box-orient: vertical;
-
-    overflow: hidden;
+    transform: translateX(2px);
 }
 
-.reverse-result-host {
-    margin-bottom: 10px;
-
-    color: var(--muted);
-
-    font-size: 10px;
-}
-
-.reverse-result-link {
-    display: inline-flex;
-
-    align-items: center;
-
-    padding: 7px 10px;
-
-    border:
-        1px solid rgba(205,169,87,.2);
-
-    border-radius: 8px;
+.side-button.active {
+    background: rgba(205, 169, 87, 0.08);
 
     color: var(--gold-light);
 
-    font-size: 10px;
-
-    text-decoration: none;
-
-    transition: .2s;
+    border: 1px solid rgba(205, 169, 87, 0.1);
 }
 
-.reverse-result-link:hover {
-    background:
-        rgba(205,169,87,.08);
+.side-icon {
+    width: 25px;
+    height: 25px;
 
-    border-color:
-        rgba(205,169,87,.4);
-}
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-.reverse-search-loading {
-    padding: 22px;
+    border-radius: 7px;
 
-    text-align: center;
+    background: rgba(255,255,255,0.035);
 
-    color: var(--muted);
+    color: var(--gold);
 
     font-size: 12px;
 }
 
-.reverse-search-error {
-    padding: 18px;
+.sidebar-footer {
+    margin-top: auto;
 
-    color: #d99a9a;
+    padding: 14px;
 
-    font-size: 12px;
-
-    line-height: 1.6;
-
-    border:
-        1px solid rgba(180,70,70,.18);
-
-    border-radius: 12px;
-
-    background:
-        rgba(120,35,35,.08);
+    border-top: 1px solid var(--border);
 }
 
-.reverse-error-line {
-    margin-bottom: 7px;
+.system-box {
+    padding: 12px;
+
+    border: 1px solid var(--border-green);
+
+    border-radius: 10px;
+
+    background: rgba(23, 36, 23, 0.35);
 }
 
-.reverse-error-label {
-    color: #777e72;
+.system-title {
+    color: var(--green-light);
 
     font-size: 9px;
 
@@ -1234,161 +295,558 @@ body::after {
     text-transform: uppercase;
 }
 
-.reverse-error-value {
-    color: #e0b1b1;
+.system-text {
+    margin-top: 5px;
 
-    font-family: Inter, sans-serif;
+    color: #777d74;
 
-    word-break: break-word;
-}
-
-.reverse-error-details {
-    margin-top: 14px;
-
-    padding: 12px;
-
-    overflow-x: auto;
-
-    border:
-        1px solid rgba(205,169,87,.1);
-
-    border-radius: 10px;
-
-    background:
-        rgba(0,0,0,.25);
-
-    color: #aaa99a;
-
-    font-family:
-        Consolas,
-        Monaco,
-        monospace;
-
-    font-size: 10px;
+    font-size: 9px;
 
     line-height: 1.5;
-
-    white-space: pre-wrap;
 }
-
 
 /* =========================================================
-   MULTI ATTACHMENT PREVIEW
+   MAIN
 ========================================================= */
 
-.attachment-preview {
-    position: absolute;
-
-    left: 50%;
-
-    bottom: 105px;
-
-    transform:
-        translateX(-50%);
-
-    width:
-        min(900px, calc(100% - 56px));
-
-    display: none;
-
-    padding: 9px;
-
-    border-radius: 16px;
-
-    border:
-        1px solid rgba(205,169,87,.22);
-
-    background:
-        rgba(8,12,8,.98);
-
-    backdrop-filter: blur(22px);
-
-    box-shadow:
-        0 20px 50px rgba(0,0,0,.7);
-
-    z-index: 1100;
-}
-
-.attachment-preview.visible {
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
-}
-
-.attachment-list {
-    display: flex;
-
-    align-items: center;
-
-    gap: 8px;
-
+.main {
     flex: 1;
 
     min-width: 0;
 
-    overflow-x: auto;
+    height: 100vh;
 
-    scrollbar-width: thin;
+    display: flex;
+    flex-direction: column;
 
-    scrollbar-color:
-        #354332
-        transparent;
-
-    padding: 2px;
-}
-
-.attachment-item {
     position: relative;
 
-    flex: 0 0 58px;
-
-    width: 58px;
-    height: 58px;
+    z-index: 5;
 }
 
-.attachment-item img {
-    width: 58px;
-    height: 58px;
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header {
+    height: 70px;
+    min-height: 70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 28px;
+
+    border-bottom: 1px solid var(--border);
+
+    background: rgba(5, 8, 5, 0.72);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.header-title {
+    font-family: "Cinzel", serif;
+
+    color: var(--cream);
+
+    font-size: 13px;
+
+    letter-spacing: 2.5px;
+}
+
+.header-subtitle {
+    margin-top: 3px;
+
+    color: #626a61;
+
+    font-size: 8px;
+
+    letter-spacing: 1.7px;
+
+    text-transform: uppercase;
+}
+
+.header-status {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    color: #769775;
+
+    font-size: 9px;
+
+    letter-spacing: 1.3px;
+
+    text-transform: uppercase;
+}
+
+/* =========================================================
+   CHAT
+========================================================= */
+
+.chat {
+    flex: 1;
+
+    min-height: 0;
+
+    overflow-y: auto;
+
+    padding: 35px 20px 30px;
+}
+
+.chat::-webkit-scrollbar {
+    width: 7px;
+}
+
+.chat::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chat::-webkit-scrollbar-thumb {
+    background: rgba(205, 169, 87, 0.14);
+
+    border-radius: 10px;
+}
+
+.chat-inner {
+    width: min(920px, 100%);
+
+    margin: 0 auto;
+}
+
+/* =========================================================
+   WELCOME
+========================================================= */
+
+.welcome {
+    min-height: calc(100vh - 180px);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 20px;
+}
+
+.specimen-image {
+    width: 125px;
+    height: 125px;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(205, 169, 87, 0.42);
+
+    box-shadow:
+        0 0 0 8px rgba(205, 169, 87, 0.025),
+        0 0 45px rgba(77, 123, 75, 0.2);
+
+    margin-bottom: 25px;
+}
+
+.welcome-title {
+    font-family: "Cinzel", serif;
+
+    color: var(--gold-light);
+
+    font-size: clamp(27px, 4vw, 43px);
+
+    letter-spacing: 5px;
+
+    margin: 0;
+}
+
+.welcome-description {
+    max-width: 600px;
+
+    margin: 13px auto 0;
+
+    color: #858c82;
+
+    font-size: 12px;
+
+    line-height: 1.7;
+}
+
+.suggestions {
+    margin-top: 28px;
+
+    width: min(680px, 100%);
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 9px;
+}
+
+.suggestion {
+    padding: 14px;
+
+    text-align: left;
+
+    border-radius: 11px;
+
+    border: 1px solid var(--border);
+
+    background: rgba(7, 12, 7, 0.62);
+
+    color: #a8aea4;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.suggestion:hover {
+    border-color: rgba(205, 169, 87, 0.35);
+
+    background: rgba(22, 30, 20, 0.75);
+
+    transform: translateY(-2px);
+}
+
+.suggestion-title {
+    color: var(--cream);
+
+    font-size: 11px;
+
+    font-weight: 600;
+}
+
+.suggestion-text {
+    margin-top: 4px;
+
+    color: #697067;
+
+    font-size: 9px;
+
+    line-height: 1.4;
+}
+
+/* =========================================================
+   MESSAGES
+========================================================= */
+
+.message {
+    display: flex;
+
+    margin-bottom: 24px;
+
+    animation: messageIn 0.22s ease;
+}
+
+@keyframes messageIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message.user {
+    justify-content: flex-end;
+}
+
+.message.assistant {
+    justify-content: flex-start;
+}
+
+.message-card {
+    max-width: min(760px, 85%);
+
+    padding: 15px 17px;
+
+    border-radius: 14px;
+
+    line-height: 1.65;
+
+    font-size: 13px;
+}
+
+.message.user .message-card {
+    background: rgba(48, 72, 48, 0.62);
+
+    border: 1px solid rgba(123, 184, 121, 0.16);
+
+    color: #dce3d9;
+
+    border-bottom-right-radius: 4px;
+}
+
+.message.assistant .message-card {
+    background: rgba(9, 14, 9, 0.82);
+
+    border: 1px solid var(--border);
+
+    color: #d2d6ce;
+
+    border-bottom-left-radius: 4px;
+}
+
+.message-label {
+    margin-bottom: 6px;
+
+    color: var(--gold);
+
+    font-size: 8px;
+
+    letter-spacing: 1.5px;
+
+    text-transform: uppercase;
+}
+
+.message-text {
+    white-space: pre-wrap;
+
+    word-break: break-word;
+}
+
+.message-image {
+    display: block;
+
+    max-width: min(600px, 100%);
+
+    width: auto;
+
+    max-height: 650px;
+
+    object-fit: contain;
+
+    margin-top: 11px;
+
+    border-radius: 11px;
+
+    border: 1px solid rgba(205, 169, 87, 0.18);
+}
+
+/* =========================================================
+   ATTACHMENTS IN MESSAGE
+========================================================= */
+
+.message-attachments {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 7px;
+
+    margin-top: 10px;
+}
+
+.message-attachments img {
+    width: 100%;
+    height: 150px;
+
+    object-fit: cover;
+
+    border-radius: 9px;
+
+    border: 1px solid rgba(205, 169, 87, 0.15);
+}
+
+/* =========================================================
+   IMAGE SEARCH RESULTS
+========================================================= */
+
+.reverse-results {
+    margin-top: 12px;
+}
+
+.reverse-title {
+    color: var(--gold);
+
+    font-family: "Cinzel", serif;
+
+    font-size: 13px;
+
+    margin-bottom: 10px;
+}
+
+.reverse-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 9px;
+}
+
+.reverse-result {
+    overflow: hidden;
+
+    border-radius: 10px;
+
+    border: 1px solid var(--border);
+
+    background: rgba(3, 6, 3, 0.8);
+}
+
+.reverse-result img {
+    width: 100%;
+    height: 130px;
 
     object-fit: cover;
 
     display: block;
-
-    border-radius: 11px;
-
-    border:
-        1px solid rgba(205,169,87,.3);
 }
 
-.attachment-index {
-    position: absolute;
+.reverse-result-content {
+    padding: 9px;
+}
 
-    left: 4px;
-    bottom: 4px;
+.reverse-result-name {
+    color: #d4d8d0;
 
-    min-width: 17px;
-    height: 17px;
+    font-size: 10px;
 
-    display: grid;
-    place-items: center;
+    font-weight: 600;
+}
 
-    padding: 0 4px;
+.reverse-result-url {
+    margin-top: 4px;
 
-    border-radius: 6px;
-
-    background:
-        rgba(0,0,0,.75);
-
-    color: var(--gold-light);
+    color: #667066;
 
     font-size: 8px;
 
-    font-weight: 700;
+    word-break: break-all;
 }
 
-.attachment-item-remove {
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    color: #747c72;
+
+    font-size: 11px;
+}
+
+.loading-dots {
+    display: flex;
+
+    gap: 4px;
+}
+
+.loading-dots span {
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    background: var(--green-light);
+
+    animation: dotPulse 1.1s infinite ease-in-out;
+}
+
+.loading-dots span:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.loading-dots span:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+@keyframes dotPulse {
+    0%, 80%, 100% {
+        opacity: 0.25;
+        transform: translateY(0);
+    }
+
+    40% {
+        opacity: 1;
+        transform: translateY(-3px);
+    }
+}
+
+/* =========================================================
+   COMPOSER
+========================================================= */
+
+.composer-area {
+    padding: 12px 20px 18px;
+
+    background:
+        linear-gradient(
+            to top,
+            rgba(5, 8, 5, 0.98),
+            rgba(5, 8, 5, 0.84),
+            transparent
+        );
+}
+
+.composer {
+    width: min(920px, 100%);
+
+    margin: 0 auto;
+
+    position: relative;
+
+    border: 1px solid var(--border);
+
+    background: rgba(7, 11, 7, 0.91);
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 15px 50px rgba(0, 0, 0, 0.28);
+
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.attachment-preview {
+    display: none;
+
+    padding: 10px 11px 0;
+
+    gap: 8px;
+
+    flex-wrap: wrap;
+}
+
+.attachment-preview.visible {
+    display: flex;
+}
+
+.attachment {
+    position: relative;
+
+    width: 70px;
+    height: 70px;
+}
+
+.attachment img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    border-radius: 9px;
+
+    border: 1px solid rgba(205, 169, 87, 0.25);
+}
+
+.remove-attachment {
     position: absolute;
 
     top: -6px;
@@ -1397,1084 +855,1094 @@ body::after {
     width: 20px;
     height: 20px;
 
-    display: grid;
-    place-items: center;
-
-    padding: 0;
-
     border-radius: 50%;
 
-    border:
-        1px solid rgba(205,169,87,.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    background:
-        #090d08;
+    background: #171d16;
 
-    color: #aaa99a;
+    border: 1px solid rgba(205, 169, 87, 0.35);
 
-    font-size: 12px;
-
-    line-height: 1;
+    color: #c6c9c1;
 
     cursor: pointer;
-
-    z-index: 2;
-
-    transition: .2s;
-}
-
-.attachment-item-remove:hover {
-    color: var(--gold-light);
-
-    border-color:
-        rgba(205,169,87,.7);
-
-    background:
-        #182317;
-}
-
-.attachment-info {
-    flex: 0 0 auto;
-
-    min-width: 95px;
-}
-
-.attachment-title {
-    color: var(--gold-light);
 
     font-size: 11px;
 
-    letter-spacing: 1px;
+    transition:
+        background 0.15s ease,
+        color 0.15s ease;
 }
 
-.attachment-sub {
-    margin-top: 4px;
+.remove-attachment:hover {
+    background: #34201d;
 
-    color: #72796d;
-
-    font-size: 9px;
-
-    line-height: 1.4;
+    color: #e58b82;
 }
 
-.attachment-remove {
-    width: 34px;
-    height: 34px;
-
-    flex: 0 0 34px;
-
-    border-radius: 10px;
-
-    border:
-        1px solid rgba(205,169,87,.15);
-
-    background:
-        rgba(255,255,255,.025);
-
-    color: #8d927f;
-
-    cursor: pointer;
-
-    font-size: 16px;
-
-    transition: .2s;
-}
-
-.attachment-remove:hover {
-    color: var(--gold-light);
-
-    border-color:
-        rgba(205,169,87,.45);
-
-    background:
-        rgba(205,169,87,.07);
-}
-
-
-/* =========================================================
-   COMPOSER
-========================================================= */
-
-.composer-area {
-    position: absolute;
-
-    left: 0;
-    right: 0;
-    bottom: 0;
-
-    z-index: 1000;
-
-    padding:
-        20px 28px 23px;
-
-    background:
-        linear-gradient(
-            to top,
-            rgba(5,6,4,1) 40%,
-            rgba(5,6,4,.92) 70%,
-            transparent
-        );
-}
-
-.composer {
-    position: relative;
-
-    width: min(900px, 100%);
-
-    min-height: 62px;
-
-    margin: auto;
-
+.composer-row {
     display: flex;
 
     align-items: flex-end;
 
-    gap: 9px;
+    gap: 8px;
 
-    padding: 8px;
-
-    border-radius: 19px;
-
-    border:
-        1px solid rgba(205,169,87,.18);
-
-    background:
-        rgba(11,16,11,.96);
-
-    backdrop-filter: blur(22px);
-
-    box-shadow:
-        0 20px 60px rgba(0,0,0,.5),
-        inset 0 0 25px rgba(205,169,87,.015);
-
-    z-index: 1050;
+    padding: 10px;
 }
 
-.tool {
-    width: 46px;
-    height: 46px;
-
-    flex: 0 0 46px;
-
-    border-radius: 13px;
-
-    border:
-        1px solid rgba(205,169,87,.13);
-
-    background:
-        rgba(255,255,255,.025);
-
-    color: #929888;
-
-    font-size: 20px;
-
-    cursor: pointer;
-
-    transition: .2s;
-}
-
-.tool:hover {
-    color: var(--gold-light);
-
-    border-color:
-        rgba(205,169,87,.4);
-
-    background:
-        rgba(205,169,87,.06);
-}
-
-.tool.send {
-    color: #10130d;
-
-    background: var(--gold);
-
-    border-color: var(--gold);
-
-    font-weight: 800;
-}
-
-.tool.send:hover {
-    background: var(--gold-light);
-
-    transform:
-        translateY(-2px);
-}
-
-textarea {
+.composer textarea {
     flex: 1;
 
-    min-height: 46px;
-    max-height: 150px;
+    min-width: 0;
 
-    padding: 13px 4px;
+    min-height: 45px;
+    max-height: 180px;
 
     resize: none;
 
+    padding: 12px 10px;
+
     border: 0;
-    outline: 0;
+
+    outline: none;
 
     background: transparent;
 
-    color: #eee;
+    color: var(--cream);
 
-    font-family: Inter, sans-serif;
+    font-size: 13px;
 
-    font-size: 14px;
+    line-height: 1.5;
 }
 
-textarea::placeholder {
-    color: #62685e;
+.composer textarea::placeholder {
+    color: #5d665d;
 }
 
-.note {
-    margin-top: 9px;
+.composer-button {
+    width: 42px;
+    height: 42px;
 
-    color: #555a51;
+    flex-shrink: 0;
 
-    text-align: center;
+    border-radius: 10px;
+
+    background: rgba(255,255,255,0.035);
+
+    border: 1px solid rgba(205, 169, 87, 0.12);
+
+    color: #9da49a;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 15px;
+
+    transition:
+        background 0.18s ease,
+        border-color 0.18s ease,
+        color 0.18s ease,
+        transform 0.18s ease;
+}
+
+.composer-button:hover {
+    background: rgba(205, 169, 87, 0.08);
+
+    border-color: rgba(205, 169, 87, 0.3);
+
+    color: var(--gold-light);
+
+    transform: translateY(-1px);
+}
+
+.send-button {
+    background: rgba(72, 112, 70, 0.38);
+
+    color: #b7d2b3;
+
+    border-color: rgba(123, 184, 121, 0.22);
+}
+
+.send-button:hover {
+    background: rgba(80, 125, 77, 0.55);
+
+    color: white;
+}
+
+.composer-tools {
+    display: flex;
+
+    gap: 6px;
+
+    padding: 0 10px 10px;
+}
+
+.tool-button {
+    padding: 7px 10px;
+
+    border-radius: 8px;
+
+    background: transparent;
+
+    border: 1px solid rgba(205, 169, 87, 0.09);
+
+    color: #777f75;
+
+    cursor: pointer;
 
     font-size: 9px;
 
-    letter-spacing: .5px;
+    letter-spacing: 0.5px;
+
+    transition: all 0.18s ease;
 }
 
-#imageInput {
+.tool-button:hover {
+    color: var(--gold-light);
+
+    background: rgba(205, 169, 87, 0.06);
+
+    border-color: rgba(205, 169, 87, 0.2);
+}
+
+.hidden-file {
     display: none;
 }
 
+.composer-hint {
+    text-align: center;
+
+    margin-top: 7px;
+
+    color: #454b45;
+
+    font-size: 8px;
+
+    letter-spacing: 0.5px;
+}
 
 /* =========================================================
-   SCROLLBAR
+   ROACHES
 ========================================================= */
 
-#chat::-webkit-scrollbar {
-    width: 7px;
+.real-roach {
+    position: fixed;
+
+    width: 25px;
+    height: 25px;
+
+    object-fit: contain;
+
+    opacity: 0.16;
+
+    pointer-events: none;
+
+    z-index: 2;
+
+    filter: grayscale(0.2) brightness(0.75);
+
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
 }
 
-#chat::-webkit-scrollbar-track {
-    background: transparent;
+.rr1 {
+    left: 7%;
+    top: 18%;
+    animation: crawl1 31s infinite;
 }
 
-#chat::-webkit-scrollbar-thumb {
-    background: #263126;
-
-    border-radius: 20px;
+.rr2 {
+    left: 74%;
+    top: 28%;
+    animation: crawl2 38s infinite;
 }
 
-.attachment-list::-webkit-scrollbar {
-    height: 4px;
+.rr3 {
+    left: 28%;
+    top: 75%;
+    animation: crawl3 43s infinite;
 }
 
-.attachment-list::-webkit-scrollbar-track {
-    background: transparent;
+.rr4 {
+    left: 86%;
+    top: 72%;
+    animation: crawl4 36s infinite;
 }
 
-.attachment-list::-webkit-scrollbar-thumb {
-    background: #263126;
-
-    border-radius: 20px;
+.rr5 {
+    left: 46%;
+    top: 12%;
+    animation: crawl5 49s infinite;
 }
 
+.rr6 {
+    left: 12%;
+    top: 60%;
+    animation: crawl6 42s infinite;
+}
+
+.rr7 {
+    left: 63%;
+    top: 86%;
+    animation: crawl7 35s infinite;
+}
+
+.rr8 {
+    left: 92%;
+    top: 43%;
+    animation: crawl8 47s infinite;
+}
+
+@keyframes crawl1 {
+    0% { transform: translate(0,0) rotate(0deg); }
+    25% { transform: translate(90px,35px) rotate(25deg); }
+    50% { transform: translate(160px,-25px) rotate(80deg); }
+    75% { transform: translate(50px,100px) rotate(150deg); }
+    100% { transform: translate(0,0) rotate(360deg); }
+}
+
+@keyframes crawl2 {
+    0% { transform: translate(0,0) rotate(10deg); }
+    50% { transform: translate(-160px,90px) rotate(180deg); }
+    100% { transform: translate(0,0) rotate(370deg); }
+}
+
+@keyframes crawl3 {
+    0% { transform: translate(0,0) rotate(0deg); }
+    50% { transform: translate(140px,-100px) rotate(220deg); }
+    100% { transform: translate(0,0) rotate(360deg); }
+}
+
+@keyframes crawl4 {
+    0% { transform: translate(0,0) rotate(0deg); }
+    40% { transform: translate(-120px,-50px) rotate(130deg); }
+    75% { transform: translate(-40px,-140px) rotate(240deg); }
+    100% { transform: translate(0,0) rotate(360deg); }
+}
+
+@keyframes crawl5 {
+    0% { transform: translate(0,0) rotate(0deg); }
+    50% { transform: translate(120px,120px) rotate(180deg); }
+    100% { transform: translate(0,0) rotate(360deg); }
+}
+
+@keyframes crawl6 {
+    0% { transform: translate(0,0) rotate(0deg); }
+    50% { transform: translate(100px,-90px) rotate(160deg); }
+    100% { transform: translate(0,0) rotate(360deg); }
+}
+
+@keyframes crawl7 {
+    0% { transform: translate(0,0) rotate(0deg); }
+    50% { transform: translate(-140px,-70px) rotate(190deg); }
+    100% { transform: translate(0,0) rotate(360deg); }
+}
+
+@keyframes crawl8 {
+    0% { transform: translate(0,0) rotate(0deg); }
+    50% { transform: translate(-100px,70px) rotate(180deg); }
+    100% { transform: translate(0,0) rotate(360deg); }
+}
 
 /* =========================================================
-   MOBILE
+   IMAGE MODE
 ========================================================= */
 
-@media (max-width: 700px) {
+.image-mode-banner {
+    display: none;
+
+    width: min(920px, 100%);
+
+    margin: 0 auto 8px;
+
+    padding: 9px 12px;
+
+    border-radius: 9px;
+
+    border: 1px solid rgba(205, 169, 87, 0.16);
+
+    background: rgba(205, 169, 87, 0.045);
+
+    color: #a89c7b;
+
+    font-size: 9px;
+}
+
+.image-mode-banner.active {
+    display: block;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 760px) {
 
     .sidebar {
-        width: 58px;
+        width: 62px;
+        min-width: 62px;
     }
 
-    .brand-mark {
-        width: 40px;
-        height: 40px;
+    .brand {
+        padding: 20px 8px;
 
-        margin-bottom: 25px;
-
-        font-size: 19px;
-
-        border-radius: 12px;
+        text-align: center;
     }
 
-    .nav button {
-        width: 38px;
-        height: 38px;
+    .brand-title {
+        font-size: 10px;
 
-        font-size: 17px;
+        letter-spacing: 1px;
+    }
+
+    .brand-subtitle,
+    .online,
+    .sidebar-label,
+    .side-button span,
+    .system-box {
+        display: none;
+    }
+
+    .sidebar-content {
+        padding: 10px 7px;
+    }
+
+    .side-button {
+        justify-content: center;
+
+        padding: 10px 6px;
+    }
+
+    .side-icon {
+        width: 32px;
+        height: 32px;
     }
 
     .header {
-        padding: 0 16px;
+        padding: 0 15px;
     }
 
-    .header-sub,
-    .status {
-        display: none;
+    .header-title {
+        font-size: 10px;
     }
 
-    .chat-inner {
-        padding:
-            30px 16px 350px;
-    }
-
-    .message {
-        max-width: 90%;
-    }
-
-    .message-images {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-    }
-
-    .message-images img {
-        height: 120px;
-    }
-
-    .composer-area {
-        padding: 12px;
-
-        z-index: 1000;
-    }
-
-    .tool {
-        width: 40px;
-        height: 40px;
-
-        flex-basis: 40px;
-
-        font-size: 17px;
-    }
-
-    .composer {
-        min-height: 56px;
-    }
-
-    .real-roach {
-        width: 125px;
-        height: 125px;
-    }
-
-    .rr2,
-    .rr4,
-    .rr6,
-    .rr8 {
-        display: none;
-    }
-
-    .roach-gallery {
-        width: min(330px, 90%);
-    }
-
-    .attachment-preview {
-        width: calc(100% - 24px);
-
-        bottom: 76px;
-
-        z-index: 1100;
-
-        gap: 7px;
-    }
-
-    .attachment-list {
-        gap: 6px;
-    }
-
-    .attachment-item,
-    .attachment-item img {
-        width: 50px;
-        height: 50px;
-    }
-
-    .attachment-item {
-        flex-basis: 50px;
-    }
-
-    .attachment-info {
-        min-width: 72px;
-    }
-
-    .attachment-title {
-        font-size: 9px;
-    }
-
-    .attachment-sub {
+    .header-status {
         font-size: 8px;
     }
 
-    .reverse-search-results {
-        width: 100%;
-
-        padding:
-            0 0 20px;
-
-        margin-top: 20px;
+    .chat {
+        padding: 20px 10px;
     }
 
-    .reverse-search-grid {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
+    .message-card {
+        max-width: 92%;
     }
 
-    .reverse-result-image {
-        height: 120px;
+    .suggestions {
+        grid-template-columns: 1fr;
     }
 
-    .reverse-search-panel {
-        padding: 13px;
+    .welcome {
+        min-height: calc(100vh - 170px);
     }
 
-    .reverse-search-header {
-        align-items: flex-start;
+    .welcome-title {
+        font-size: 25px;
+
+        letter-spacing: 3px;
     }
 
-    .reverse-search-title {
-        font-size: 11px;
+    .specimen-image {
+        width: 100px;
+        height: 100px;
     }
 
-    .reverse-search-error {
-        font-size: 11px;
+    .composer-area {
+        padding-left: 9px;
+        padding-right: 9px;
+    }
+
+    .tool-button {
+        font-size: 8px;
+    }
+
+    .reverse-grid {
+        grid-template-columns: 1fr;
     }
 }
 
 </style>
-
 </head>
 
 <body>
 
-<!-- =========================================================
-     REAL COCKROACHES
-========================================================= -->
+<div class="background-overlay"></div>
 
-<div class="real-roach rr1">
-    <img src="/assets/model.png" alt="">
-</div>
-
-<div class="real-roach rr2">
-    <img src="/assets/model.png" alt="">
-</div>
-
-<div class="real-roach rr3">
-    <img src="/assets/model.png" alt="">
-</div>
-
-<div class="real-roach rr4">
-    <img src="/assets/model.png" alt="">
-</div>
-
-<div class="real-roach rr5">
-    <img src="/assets/model.png" alt="">
-</div>
-
-<div class="real-roach rr6">
-    <img src="/assets/model.png" alt="">
-</div>
-
-<div class="real-roach rr7">
-    <img src="/assets/model.png" alt="">
-</div>
-
-<div class="real-roach rr8">
-    <img src="/assets/model.png" alt="">
-</div>
+<!-- Decorative roaches -->
+<img class="real-roach rr1" src="/assets/model.png" alt="">
+<img class="real-roach rr2" src="/assets/model.png" alt="">
+<img class="real-roach rr3" src="/assets/model.png" alt="">
+<img class="real-roach rr4" src="/assets/model.png" alt="">
+<img class="real-roach rr5" src="/assets/model.png" alt="">
+<img class="real-roach rr6" src="/assets/model.png" alt="">
+<img class="real-roach rr7" src="/assets/model.png" alt="">
+<img class="real-roach rr8" src="/assets/model.png" alt="">
 
 <div class="app">
 
-<aside class="sidebar">
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
 
-```
-<div class="brand-mark">
-    ✦
-</div>
+    <aside class="sidebar">
 
-<div class="nav">
+        <div class="brand">
+            <div class="brand-title">DALBAYOB</div>
 
-    <button
-        class="active"
-        title="Chat"
-        type="button">
-        ◈
-    </button>
+            <div class="brand-subtitle">
+                Intelligence System
+            </div>
 
-    <button
-        title="New chat"
-        type="button"
-        onclick="newChat()">
-        ☰
-    </button>
-
-    <button
-        title="Image generation"
-        type="button"
-        onclick="focusImageMode()">
-        ☪
-    </button>
-
-</div>
-
-<div class="sidebar-bottom">
-    DALBAYOB
-</div>
-```
-
-</aside>
-
-<main class="main">
-
-<header class="header">
-
-```
-<div class="header-left">
-
-    <div class="header-symbol">
-        ☪
-    </div>
-
-    <div>
-
-        <div class="header-title">
-            DALBAYOB AI
+            <div class="online">
+                <span class="online-dot"></span>
+                System Online
+            </div>
         </div>
 
-        <div class="header-sub">
-            INTELLIGENCE SYSTEM
+        <div class="sidebar-content">
+
+            <div class="sidebar-label">
+                Workspace
+            </div>
+
+            <button class="side-button active" id="chatButton">
+                <span class="side-icon">◈</span>
+                <span>Chat</span>
+            </button>
+
+            <button class="side-button" id="newChatButton">
+                <span class="side-icon">＋</span>
+                <span>New Chat</span>
+            </button>
+
+            <button class="side-button" id="imageButton">
+                <span class="side-icon">◇</span>
+                <span>Image Generation</span>
+            </button>
+
+            <button class="side-button" id="reverseButton">
+                <span class="side-icon">⌕</span>
+                <span>Reverse Search</span>
+            </button>
+
         </div>
 
-    </div>
+        <div class="sidebar-footer">
 
-</div>
+            <div class="system-box">
+                <div class="system-title">
+                    Dalbayob Core
+                </div>
 
-
-<div class="status">
-
-    <div class="status-dot"></div>
-
-    SYSTEM ONLINE
-
-</div>
-```
-
-</header>
-
-<section id="chat">
-
-```
-<div
-    class="chat-inner"
-    id="chat-inner">
-
-
-    <div
-        class="welcome"
-        id="welcome">
-
-
-        <div class="welcome-emblem">
-
-            <div class="crescent">
-                ☪
+                <div class="system-text">
+                    Multimodal AI interface.
+                    Text, images and visual analysis.
+                </div>
             </div>
 
         </div>
 
+    </aside>
 
-        <h1>
-            Welcome to Dalbayob.
-        </h1>
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
 
+    <main class="main">
 
-        <p>
-            Intelligence with a slightly questionable pest problem.
-        </p>
+        <header class="header">
 
+            <div>
+                <div class="header-title">
+                    DALBAYOB AI
+                </div>
 
-        <div class="roach-gallery">
+                <div class="header-subtitle">
+                    Intelligence / Visual Processing / Generation
+                </div>
+            </div>
 
-            <img
-                src="https://avatars.fastly.steamstatic.com/b76a2e69616ae68a574fdc638ab82fdcc3f94161_full.jpg"
-                alt="Dalbayob specimen"
-            >
+            <div class="header-status">
+                <span class="online-dot"></span>
+                Operational
+            </div>
 
-            <div class="roach-gallery-caption">
-                DALBAYOB SPECIMEN ARCHIVE · ROACH DIVISION
+        </header>
+
+        <div class="chat" id="chat">
+
+            <div class="chat-inner" id="chatInner">
+
+                <!-- Welcome -->
+                <section class="welcome" id="welcome">
+
+                    <img
+                        class="specimen-image"
+                        src="https://avatars.fastly.steamstatic.com/b76a2e69616ae68a574fdc638ab82fdcc3f94161_full.jpg"
+                        alt="Dalbayob"
+                    >
+
+                    <h1 class="welcome-title">
+                        DALBAYOB
+                    </h1>
+
+                    <p class="welcome-description">
+                        A multimodal AI interface for conversation,
+                        image generation, image analysis and visual search.
+                    </p>
+
+                    <div class="suggestions">
+
+                        <button
+                            class="suggestion"
+                            onclick="useSuggestion('What can you do?')"
+                        >
+                            <div class="suggestion-title">
+                                What can you do?
+                            </div>
+
+                            <div class="suggestion-text">
+                                Explore Dalbayob's capabilities.
+                            </div>
+                        </button>
+
+                        <button
+                            class="suggestion"
+                            onclick="useSuggestion('Explain something complicated to me in a simple way.')"
+                        >
+                            <div class="suggestion-title">
+                                Explain something complicated
+                            </div>
+
+                            <div class="suggestion-text">
+                                Turn technical nonsense into something understandable.
+                            </div>
+                        </button>
+
+                        <button
+                            class="suggestion"
+                            onclick="useSuggestion('Give me a creative idea.')"
+                        >
+                            <div class="suggestion-title">
+                                Give me a creative idea
+                            </div>
+
+                            <div class="suggestion-text">
+                                Let the machine cook.
+                            </div>
+                        </button>
+
+                        <button
+                            class="suggestion"
+                            onclick="useSuggestion('Summon a roach.')"
+                        >
+                            <div class="suggestion-title">
+                                Summon a roach
+                            </div>
+
+                            <div class="suggestion-text">
+                                This is probably a terrible idea.
+                            </div>
+                        </button>
+
+                    </div>
+
+                </section>
+
             </div>
 
         </div>
 
+        <!-- Image mode status -->
+        <div class="image-mode-banner" id="imageModeBanner">
+            Image generation mode active. Describe the image you want.
+        </div>
 
-        <div class="suggestions">
+        <!-- =================================================
+             COMPOSER
+        ================================================== -->
 
-            <button
-                class="suggestion"
-                type="button"
-                onclick="useSuggestion('What can you do?')">
+        <div class="composer-area">
 
-                What can you do?
+            <div class="composer">
 
-            </button>
+                <div
+                    class="attachment-preview"
+                    id="attachmentPreview"
+                ></div>
 
+                <div class="composer-row">
 
-            <button
-                class="suggestion"
-                type="button"
-                onclick="useSuggestion('Explain something complicated')">
+                    <button
+                        class="composer-button"
+                        id="attachButton"
+                        title="Attach images"
+                        type="button"
+                    >
+                        ＋
+                    </button>
 
-                Explain something complicated
+                    <textarea
+                        id="input"
+                        rows="1"
+                        placeholder="Message Dalbayob..."
+                        autocomplete="off"
+                        spellcheck="true"
+                    ></textarea>
 
-            </button>
+                    <button
+                        class="composer-button send-button"
+                        id="sendButton"
+                        title="Send"
+                        type="button"
+                    >
+                        ➤
+                    </button>
 
+                </div>
 
-            <button
-                class="suggestion"
-                type="button"
-                onclick="useSuggestion('Give me a creative idea')">
+                <div class="composer-tools">
 
-                Give me a creative idea
+                    <button
+                        class="tool-button"
+                        id="generateButton"
+                        type="button"
+                    >
+                        ✦ Generate Image
+                    </button>
 
-            </button>
+                    <button
+                        class="tool-button"
+                        id="searchImageButton"
+                        type="button"
+                    >
+                        ⌕ Reverse Search
+                    </button>
 
+                    <button
+                        class="tool-button"
+                        id="clearImagesButton"
+                        type="button"
+                    >
+                        × Clear Images
+                    </button>
 
-            <button
-                class="suggestion"
-                type="button"
-                onclick="useSuggestion('Generate an image of a giant cockroach')">
+                </div>
 
-                🪳 Summon a roach
+            </div>
 
-            </button>
+            <div class="composer-hint">
+                Enter to send · Shift + Enter for new line · Ctrl + V to paste images
+            </div>
 
         </div>
 
-    </div>
+        <input
+            class="hidden-file"
+            id="imageInput"
+            type="file"
+            accept="image/*"
+            multiple
+        >
 
-
-    <div
-        id="reverseSearchResults"
-        class="reverse-search-results">
-    </div>
-
-
-</div>
-```
-
-</section>
-
-<div class="composer-area">
-
-```
-<div
-    class="attachment-preview"
-    id="attachmentPreview">
-
-
-    <div
-        class="attachment-list"
-        id="attachmentList">
-    </div>
-
-
-    <div class="attachment-info">
-
-        <div
-            class="attachment-title"
-            id="attachmentTitle">
-
-            IMAGES ATTACHED
-
-        </div>
-
-        <div
-            class="attachment-sub"
-            id="attachmentSub">
-
-            Dalbayob can analyze multiple images.
-
-        </div>
-
-    </div>
-
-
-    <button
-        class="attachment-remove"
-        type="button"
-        title="Remove all images"
-        onclick="clearAttachment()">
-
-        ×
-
-    </button>
-
-
-</div>
-
-
-<div class="composer">
-
-
-    <input
-        id="imageInput"
-        type="file"
-        accept="image/*"
-        multiple
-        onchange="handleImageUpload(event)"
-    >
-
-
-    <button
-        class="tool"
-        title="Attach images"
-        type="button"
-        onclick="openImagePicker()">
-
-        ✡
-
-    </button>
-
-
-    <textarea
-        id="input"
-        rows="1"
-        placeholder="Speak to Dalbayob..."></textarea>
-
-
-    <button
-        class="tool"
-        title="Generate image"
-        type="button"
-        onclick="generateImage()">
-
-        ☪
-
-    </button>
-
-
-    <button
-        class="tool"
-        title="Reverse image search"
-        type="button"
-        onclick="reverseSearch()">
-
-        🔎
-
-    </button>
-
-
-    <button
-        class="tool send"
-        title="Send"
-        type="button"
-        onclick="sendMessage()">
-
-        ↑
-
-    </button>
-
-
-</div>
-
-
-<div class="note">
-    Dalbayob AI can make mistakes. Check important information.
-</div>
-```
-
-</div>
-
-</main>
+    </main>
 
 </div>
 
 <script>
+
+/* =========================================================
+   DALBAYOB AI
+   Main frontend controller
+========================================================= */
+
+let conversationHistory = [];
+
+let currentImage = null;
+
+let attachedImages = [];
+
+let imageMode = false;
+
+let isBusy = false;
 
 
 /* =========================================================
    ELEMENTS
 ========================================================= */
 
-const input =
-    document.getElementById("input");
+const chat = document.getElementById("chat");
+const chatInner = document.getElementById("chatInner");
 
-const chat =
-    document.getElementById("chat");
+const welcome = document.getElementById("welcome");
 
-const chatInner =
-    document.getElementById("chat-inner");
+const input = document.getElementById("input");
 
-const imageInput =
-    document.getElementById("imageInput");
+const sendButton = document.getElementById("sendButton");
+
+const attachButton = document.getElementById("attachButton");
+
+const imageInput = document.getElementById("imageInput");
 
 const attachmentPreview =
     document.getElementById("attachmentPreview");
 
-const attachmentList =
-    document.getElementById("attachmentList");
+const generateButton =
+    document.getElementById("generateButton");
 
-const attachmentTitle =
-    document.getElementById("attachmentTitle");
+const searchImageButton =
+    document.getElementById("searchImageButton");
 
-const attachmentSub =
-    document.getElementById("attachmentSub");
+const clearImagesButton =
+    document.getElementById("clearImagesButton");
 
+const newChatButton =
+    document.getElementById("newChatButton");
 
-/* =========================================================
-   MEMORY
-========================================================= */
+const chatButton =
+    document.getElementById("chatButton");
 
-let conversationHistory = [];
+const imageButton =
+    document.getElementById("imageButton");
 
+const reverseButton =
+    document.getElementById("reverseButton");
 
-/* =========================================================
-   IMAGE MEMORY
-========================================================= */
-
-/*
-    currentImage stores the latest generated image.
-
-    attachedImages stores ALL images currently waiting
-    to be sent to Dalbayob.
-
-    Each item is a data URL.
-*/
-
-let currentImage = null;
-
-let attachedImages = [];
+const imageModeBanner =
+    document.getElementById("imageModeBanner");
 
 
 /* =========================================================
-   COMPATIBILITY ALIAS
+   HELPERS
 ========================================================= */
 
-/*
-    Some older code referred to "attachedImage".
+function escapeHtml(value) {
 
-    This helper returns the first attached image.
-*/
-
-function getFirstAttachedImage() {
-
-    return attachedImages.length
-        ? attachedImages[0]
-        : null;
-
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 
-/* =========================================================
-   TEXTAREA
-========================================================= */
+function escapeAttribute(value) {
 
-input.addEventListener("input", () => {
+    return escapeHtml(value);
+}
+
+
+function safeUrl(url) {
+
+    if (!url) {
+        return "";
+    }
+
+    try {
+
+        const parsed = new URL(url, window.location.origin);
+
+        if (
+            parsed.protocol === "http:" ||
+            parsed.protocol === "https:"
+        ) {
+            return parsed.href;
+        }
+
+    } catch (error) {
+        return "";
+    }
+
+    return "";
+}
+
+
+function scrollToBottom() {
+
+    requestAnimationFrame(() => {
+
+        chat.scrollTop = chat.scrollHeight;
+
+    });
+}
+
+
+function autoResize() {
 
     input.style.height = "auto";
 
     input.style.height =
-        Math.min(
-            input.scrollHeight,
-            150
-        ) + "px";
-
-});
+        Math.min(input.scrollHeight, 180) + "px";
+}
 
 
-/* =========================================================
-   ENTER TO SEND
-========================================================= */
+function setBusy(state) {
 
-input.addEventListener("keydown", event => {
+    isBusy = state;
 
-    if (
-        event.key === "Enter" &&
-        !event.shiftKey
-    ) {
+    sendButton.disabled = state;
 
-        event.preventDefault();
+    generateButton.disabled = state;
 
-        sendMessage();
+    searchImageButton.disabled = state;
+
+    if (state) {
+
+        sendButton.style.opacity = "0.45";
+
+    } else {
+
+        sendButton.style.opacity = "1";
 
     }
-
-});
+}
 
 
 /* =========================================================
-   PASTE IMAGES
+   WELCOME
 ========================================================= */
 
-document.addEventListener("paste", event => {
+function hideWelcome() {
 
-    const items =
-        event.clipboardData?.items;
+    if (welcome) {
+        welcome.style.display = "none";
+    }
+}
 
-    if (!items)
+
+function showWelcome() {
+
+    if (welcome) {
+        welcome.style.display = "flex";
+    }
+}
+
+
+/* =========================================================
+   ATTACHMENTS
+========================================================= */
+
+function handleImageUpload(event) {
+
+    const files =
+        Array.from(event.target.files || []);
+
+    if (!files.length) {
         return;
+    }
 
+    files.forEach(file => {
 
-    let foundImage = false;
-
-
-    for (const item of items) {
-
-        if (
-            !item.type ||
-            !item.type.startsWith("image/")
-        ) {
-            continue;
+        if (!file.type.startsWith("image/")) {
+            return;
         }
-
-
-        const file =
-            item.getAsFile();
-
-        if (!file)
-            continue;
-
-
-        foundImage = true;
 
         readImageFile(file);
 
-    }
+    });
 
+    imageInput.value = "";
+}
 
-    if (foundImage) {
-
-        event.preventDefault();
-
-    }
-
-});
-
-
-/* =========================================================
-   READ IMAGE FILE
-========================================================= */
 
 function readImageFile(file) {
 
-    if (!file.type.startsWith("image/")) {
+    const reader = new FileReader();
 
-        alert(
-            "Please select an image."
-        );
+    reader.onload = function() {
 
-        return;
+        if (!reader.result) {
+            return;
+        }
 
-    }
-
-
-    const reader =
-        new FileReader();
-
-
-    reader.onload = () => {
-
-        const image =
-            reader.result;
-
-
-        attachedImages.push(
-            image
-        );
-
+        attachedImages.push(reader.result);
 
         renderAttachmentPreview();
 
-
-        input.placeholder =
-            attachedImages.length > 1
-                ? "Ask Dalbayob about these images..."
-                : "Ask Dalbayob about this image...";
-
+        updateInputPlaceholder();
 
         input.focus();
 
     };
 
+    reader.onerror = function() {
+
+        console.error("Could not read image:", file.name);
+
+    };
 
     reader.readAsDataURL(file);
+}
 
+
+function renderAttachmentPreview() {
+
+    attachmentPreview.innerHTML = "";
+
+    if (!attachedImages.length) {
+
+        attachmentPreview.classList.remove("visible");
+
+        return;
+    }
+
+    attachmentPreview.classList.add("visible");
+
+    attachedImages.forEach((image, index) => {
+
+        const wrapper =
+            document.createElement("div");
+
+        wrapper.className = "attachment";
+
+        const img =
+            document.createElement("img");
+
+        img.src = image;
+
+        img.alt = "Attachment " + (index + 1);
+
+        const remove =
+            document.createElement("button");
+
+        remove.className = "remove-attachment";
+
+        remove.type = "button";
+
+        remove.textContent = "×";
+
+        remove.title = "Remove image";
+
+        remove.addEventListener("click", function() {
+
+            attachedImages.splice(index, 1);
+
+            renderAttachmentPreview();
+
+            updateInputPlaceholder();
+
+        });
+
+        wrapper.appendChild(img);
+
+        wrapper.appendChild(remove);
+
+        attachmentPreview.appendChild(wrapper);
+
+    });
+}
+
+
+function updateInputPlaceholder() {
+
+    if (attachedImages.length > 1) {
+
+        input.placeholder =
+            "Ask Dalbayob about these images...";
+
+    } else if (attachedImages.length === 1) {
+
+        input.placeholder =
+            "Ask Dalbayob about this image...";
+
+    } else if (imageMode) {
+
+        input.placeholder =
+            "Describe the image you want...";
+
+    } else {
+
+        input.placeholder =
+            "Message Dalbayob...";
+
+    }
+}
+
+
+function clearAttachedImages() {
+
+    attachedImages = [];
+
+    renderAttachmentPreview();
+
+    updateInputPlaceholder();
+
+    input.focus();
 }
 
 
 /* =========================================================
-   ADD MESSAGE
+   CLIPBOARD IMAGE PASTE
 ========================================================= */
 
-function addMessage(text, type) {
+document.addEventListener("paste", function(event) {
 
-    const welcome =
-        document.getElementById(
-            "welcome"
+    const items =
+        Array.from(event.clipboardData?.items || []);
+
+    const imageItems =
+        items.filter(item =>
+            item.kind === "file" &&
+            item.type.startsWith("image/")
         );
 
-    if (welcome) {
-        welcome.remove();
+    if (!imageItems.length) {
+        return;
     }
 
+    imageItems.forEach(item => {
 
-    const row =
-        document.createElement("div");
+        const file = item.getAsFile();
 
-    row.className =
-        "message-row " + type;
-
-
-    const message =
-        document.createElement("div");
-
-    message.className =
-        "message " + type;
-
-
-    message.textContent =
-        text;
-
-
-    row.appendChild(message);
-
-    chatInner.appendChild(row);
-
-
-    requestAnimationFrame(() => {
-
-        chat.scrollTop =
-            chat.scrollHeight;
+        if (file) {
+            readImageFile(file);
+        }
 
     });
 
-
-    return message;
-
-}
+});
 
 
 /* =========================================================
-   ADD IMAGE MESSAGE
+   FILE BUTTON
 ========================================================= */
 
-function addImageMessage(
-    images,
-    text
-) {
+attachButton.addEventListener("click", function() {
 
-    const welcome =
-        document.getElementById(
-            "welcome"
-        );
+    imageInput.click();
 
-    if (welcome) {
-        welcome.remove();
-    }
+});
 
 
-    const row =
-        document.createElement("div");
+imageInput.addEventListener(
+    "change",
+    handleImageUpload
+);
 
-    row.className =
-        "message-row user";
 
+/* =========================================================
+   MESSAGES
+========================================================= */
+
+function addUserMessage(text, images = []) {
+
+    hideWelcome();
 
     const message =
         document.createElement("div");
@@ -2482,998 +1950,251 @@ function addImageMessage(
     message.className =
         "message user";
 
+    const card =
+        document.createElement("div");
+
+    card.className =
+        "message-card";
+
+    const label =
+        document.createElement("div");
+
+    label.className =
+        "message-label";
+
+    label.textContent =
+        "You";
+
+    card.appendChild(label);
 
     if (text) {
 
-        const textNode =
+        const textElement =
             document.createElement("div");
 
-        textNode.textContent =
+        textElement.className =
+            "message-text";
+
+        textElement.textContent =
             text;
 
-        message.appendChild(
-            textNode
-        );
-
+        card.appendChild(textElement);
     }
 
+    if (images.length) {
 
-    const imageContainer =
-        document.createElement("div");
+        const imageGrid =
+            document.createElement("div");
 
-    imageContainer.className =
-        "message-images";
+        imageGrid.className =
+            "message-attachments";
 
+        images.forEach(image => {
 
-    images.forEach(
-        (image, index) => {
-
-            const imageElement =
+            const img =
                 document.createElement("img");
 
-            imageElement.src =
-                image;
+            img.src = image;
 
-            imageElement.alt =
-                `Uploaded image ${index + 1}`;
+            img.alt = "Attached image";
 
-            imageElement.loading =
-                "lazy";
+            imageGrid.appendChild(img);
 
-
-            imageContainer.appendChild(
-                imageElement
-            );
-
-        }
-    );
-
-
-    message.appendChild(
-        imageContainer
-    );
-
-
-    row.appendChild(
-        message
-    );
-
-
-    chatInner.appendChild(
-        row
-    );
-
-
-    requestAnimationFrame(() => {
-
-        chat.scrollTop =
-            chat.scrollHeight;
-
-    });
-
-
-    return message;
-
-}
-
-
-/* =========================================================
-   IMAGE UPLOAD
-========================================================= */
-
-function openImagePicker() {
-
-    imageInput.click();
-
-}
-
-
-function handleImageUpload(event) {
-
-    const files =
-        Array.from(
-            event.target.files || []
-        );
-
-
-    if (!files.length)
-        return;
-
-
-    files.forEach(
-        file => {
-
-            if (
-                file.type &&
-                file.type.startsWith("image/")
-            ) {
-
-                readImageFile(file);
-
-            }
-
-        }
-    );
-
-
-    /*
-        Reset the input so selecting the same files
-        again still triggers the change event.
-    */
-
-    imageInput.value = "";
-
-}
-
-
-/* =========================================================
-   RENDER ATTACHMENT PREVIEW
-========================================================= */
-
-function renderAttachmentPreview() {
-
-    if (!attachmentList)
-        return;
-
-
-    attachmentList.innerHTML = "";
-
-
-    if (!attachedImages.length) {
-
-        attachmentPreview.classList.remove(
-            "visible"
-        );
-
-        return;
-
-    }
-
-
-    attachedImages.forEach(
-        (image, index) => {
-
-            const item =
-                document.createElement("div");
-
-            item.className =
-                "attachment-item";
-
-
-            const imageElement =
-                document.createElement("img");
-
-            imageElement.src =
-                image;
-
-            imageElement.alt =
-                `Attachment ${index + 1}`;
-
-
-            const indexBadge =
-                document.createElement("div");
-
-            indexBadge.className =
-                "attachment-index";
-
-            indexBadge.textContent =
-                index + 1;
-
-
-            const removeButton =
-                document.createElement("button");
-
-            removeButton.type =
-                "button";
-
-            removeButton.className =
-                "attachment-item-remove";
-
-            removeButton.title =
-                "Remove image";
-
-            removeButton.textContent =
-                "×";
-
-
-            removeButton.addEventListener(
-                "click",
-                () => {
-
-                    removeAttachment(
-                        index
-                    );
-
-                }
-            );
-
-
-            item.appendChild(
-                imageElement
-            );
-
-            item.appendChild(
-                indexBadge
-            );
-
-            item.appendChild(
-                removeButton
-            );
-
-
-            attachmentList.appendChild(
-                item
-            );
-
-        }
-    );
-
-
-    attachmentTitle.textContent =
-        attachedImages.length === 1
-            ? "IMAGE ATTACHED"
-            : `${attachedImages.length} IMAGES ATTACHED`;
-
-
-    attachmentSub.textContent =
-        attachedImages.length === 1
-            ? "Dalbayob can analyze or reverse-search this image."
-            : "Dalbayob can analyze all attached images.";
-
-
-    attachmentPreview.classList.add(
-        "visible"
-    );
-
-}
-
-
-/* =========================================================
-   REMOVE ONE ATTACHMENT
-========================================================= */
-
-function removeAttachment(index) {
-
-    if (
-        index < 0 ||
-        index >= attachedImages.length
-    ) {
-        return;
-    }
-
-
-    attachedImages.splice(
-        index,
-        1
-    );
-
-
-    renderAttachmentPreview();
-
-
-    if (!attachedImages.length) {
-
-        input.placeholder =
-            "Speak to Dalbayob...";
-
-    } else {
-
-        input.placeholder =
-            attachedImages.length > 1
-                ? "Ask Dalbayob about these images..."
-                : "Ask Dalbayob about this image...";
-
-    }
-
-}
-
-
-/* =========================================================
-   CLEAR ALL ATTACHMENTS
-========================================================= */
-
-function clearAttachment() {
-
-    attachedImages = [];
-
-    imageInput.value = "";
-
-    attachmentList.innerHTML = "";
-
-    attachmentPreview.classList.remove(
-        "visible"
-    );
-
-    input.placeholder =
-        "Speak to Dalbayob...";
-
-}
-
-
-/* =========================================================
-   REVERSE IMAGE SEARCH
-========================================================= */
-
-async function reverseSearch() {
-
-    const image =
-        getFirstAttachedImage() ||
-        currentImage ||
-        null;
-
-
-    if (!image) {
-
-        addMessage(
-            "🔎 Upload or paste an image first.",
-            "assistant"
-        );
-
-        return;
-
-    }
-
-
-    const resultsContainer =
-        document.getElementById(
-            "reverseSearchResults"
-        );
-
-
-    if (!resultsContainer) {
-
-        console.error(
-            "reverseSearchResults element was not found."
-        );
-
-        addMessage(
-            "⚠️ Reverse search interface failed to initialize.",
-            "assistant"
-        );
-
-        return;
-
-    }
-
-
-    resultsContainer.classList.add(
-        "visible"
-    );
-
-
-    resultsContainer.innerHTML = `
-
-        <div class="reverse-search-panel">
-
-            <div class="reverse-search-header">
-
-                <div class="reverse-search-title">
-                    🔎 REVERSE IMAGE SEARCH
-                </div>
-
-                <div class="reverse-search-count">
-                    SEARCHING
-                </div>
-
-            </div>
-
-            <div class="reverse-search-loading">
-                Uploading image and scanning indexed images...
-            </div>
-
-        </div>
-
-    `;
-
-
-    requestAnimationFrame(() => {
-
-        chat.scrollTo({
-            top: chat.scrollHeight,
-            behavior: "smooth"
         });
 
-    });
-
-
-    try {
-
-        const response =
-            await fetch(
-                "/api/reverse-search",
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        image
-                    })
-                }
-            );
-
-
-        const responseText =
-            await response.text();
-
-
-        let data;
-
-
-        try {
-
-            data =
-                JSON.parse(responseText);
-
-        } catch {
-
-            throw new Error(
-                `Server returned invalid JSON. HTTP ${response.status}. Response: ${responseText.slice(0, 1000)}`
-            );
-
-        }
-
-
-        if (!response.ok) {
-
-            const error =
-                new Error(
-                    data.error ||
-                    data.message ||
-                    `Reverse image search failed. HTTP ${response.status}.`
-                );
-
-
-            error.status =
-                data.status ||
-                response.status;
-
-
-            error.stage =
-                data.stage ||
-                "reverse-search";
-
-
-            error.details =
-                data.details ||
-                data.response ||
-                data.raw ||
-                null;
-
-
-            throw error;
-
-        }
-
-
-        if (
-            !data ||
-            !Array.isArray(data.results)
-        ) {
-
-            console.error(
-                "Invalid reverse search response:",
-                data
-            );
-
-
-            const error =
-                new Error(
-                    "Reverse search returned an unexpected response."
-                );
-
-
-            error.status =
-                data?.status ||
-                response.status;
-
-
-            error.stage =
-                data?.stage ||
-                "response-validation";
-
-
-            error.details =
-                data;
-
-
-            throw error;
-
-        }
-
-
-        renderReverseSearchResults(
-            data.results
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Reverse search error:",
-            error
-        );
-
-
-        renderReverseSearchError(
-            error
-        );
-
+        card.appendChild(imageGrid);
     }
 
+    message.appendChild(card);
 
-    requestAnimationFrame(() => {
+    chatInner.appendChild(message);
 
-        chat.scrollTo({
-            top: chat.scrollHeight,
-            behavior: "smooth"
-        });
-
-    });
-
+    scrollToBottom();
 }
 
 
-/* =========================================================
-   RENDER REVERSE SEARCH ERROR
-========================================================= */
+function addAssistantMessage(text, image = null) {
 
-function renderReverseSearchError(error) {
-
-    const container =
-        document.getElementById(
-            "reverseSearchResults"
-        );
-
-
-    if (!container)
-        return;
-
-
-    const status =
-        error?.status ||
-        "UNKNOWN";
-
-
-    const stage =
-        error?.stage ||
-        "frontend";
-
+    hideWelcome();
 
     const message =
-        error?.message ||
-        "Reverse image search failed.";
+        document.createElement("div");
 
+    message.className =
+        "message assistant";
 
-    let details = "";
+    const card =
+        document.createElement("div");
 
+    card.className =
+        "message-card";
 
-    if (error?.details) {
+    const label =
+        document.createElement("div");
 
-        try {
+    label.className =
+        "message-label";
 
-            details =
-                JSON.stringify(
-                    error.details,
-                    null,
-                    2
-                );
+    label.textContent =
+        "Dalbayob";
 
-        } catch {
+    card.appendChild(label);
 
-            details =
-                String(
-                    error.details
-                );
+    if (text) {
+
+        const textElement =
+            document.createElement("div");
+
+        textElement.className =
+            "message-text";
+
+        textElement.textContent =
+            text;
+
+        card.appendChild(textElement);
+
+    }
+
+    if (image) {
+
+        const safeImage =
+            safeUrl(image);
+
+        if (safeImage) {
+
+            const img =
+                document.createElement("img");
+
+            img.className =
+                "message-image";
+
+            img.src =
+                safeImage;
+
+            img.alt =
+                "Generated image";
+
+            img.loading =
+                "lazy";
+
+            card.appendChild(img);
 
         }
-
     }
 
+    message.appendChild(card);
 
-    container.innerHTML = `
+    chatInner.appendChild(message);
 
-        <div class="reverse-search-panel">
-
-            <div class="reverse-search-header">
-
-                <div class="reverse-search-title">
-                    🔎 REVERSE IMAGE SEARCH
-                </div>
-
-                <div class="reverse-search-count">
-                    ERROR
-                </div>
-
-            </div>
-
-
-            <div class="reverse-search-error">
-
-                <div class="reverse-error-line">
-
-                    <div class="reverse-error-label">
-                        Error
-                    </div>
-
-                    <div class="reverse-error-value">
-                        ⚠️ ${escapeHtml(message)}
-                    </div>
-
-                </div>
-
-
-                <div class="reverse-error-line">
-
-                    <div class="reverse-error-label">
-                        HTTP Status
-                    </div>
-
-                    <div class="reverse-error-value">
-                        ${escapeHtml(String(status))}
-                    </div>
-
-                </div>
-
-
-                <div class="reverse-error-line">
-
-                    <div class="reverse-error-label">
-                        Stage
-                    </div>
-
-                    <div class="reverse-error-value">
-                        ${escapeHtml(String(stage))}
-                    </div>
-
-                </div>
-
-
-                ${
-                    details
-                        ? `
-                            <div class="reverse-error-line">
-
-                                <div class="reverse-error-label">
-                                    API Response
-                                </div>
-
-                                <pre class="reverse-error-details">${escapeHtml(details)}</pre>
-
-```
-                        </div>
-                    `
-                    : ""
-            }
-
-        </div>
-
-    </div>
-
-`;
-```
-
+    scrollToBottom();
 }
 
-/* =========================================================
-RENDER SEARCH RESULTS
-========================================================= */
 
-function renderReverseSearchResults(
-results
-) {
+function addLoadingMessage() {
 
-```
-const container =
-    document.getElementById(
-        "reverseSearchResults"
-    );
+    hideWelcome();
 
+    const message =
+        document.createElement("div");
 
-if (!container)
-    return;
+    message.className =
+        "message assistant";
 
+    message.id =
+        "loadingMessage";
 
-if (!results.length) {
+    const card =
+        document.createElement("div");
 
-    container.innerHTML = `
+    card.className =
+        "message-card";
 
-        <div class="reverse-search-panel">
+    const loading =
+        document.createElement("div");
 
-            <div class="reverse-search-header">
+    loading.className =
+        "loading";
 
-                <div class="reverse-search-title">
-                    🔎 REVERSE IMAGE SEARCH
-                </div>
-
-                <div class="reverse-search-count">
-                    0 MATCHES
-                </div>
-
-            </div>
-
-            <div class="reverse-search-loading">
-                No indexed matches were found.
-            </div>
-
-        </div>
-
+    loading.innerHTML = `
+        <span>Processing</span>
+        <span class="loading-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+        </span>
     `;
 
-    return;
+    card.appendChild(loading);
 
+    message.appendChild(card);
+
+    chatInner.appendChild(message);
+
+    scrollToBottom();
 }
 
 
-const cards =
-    results
-        .map(result => {
+function removeLoadingMessage() {
 
-            const title =
-                escapeHtml(
-                    result.title ||
-                    "Untitled result"
-                );
+    const loading =
+        document.getElementById("loadingMessage");
 
-
-            const host =
-                escapeHtml(
-                    result.host ||
-                    result.source ||
-                    "Unknown source"
-                );
-
-
-            const imageUrl =
-                safeUrl(
-                    result.imageUrl ||
-                    result.thumbnail
-                );
-
-
-            const pageUrl =
-                safeUrl(
-                    result.pageUrl
-                );
-
-
-            return `
-
-                <article class="reverse-result">
-
-                    ${
-                        imageUrl
-                            ? `
-                                <img
-                                    class="reverse-result-image"
-                                    src="${imageUrl}"
-                                    alt=""
-                                    loading="lazy"
-                                    referrerpolicy="no-referrer"
-                                    onerror="this.style.display='none'"
-                                >
-                            `
-                            : ""
-                    }
-
-                    <div class="reverse-result-body">
-
-                        <div class="reverse-result-title">
-                            ${title}
-                        </div>
-
-                        <div class="reverse-result-host">
-                            ${host}
-                        </div>
-
-                        ${
-                            pageUrl
-                                ? `
-                                    <a
-                                        class="reverse-result-link"
-                                        href="${pageUrl}"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        Open source ↗
-                                    </a>
-                                `
-                                : ""
-                        }
-
-                    </div>
-
-                </article>
-
-            `;
-
-        })
-        .join("");
-
-
-container.innerHTML = `
-
-    <div class="reverse-search-panel">
-
-        <div class="reverse-search-header">
-
-            <div class="reverse-search-title">
-                🔎 REVERSE IMAGE SEARCH
-            </div>
-
-            <div class="reverse-search-count">
-                ${results.length}
-                ${
-                    results.length === 1
-                        ? " MATCH"
-                        : " MATCHES"
-                }
-            </div>
-
-        </div>
-
-
-        <div class="reverse-search-grid">
-
-            ${cards}
-
-        </div>
-
-    </div>
-
-`;
-```
-
-}
-
-/* =========================================================
-URL SECURITY
-========================================================= */
-
-function safeUrl(value) {
-
-```
-if (!value)
-    return "";
-
-
-try {
-
-    const url =
-        new URL(value);
-
-
-    if (
-        url.protocol !== "http:" &&
-        url.protocol !== "https:"
-    ) {
-
-        return "";
-
+    if (loading) {
+        loading.remove();
     }
-
-
-    return escapeAttribute(
-        url.href
-    );
-
-
-} catch {
-
-    return "";
-
-}
-```
-
 }
 
-function escapeHtml(value) {
-
-```
-return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-```
-
-}
-
-function escapeAttribute(value) {
-
-```
-return escapeHtml(value);
-```
-
-}
 
 /* =========================================================
-CHAT
+   CHAT API
 ========================================================= */
 
 async function sendMessage() {
 
-```
-const text =
-    input.value.trim();
+    if (isBusy) {
+        return;
+    }
 
+    const actualMessage =
+        input.value.trim();
 
-const imagesForThisMessage =
-    [...attachedImages];
+    const imagesForThisMessage =
+        [...attachedImages];
 
+    if (!actualMessage && !imagesForThisMessage.length) {
+        return;
+    }
 
-if (
-    !text &&
-    !imagesForThisMessage.length
-) {
-    return;
-}
+    setBusy(true);
 
+    hideWelcome();
 
-const actualMessage =
-    text ||
-    "Analyze these images and tell me what you see.";
-
-
-if (imagesForThisMessage.length) {
-
-    addImageMessage(
-        imagesForThisMessage,
-        text
+    addUserMessage(
+        actualMessage || "Analyze these images.",
+        imagesForThisMessage
     );
 
-} else {
+    input.value = "";
 
-    addMessage(
-        text,
-        "user"
-    );
+    autoResize();
 
-}
+    attachedImages = [];
 
+    renderAttachmentPreview();
 
-/*
-    Keep a copy before clearing the UI.
-*/
+    updateInputPlaceholder();
 
-attachedImages = [];
+    addLoadingMessage();
 
-imageInput.value = "";
+    try {
 
-renderAttachmentPreview();
+        const response =
+            await fetch("/api/chat", {
 
-input.placeholder =
-    "Speak to Dalbayob...";
-
-
-input.value = "";
-
-input.style.height =
-    "auto";
-
-
-const reply =
-    addMessage(
-        "Thinking...",
-        "assistant"
-    );
-
-
-try {
-
-    const response =
-        await fetch(
-            "/api/chat",
-            {
                 method: "POST",
 
                 headers: {
-                    "Content-Type":
-                        "application/json"
+                    "Content-Type": "application/json"
                 },
 
                 body: JSON.stringify({
@@ -3484,441 +2205,922 @@ try {
                     history:
                         conversationHistory,
 
-                    /*
-                        New multi-image field.
-                    */
-
                     images:
                         imagesForThisMessage,
 
-                    /*
-                        Old field kept for
-                        compatibility with
-                        your current backend.
-                    */
-
                     image:
-                        imagesForThisMessage[0] ||
-                        null
+                        imagesForThisMessage[0] || null
 
                 })
-            }
+
+            });
+
+
+        const raw =
+            await response.text();
+
+
+        let data;
+
+        try {
+
+            data =
+                JSON.parse(raw);
+
+        } catch (parseError) {
+
+            throw new Error(
+                raw ||
+                "The chat server returned invalid data."
+            );
+
+        }
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                data.message ||
+                "Chat request failed."
+            );
+
+        }
+
+
+        removeLoadingMessage();
+
+
+        const reply =
+            data.reply ||
+            data.message ||
+            data.content ||
+            data.text ||
+            "";
+
+
+        const returnedImage =
+            data.image ||
+            data.imageUrl ||
+            null;
+
+
+        if (!reply && !returnedImage) {
+
+            throw new Error(
+                "The AI returned an empty response."
+            );
+
+        }
+
+
+        addAssistantMessage(
+            reply,
+            returnedImage
         );
 
 
-    const responseText =
-        await response.text();
+        conversationHistory.push({
+
+            role: "user",
+
+            content:
+                actualMessage ||
+                "Analyze the attached images.",
+
+            images:
+                imagesForThisMessage
+
+        });
 
 
-    let data;
+        conversationHistory.push({
+
+            role: "assistant",
+
+            content:
+                reply
+
+        });
 
 
-    try {
+        if (returnedImage) {
 
-        data =
-            JSON.parse(responseText);
+            currentImage =
+                returnedImage;
 
-    } catch {
+        }
 
-        throw new Error(
-            `Server returned invalid JSON. HTTP ${response.status}.`
+    } catch (error) {
+
+        removeLoadingMessage();
+
+        console.error(
+            "Chat error:",
+            error
         );
+
+        addAssistantMessage(
+            "I couldn't process that request.\n\n" +
+            "Error: " +
+            error.message
+        );
+
+    } finally {
+
+        setBusy(false);
+
+        input.focus();
 
     }
-
-
-    if (!response.ok) {
-
-        throw new Error(
-            data.error ||
-            "AI request failed."
-        );
-
-    }
-
-
-    reply.textContent =
-        data.reply;
-
-
-    conversationHistory.push({
-
-        role: "user",
-
-        content:
-            imagesForThisMessage.length
-                ? `[${imagesForThisMessage.length} image${imagesForThisMessage.length === 1 ? "" : "s"} attached] ${actualMessage}`
-                : actualMessage
-
-    });
-
-
-    conversationHistory.push({
-
-        role: "assistant",
-
-        content:
-            data.reply
-
-    });
-
-
-} catch (error) {
-
-    reply.textContent =
-        "⚠️ " + error.message;
-
 }
 
-
-chat.scrollTop =
-    chat.scrollHeight;
-```
-
-}
 
 /* =========================================================
-IMAGE GENERATION
+   IMAGE GENERATION
 ========================================================= */
 
 async function generateImage() {
 
-```
-const prompt =
-    input.value.trim();
+    if (isBusy) {
+        return;
+    }
 
+    const prompt =
+        input.value.trim();
 
-const sourceImage =
-    currentImage ||
-    getFirstAttachedImage() ||
-    null;
+    const sourceImage =
+        attachedImages[0] ||
+        currentImage ||
+        null;
 
+    if (!prompt) {
 
-if (!prompt) {
+        input.focus();
 
-    input.focus();
+        input.placeholder =
+            sourceImage
+                ? "Describe how you want to change the image..."
+                : "Describe the image you want...";
 
-    return;
+        return;
+    }
 
-}
+    setBusy(true);
 
+    hideWelcome();
 
-addMessage(
-    "☪ " + prompt,
-    "user"
-);
+    const imagesForMessage =
+        [...attachedImages];
 
-
-input.value = "";
-
-input.style.height =
-    "auto";
-
-
-if (attachedImages.length) {
-
-    clearAttachment();
-
-}
-
-
-const statusText =
-    sourceImage
-        ? "✏️ Editing the latest specimen..."
-        : "🪳 Generating specimen...";
-
-
-const message =
-    addMessage(
-        statusText,
-        "assistant"
+    addUserMessage(
+        prompt,
+        imagesForMessage
     );
 
+    input.value = "";
 
-try {
+    autoResize();
 
-    const response =
-        await fetch(
-            "/api/image",
-            {
+    attachedImages = [];
+
+    renderAttachmentPreview();
+
+    updateInputPlaceholder();
+
+    addLoadingMessage();
+
+    try {
+
+        const response =
+            await fetch("/api/image", {
+
                 method: "POST",
 
                 headers: {
-                    "Content-Type":
-                        "application/json"
+                    "Content-Type": "application/json"
                 },
 
                 body: JSON.stringify({
 
-                    prompt,
+                    prompt:
+                        prompt,
 
                     image:
                         sourceImage
 
                 })
-            }
+
+            });
+
+
+        const raw =
+            await response.text();
+
+
+        let data;
+
+        try {
+
+            data =
+                JSON.parse(raw);
+
+        } catch (parseError) {
+
+            throw new Error(
+                raw ||
+                "Image server returned invalid data."
+            );
+
+        }
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                data.message ||
+                "Image generation failed."
+            );
+
+        }
+
+
+        const image =
+            data.image ||
+            data.url ||
+            data.imageUrl ||
+            null;
+
+
+        if (!image) {
+
+            throw new Error(
+                "The image server returned no image."
+            );
+
+        }
+
+
+        currentImage =
+            image;
+
+
+        removeLoadingMessage();
+
+        addAssistantMessage(
+            "Image generated successfully.",
+            image
         );
 
 
-    const responseText =
-        await response.text();
+        conversationHistory.push({
+
+            role: "user",
+
+            content:
+                prompt
+
+        });
 
 
-    let data;
+        conversationHistory.push({
+
+            role: "assistant",
+
+            content:
+                "Generated an image."
+
+        });
+
+    } catch (error) {
+
+        removeLoadingMessage();
+
+        console.error(
+            "Image generation error:",
+            error
+        );
+
+        addAssistantMessage(
+            "I couldn't generate the image.\n\n" +
+            "Error: " +
+            error.message
+        );
+
+    } finally {
+
+        setBusy(false);
+
+        input.focus();
+
+    }
+}
+
+
+/* =========================================================
+   REVERSE IMAGE SEARCH
+========================================================= */
+
+async function reverseImageSearch() {
+
+    if (isBusy) {
+        return;
+    }
+
+    const image =
+        attachedImages[0] ||
+        currentImage;
+
+
+    if (!image) {
+
+        addAssistantMessage(
+            "Please attach an image first, or generate an image before using reverse search."
+        );
+
+        return;
+    }
+
+
+    setBusy(true);
+
+    hideWelcome();
+
+    addUserMessage(
+        "Reverse search this image.",
+        [image]
+    );
+
+    addLoadingMessage();
 
 
     try {
 
-        data =
-            JSON.parse(responseText);
+        const response =
+            await fetch(
+                "/api/reverse-search",
+                {
 
-    } catch {
+                    method: "POST",
 
-        throw new Error(
-            `Server returned invalid JSON. HTTP ${response.status}.`
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        image: image
+                    })
+
+                }
+            );
+
+
+        const raw =
+            await response.text();
+
+
+        let data;
+
+        try {
+
+            data =
+                JSON.parse(raw);
+
+        } catch (parseError) {
+
+            throw new Error(
+                raw ||
+                "Reverse search returned invalid data."
+            );
+
+        }
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                data.message ||
+                "Reverse search failed."
+            );
+
+        }
+
+
+        removeLoadingMessage();
+
+        renderReverseSearchResults(data);
+
+    } catch (error) {
+
+        removeLoadingMessage();
+
+        console.error(
+            "Reverse search error:",
+            error
         );
 
-    }
-
-
-    if (!response.ok) {
-
-        throw new Error(
-            data.error ||
-            "Image generation failed."
+        renderReverseSearchError(
+            error.message
         );
 
+    } finally {
+
+        setBusy(false);
+
     }
+}
 
 
-    currentImage =
-        data.image;
+function renderReverseSearchError(message) {
 
+    const safeMessage =
+        escapeHtml(message);
 
-    message.textContent =
-        "";
-
-
-    const image =
-        document.createElement("img");
-
-
-    image.src =
-        currentImage;
-
-
-    image.alt =
-        prompt;
-
-
-    message.appendChild(
-        image
+    addAssistantMessage(
+        "Reverse image search failed.\n\n" +
+        message
     );
+}
 
 
-    conversationHistory.push({
+function renderReverseSearchResults(data) {
 
-        role: "user",
+    const results =
+        Array.isArray(data.results)
+            ? data.results
+            : Array.isArray(data.data)
+                ? data.data
+                : [];
 
-        content:
-            "[Image request] " +
-            prompt
+
+    if (!results.length) {
+
+        addAssistantMessage(
+            data.message ||
+            "The reverse image search returned no results."
+        );
+
+        return;
+    }
+
+
+    const message =
+        document.createElement("div");
+
+    message.className =
+        "message assistant";
+
+
+    const card =
+        document.createElement("div");
+
+    card.className =
+        "message-card";
+
+
+    const label =
+        document.createElement("div");
+
+    label.className =
+        "message-label";
+
+    label.textContent =
+        "Dalbayob";
+
+
+    card.appendChild(label);
+
+
+    const title =
+        document.createElement("div");
+
+    title.className =
+        "reverse-title";
+
+    title.textContent =
+        "Reverse Image Search";
+
+
+    card.appendChild(title);
+
+
+    const grid =
+        document.createElement("div");
+
+    grid.className =
+        "reverse-grid";
+
+
+    results.slice(0, 12).forEach(result => {
+
+        const url =
+            safeUrl(
+                result.url ||
+                result.link ||
+                result.source ||
+                ""
+            );
+
+
+        const imageUrl =
+            safeUrl(
+                result.image ||
+                result.thumbnail ||
+                result.imageUrl ||
+                result.thumbnailUrl ||
+                ""
+            );
+
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "reverse-result";
+
+
+        if (imageUrl) {
+
+            const img =
+                document.createElement("img");
+
+            img.src =
+                imageUrl;
+
+            img.alt =
+                result.title ||
+                "Search result";
+
+            img.loading =
+                "lazy";
+
+            img.onerror =
+                function() {
+                    this.style.display = "none";
+                };
+
+            item.appendChild(img);
+
+        }
+
+
+        const content =
+            document.createElement("div");
+
+        content.className =
+            "reverse-result-content";
+
+
+        const name =
+            document.createElement("div");
+
+        name.className =
+            "reverse-result-name";
+
+        name.textContent =
+            result.title ||
+            result.name ||
+            "Image result";
+
+
+        content.appendChild(name);
+
+
+        if (url) {
+
+            const link =
+                document.createElement("a");
+
+            link.className =
+                "reverse-result-url";
+
+            link.href =
+                url;
+
+            link.target =
+                "_blank";
+
+            link.rel =
+                "noopener noreferrer";
+
+            link.textContent =
+                url;
+
+
+            content.appendChild(link);
+
+        }
+
+
+        item.appendChild(content);
+
+        grid.appendChild(item);
 
     });
 
 
-    conversationHistory.push({
+    card.appendChild(grid);
 
-        role: "assistant",
+    message.appendChild(card);
 
-        content:
-            "[Generated an image]"
+    chatInner.appendChild(message);
 
-    });
-
-
-} catch (error) {
-
-    message.textContent =
-        "⚠️ " + error.message;
+    scrollToBottom();
 
 }
 
-
-chat.scrollTop =
-    chat.scrollHeight;
-```
-
-}
 
 /* =========================================================
-NEW CHAT
+   IMAGE MODE
+========================================================= */
+
+function setImageMode(enabled) {
+
+    imageMode =
+        enabled;
+
+    if (enabled) {
+
+        imageModeBanner.classList.add(
+            "active"
+        );
+
+        imageButton.classList.add(
+            "active"
+        );
+
+        chatButton.classList.remove(
+            "active"
+        );
+
+    } else {
+
+        imageModeBanner.classList.remove(
+            "active"
+        );
+
+        imageButton.classList.remove(
+            "active"
+        );
+
+        chatButton.classList.add(
+            "active"
+        );
+
+    }
+
+    updateInputPlaceholder();
+
+}
+
+
+function focusImageMode() {
+
+    setImageMode(true);
+
+    input.focus();
+
+}
+
+
+/* =========================================================
+   SUGGESTIONS
+========================================================= */
+
+function useSuggestion(text) {
+
+    input.value =
+        text;
+
+    autoResize();
+
+    input.focus();
+
+}
+
+
+/* =========================================================
+   NEW CHAT
 ========================================================= */
 
 function newChat() {
 
-```
-conversationHistory = [];
+    conversationHistory = [];
 
-currentImage = null;
+    currentImage = null;
 
-attachedImages = [];
+    attachedImages = [];
 
-imageInput.value = "";
+    imageMode = false;
 
-attachmentList.innerHTML = "";
+    input.value = "";
 
-attachmentPreview.classList.remove(
-    "visible"
-);
+    autoResize();
 
-input.placeholder =
-    "Speak to Dalbayob...";
+    renderAttachmentPreview();
 
+    setImageMode(false);
 
-chatInner.innerHTML = `
+    chatInner.innerHTML = "";
 
-    <div
-        class="welcome"
-        id="welcome">
+    chatInner.appendChild(
+        createWelcomeElement()
+    );
 
-        <div class="welcome-emblem">
+    input.focus();
 
-            <div class="crescent">
-                ☪
-            </div>
+    scrollToBottom();
 
-        </div>
+}
 
 
-        <h1>
-            Welcome to Dalbayob.
+function createWelcomeElement() {
+
+    const section =
+        document.createElement("section");
+
+    section.className =
+        "welcome";
+
+    section.id =
+        "welcome";
+
+
+    section.innerHTML = `
+        <img
+            class="specimen-image"
+            src="https://avatars.fastly.steamstatic.com/b76a2e69616ae68a574fdc638ab82fdcc3f94161_full.jpg"
+            alt="Dalbayob"
+        >
+
+        <h1 class="welcome-title">
+            DALBAYOB
         </h1>
 
-
-        <p>
-            Intelligence with a slightly questionable pest problem.
+        <p class="welcome-description">
+            A multimodal AI interface for conversation,
+            image generation, image analysis and visual search.
         </p>
-
-
-        <div class="roach-gallery">
-
-            <img
-                src="https://avatars.fastly.steamstatic.com/b76a2e69616ae68a574fdc638ab82fdcc3f94161_full.jpg"
-                alt="Dalbayob specimen"
-            >
-
-            <div class="roach-gallery-caption">
-                DALBAYOB SPECIMEN ARCHIVE · ROACH DIVISION
-            </div>
-
-        </div>
-
 
         <div class="suggestions">
 
             <button
                 class="suggestion"
-                type="button"
-                onclick="useSuggestion('What can you do?')">
+                onclick="useSuggestion('What can you do?')"
+            >
+                <div class="suggestion-title">
+                    What can you do?
+                </div>
 
-                What can you do?
-
+                <div class="suggestion-text">
+                    Explore Dalbayob's capabilities.
+                </div>
             </button>
-
 
             <button
                 class="suggestion"
-                type="button"
-                onclick="useSuggestion('Explain something complicated')">
+                onclick="useSuggestion('Explain something complicated to me in a simple way.')"
+            >
+                <div class="suggestion-title">
+                    Explain something complicated
+                </div>
 
-                Explain something complicated
-
+                <div class="suggestion-text">
+                    Turn technical nonsense into something understandable.
+                </div>
             </button>
-
 
             <button
                 class="suggestion"
-                type="button"
-                onclick="useSuggestion('Give me a creative idea')">
+                onclick="useSuggestion('Give me a creative idea.')"
+            >
+                <div class="suggestion-title">
+                    Give me a creative idea
+                </div>
 
-                Give me a creative idea
-
+                <div class="suggestion-text">
+                    Let the machine cook.
+                </div>
             </button>
-
 
             <button
                 class="suggestion"
-                type="button"
-                onclick="useSuggestion('Generate an image of a giant cockroach')">
+                onclick="useSuggestion('Summon a roach.')"
+            >
+                <div class="suggestion-title">
+                    Summon a roach
+                </div>
 
-                🪳 Summon a roach
-
+                <div class="suggestion-text">
+                    This is probably a terrible idea.
+                </div>
             </button>
 
         </div>
+    `;
 
-    </div>
-
-
-    <div
-        id="reverseSearchResults"
-        class="reverse-search-results">
-    </div>
-
-`;
-
-
-input.focus();
-```
-
+    return section;
 }
 
+
 /* =========================================================
-SUGGESTIONS
+   BUTTON EVENTS
 ========================================================= */
 
-function useSuggestion(text) {
-
-```
-input.value =
-    text;
-
-
-input.dispatchEvent(
-    new Event("input")
+sendButton.addEventListener(
+    "click",
+    sendMessage
 );
 
 
-input.focus();
-```
-
-}
-
-/* =========================================================
-IMAGE MODE
-========================================================= */
-
-function focusImageMode() {
-
-```
-input.value =
-    currentImage
-        ? "Edit the latest image: "
-        : attachedImages.length
-            ? "Edit the attached image: "
-            : "Generate an image of ";
-
-
-input.dispatchEvent(
-    new Event("input")
+generateButton.addEventListener(
+    "click",
+    generateImage
 );
 
 
-input.focus();
-```
+searchImageButton.addEventListener(
+    "click",
+    reverseImageSearch
+);
 
-}
+
+clearImagesButton.addEventListener(
+    "click",
+    clearAttachedImages
+);
+
+
+newChatButton.addEventListener(
+    "click",
+    newChat
+);
+
+
+imageButton.addEventListener(
+    "click",
+    focusImageMode
+);
+
+
+reverseButton.addEventListener(
+    "click",
+    reverseImageSearch
+);
+
+
+chatButton.addEventListener(
+    "click",
+    function() {
+
+        setImageMode(false);
+
+        input.focus();
+
+    }
+);
+
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+input.addEventListener(
+    "input",
+    autoResize
+);
+
+
+input.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Enter" &&
+            !event.shiftKey
+        ) {
+
+            event.preventDefault();
+
+            sendMessage();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   STARTUP
+========================================================= */
+
+autoResize();
+
+updateInputPlaceholder();
+
+input.focus();
 
 </script>
 
