@@ -1053,6 +1053,24 @@ button {
     display:block;
 }
 
+/* EDIT MODE */
+
+.edit-mode-banner {
+    display:none;
+    width:min(920px,100%);
+    margin:0 auto 8px;
+    padding:9px 12px;
+    border-radius:9px;
+    border:1px solid rgba(123,184,121,.2);
+    background:rgba(60,100,58,.08);
+    color:#8fb98c;
+    font-size:9px;
+}
+
+.edit-mode-banner.active {
+    display:block;
+}
+
 /* RESPONSIVE */
 
 @media(max-width:760px) {
@@ -1263,7 +1281,7 @@ button {
 
     <p class="welcome-description">
         A multimodal AI interface for conversation,
-        image generation, image analysis and visual search.
+        image generation, image editing, image analysis and visual search.
     </p>
 
     <div class="suggestions">
@@ -1333,6 +1351,10 @@ button {
 
 <div class="image-mode-banner" id="imageModeBanner">
     Image generation mode active. Describe the image you want.
+</div>
+
+<div class="edit-mode-banner" id="editModeBanner">
+    Image editing mode active. Describe how you want to change the current image.
 </div>
 
 <div class="composer-area">
@@ -1411,12 +1433,11 @@ button {
 </div>
 
 <input
-class="hidden-file"
-id="imageInput"
-type="file"
-accept="image/*"
-multiple
-
+    class="hidden-file"
+    id="imageInput"
+    type="file"
+    accept="image/*"
+    multiple
 >
 
 </main>
@@ -1446,6 +1467,7 @@ const chatButton = document.getElementById("chatButton");
 const imageButton = document.getElementById("imageButton");
 const reverseButton = document.getElementById("reverseButton");
 const imageModeBanner = document.getElementById("imageModeBanner");
+const editModeBanner = document.getElementById("editModeBanner");
 
 /* URL SAFETY */
 
@@ -1900,12 +1922,39 @@ function updateInputPlaceholder() {
     } else if (attachedImages.length === 1) {
         input.placeholder =
             "Ask Dalbayob about this image...";
+    } else if (currentImage) {
+        input.placeholder =
+            "Describe how you want to edit the current image...";
     } else if (imageMode) {
         input.placeholder =
             "Describe the image you want...";
     } else {
         input.placeholder =
             "Message Dalbayob...";
+    }
+}
+
+function updateEditMode() {
+    const editing =
+        Boolean(
+            currentImage ||
+            attachedImages.length
+        );
+
+    if (editing) {
+        editModeBanner.classList.add(
+            "active"
+        );
+
+        generateButton.textContent =
+            "✦ Edit Image";
+    } else {
+        editModeBanner.classList.remove(
+            "active"
+        );
+
+        generateButton.textContent =
+            "✦ Generate Image";
     }
 }
 
@@ -1933,6 +1982,7 @@ function readImageFile(file) {
 
         renderAttachmentPreview();
         updateInputPlaceholder();
+        updateEditMode();
 
         input.focus();
     };
@@ -2029,6 +2079,7 @@ function renderAttachmentPreview() {
 
                     renderAttachmentPreview();
                     updateInputPlaceholder();
+                    updateEditMode();
                 }
             );
 
@@ -2047,6 +2098,7 @@ function clearAttachedImages() {
 
     renderAttachmentPreview();
     updateInputPlaceholder();
+    updateEditMode();
 
     input.focus();
 }
@@ -2277,7 +2329,7 @@ function addAssistantMessage(
             card.appendChild(error);
 
             console.error(
-                "Invalid image returned by /api/image:",
+                "Invalid image returned:",
                 image
             );
         }
@@ -2378,6 +2430,7 @@ async function sendMessage() {
 
     renderAttachmentPreview();
     updateInputPlaceholder();
+    updateEditMode();
 
     addLoadingMessage();
 
@@ -2474,6 +2527,9 @@ async function sendMessage() {
         if (returnedImage) {
             currentImage =
                 returnedImage;
+
+            updateEditMode();
+            updateInputPlaceholder();
         }
 
     } catch (error) {
@@ -2495,7 +2551,7 @@ async function sendMessage() {
     }
 }
 
-/* IMAGE GENERATION */
+/* IMAGE GENERATION / EDITING */
 
 async function generateImage() {
     if (isBusy) return;
@@ -2503,6 +2559,14 @@ async function generateImage() {
     const prompt =
         input.value.trim();
 
+    /*
+        If an image is attached, edit that image.
+
+        Otherwise, if a generated image already exists,
+        edit the current generated image.
+
+        If neither exists, perform normal generation.
+    */
     const sourceImage =
         attachedImages[0] ||
         currentImage ||
@@ -2542,28 +2606,51 @@ async function generateImage() {
     addLoadingMessage();
 
     try {
+        const editing =
+            Boolean(sourceImage);
+
+        const endpoint =
+            editing
+                ? "/api/edit-image"
+                : "/api/image";
+
+        const body =
+            editing
+                ? {
+                    prompt: prompt,
+                    image: sourceImage
+                }
+                : {
+                    prompt: prompt
+                };
+
         console.log(
-            "Sending image generation request..."
+            editing
+                ? "Sending image edit request to ComfyUI..."
+                : "Sending normal image generation request to ComfyUI..."
         );
 
         const response =
             await fetch(
-                "/api/image",
+                endpoint,
                 {
                     method:"POST",
                     headers:{
                         "Content-Type":
                             "application/json"
                     },
-                    body:JSON.stringify({
-                        prompt:prompt,
-                        image:sourceImage
-                    })
+                    body:
+                        JSON.stringify(body)
                 }
             );
 
         const raw =
             await response.text();
+
+        console.log(
+            "Image API endpoint:",
+            endpoint
+        );
 
         console.log(
             "Image API status:",
@@ -2591,7 +2678,11 @@ async function generateImage() {
             throw new Error(
                 data.error ||
                 data.message ||
-                "Image generation failed."
+                (
+                    editing
+                        ? "Image editing failed."
+                        : "Image generation failed."
+                )
             );
         }
 
@@ -2603,21 +2694,33 @@ async function generateImage() {
 
         if (!image) {
             throw new Error(
-                "The image server returned no image."
+                editing
+                    ? "The image editor returned no image."
+                    : "The image server returned no image."
             );
         }
 
         console.log(
-            "Generated image received."
+            editing
+                ? "Edited image received from ComfyUI."
+                : "Generated image received from ComfyUI."
         );
 
+        /*
+            This is important.
+
+            The returned image becomes the new currentImage,
+            allowing another edit immediately afterwards.
+        */
         currentImage =
             image;
 
         removeLoadingMessage();
 
         addAssistantMessage(
-            "Image generated successfully.",
+            editing
+                ? "Image edited successfully."
+                : "Image generated successfully.",
             image
         );
 
@@ -2629,19 +2732,29 @@ async function generateImage() {
         conversationHistory.push({
             role:"assistant",
             content:
-                "Generated an image."
+                editing
+                    ? "Edited the image."
+                    : "Generated an image."
         });
+
+        updateEditMode();
+        updateInputPlaceholder();
 
     } catch (error) {
         removeLoadingMessage();
 
         console.error(
-            "Image generation error:",
+            "Image operation error:",
             error
         );
 
         addAssistantMessage(
-            "I couldn't generate the image.\n\nError: " +
+            (
+                sourceImage
+                    ? "I couldn't edit the image."
+                    : "I couldn't generate the image."
+            ) +
+            "\n\nError: " +
             error.message
         );
 
@@ -2950,6 +3063,7 @@ function setImageMode(enabled) {
     }
 
     updateInputPlaceholder();
+    updateEditMode();
 }
 
 function focusImageMode() {
@@ -2977,6 +3091,7 @@ function newChat() {
 
     renderAttachmentPreview();
     setImageMode(false);
+    updateEditMode();
 
     chatInner.innerHTML = "";
 
@@ -3016,7 +3131,8 @@ function createWelcomeElement() {
 
         <p class="welcome-description">
             A multimodal AI interface for conversation,
-            image generation, image analysis and visual search.
+            image generation, image editing,
+            image analysis and visual search.
         </p>
 
         <div class="suggestions">
@@ -3140,7 +3256,16 @@ chatButton.addEventListener(
 
 input.addEventListener(
     "input",
-    autoResize
+    () => {
+        autoResize();
+
+        if (
+            !isBusy &&
+            input.value.trim()
+        ) {
+            updateInputPlaceholder();
+        }
+    }
 );
 
 input.addEventListener(
@@ -3160,6 +3285,7 @@ input.addEventListener(
 
 autoResize();
 updateInputPlaceholder();
+updateEditMode();
 input.focus();
 </script>
 
