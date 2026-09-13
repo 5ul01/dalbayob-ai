@@ -4,7 +4,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Dalbayob AI</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,1315 +11,892 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-
 :root {
-    --black: #050604;
-    --black2: #080b07;
-    --panel: rgba(10, 15, 10, 0.86);
-    --panel2: rgba(14, 20, 14, 0.92);
-
-    --green: #4e8c52;
-    --green-light: #7bb879;
-    --green-dark: #274d2b;
-
-    --gold: #cda957;
-    --gold-light: #e7c97b;
-
-    --cream: #e7e2d4;
-    --muted: #858b80;
-
-    --border: rgba(205, 169, 87, 0.18);
-    --border-green: rgba(123, 184, 121, 0.16);
-
-    --danger: #c65d5d;
-
-    --radius: 16px;
+    --black:#050604;
+    --black2:#080b07;
+    --panel:rgba(10,15,10,.86);
+    --panel2:rgba(14,20,14,.92);
+    --green:#4e8c52;
+    --green-light:#7bb879;
+    --green-dark:#274d2b;
+    --gold:#cda957;
+    --gold-light:#e7c97b;
+    --cream:#e7e2d4;
+    --muted:#858b80;
+    --border:rgba(205,169,87,.18);
+    --border-green:rgba(123,184,121,.16);
+    --danger:#c65d5d;
+    --radius:16px;
 }
 
 * {
-    box-sizing: border-box;
+    box-sizing:border-box;
 }
 
 html,
 body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
 }
 
 body {
     background:
-        radial-gradient(circle at 50% 40%, rgba(46, 82, 48, 0.16), transparent 35%),
-        linear-gradient(rgba(4, 7, 4, 0.88), rgba(4, 7, 4, 0.94)),
+        radial-gradient(circle at 50% 40%,rgba(46,82,48,.16),transparent 35%),
+        linear-gradient(rgba(4,7,4,.88),rgba(4,7,4,.94)),
         url("https://avatars.fastly.steamstatic.com/b76a2e69616ae68a574fdc638ab82fdcc3f94161_full.jpg");
-
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-
-    color: var(--cream);
-    font-family: "Inter", sans-serif;
-
-    overflow: hidden;
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+    color:var(--cream);
+    font-family:"Inter",sans-serif;
+    overflow:hidden;
 }
 
 button,
 input,
 textarea {
-    font-family: inherit;
+    font-family:inherit;
 }
 
 button {
-    border: 0;
+    border:0;
 }
 
 .app {
-    width: 100%;
-    height: 100vh;
-
-    display: flex;
-
-    position: relative;
+    width:100%;
+    height:100vh;
+    display:flex;
+    position:relative;
 }
-
-/* =========================================================
-   BACKGROUND
-========================================================= */
 
 .background-overlay {
-    position: fixed;
-    inset: 0;
-
-    pointer-events: none;
-
+    position:fixed;
+    inset:0;
+    pointer-events:none;
     background:
-        radial-gradient(
-            circle at center,
-            transparent 0%,
-            rgba(0, 0, 0, 0.18) 45%,
-            rgba(0, 0, 0, 0.72) 100%
-        );
-
-    z-index: 0;
+        radial-gradient(circle at center,
+        transparent 0%,
+        rgba(0,0,0,.18) 45%,
+        rgba(0,0,0,.72) 100%);
+    z-index:0;
 }
 
-/* =========================================================
-   SIDEBAR
-========================================================= */
+/* SIDEBAR */
 
 .sidebar {
-    width: 250px;
-    min-width: 250px;
-
-    height: 100vh;
-
-    background: rgba(5, 8, 5, 0.94);
-
-    border-right: 1px solid var(--border);
-
-    display: flex;
-    flex-direction: column;
-
-    position: relative;
-    z-index: 20;
-
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    width:250px;
+    min-width:250px;
+    height:100vh;
+    background:rgba(5,8,5,.94);
+    border-right:1px solid var(--border);
+    display:flex;
+    flex-direction:column;
+    position:relative;
+    z-index:20;
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
 }
 
 .brand {
-    padding: 26px 22px 24px;
-
-    border-bottom: 1px solid var(--border);
-
-    position: relative;
+    padding:26px 22px 24px;
+    border-bottom:1px solid var(--border);
 }
 
 .brand-title {
-    font-family: "Cinzel", serif;
-
-    color: var(--gold);
-
-    font-size: 22px;
-    font-weight: 700;
-
-    letter-spacing: 3px;
+    font-family:"Cinzel",serif;
+    color:var(--gold);
+    font-size:22px;
+    font-weight:700;
+    letter-spacing:3px;
 }
 
 .brand-subtitle {
-    margin-top: 5px;
-
-    color: var(--muted);
-
-    font-size: 9px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
+    margin-top:5px;
+    color:var(--muted);
+    font-size:9px;
+    letter-spacing:2px;
+    text-transform:uppercase;
 }
 
 .online {
-    display: flex;
-    align-items: center;
-
-    gap: 7px;
-
-    margin-top: 14px;
-
-    color: #7fbd7d;
-
-    font-size: 9px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    margin-top:14px;
+    color:#7fbd7d;
+    font-size:9px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
 }
 
 .online-dot {
-    width: 7px;
-    height: 7px;
-
-    border-radius: 50%;
-
-    background: #75ba73;
-
-    box-shadow: 0 0 10px rgba(117, 186, 115, 0.8);
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#75ba73;
+    box-shadow:0 0 10px rgba(117,186,115,.8);
 }
 
 .sidebar-content {
-    padding: 18px 12px;
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 7px;
+    padding:18px 12px;
+    display:flex;
+    flex-direction:column;
+    gap:7px;
 }
 
 .sidebar-label {
-    padding: 10px 11px 7px;
-
-    color: #626960;
-
-    font-size: 9px;
-
-    letter-spacing: 1.8px;
-
-    text-transform: uppercase;
+    padding:10px 11px 7px;
+    color:#626960;
+    font-size:9px;
+    letter-spacing:1.8px;
+    text-transform:uppercase;
 }
 
 .side-button {
-    width: 100%;
-
-    display: flex;
-    align-items: center;
-
-    gap: 11px;
-
-    padding: 11px 13px;
-
-    border-radius: 10px;
-
-    background: transparent;
-
-    color: #aaaFA5;
-
-    cursor: pointer;
-
-    text-align: left;
-
-    font-size: 12px;
-
-    transition:
-        background 0.18s ease,
-        color 0.18s ease,
-        transform 0.18s ease;
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding:11px 13px;
+    border-radius:10px;
+    background:transparent;
+    color:#aaafa5;
+    cursor:pointer;
+    text-align:left;
+    font-size:12px;
+    transition:background .18s ease,color .18s ease,transform .18s ease;
 }
 
 .side-button:hover {
-    background: rgba(123, 184, 121, 0.08);
-
-    color: var(--cream);
-
-    transform: translateX(2px);
+    background:rgba(123,184,121,.08);
+    color:var(--cream);
+    transform:translateX(2px);
 }
 
 .side-button.active {
-    background: rgba(205, 169, 87, 0.08);
-
-    color: var(--gold-light);
-
-    border: 1px solid rgba(205, 169, 87, 0.1);
+    background:rgba(205,169,87,.08);
+    color:var(--gold-light);
+    border:1px solid rgba(205,169,87,.1);
 }
 
 .side-icon {
-    width: 25px;
-    height: 25px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 7px;
-
-    background: rgba(255,255,255,0.035);
-
-    color: var(--gold);
-
-    font-size: 12px;
+    width:25px;
+    height:25px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:7px;
+    background:rgba(255,255,255,.035);
+    color:var(--gold);
+    font-size:12px;
 }
 
 .sidebar-footer {
-    margin-top: auto;
-
-    padding: 14px;
-
-    border-top: 1px solid var(--border);
+    margin-top:auto;
+    padding:14px;
+    border-top:1px solid var(--border);
 }
 
 .system-box {
-    padding: 12px;
-
-    border: 1px solid var(--border-green);
-
-    border-radius: 10px;
-
-    background: rgba(23, 36, 23, 0.35);
+    padding:12px;
+    border:1px solid var(--border-green);
+    border-radius:10px;
+    background:rgba(23,36,23,.35);
 }
 
 .system-title {
-    color: var(--green-light);
-
-    font-size: 9px;
-
-    letter-spacing: 1.5px;
-
-    text-transform: uppercase;
+    color:var(--green-light);
+    font-size:9px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
 }
 
 .system-text {
-    margin-top: 5px;
-
-    color: #777d74;
-
-    font-size: 9px;
-
-    line-height: 1.5;
+    margin-top:5px;
+    color:#777d74;
+    font-size:9px;
+    line-height:1.5;
 }
 
-/* =========================================================
-   MAIN
-========================================================= */
+/* MAIN */
 
 .main {
-    flex: 1;
-
-    min-width: 0;
-
-    height: 100vh;
-
-    display: flex;
-    flex-direction: column;
-
-    position: relative;
-
-    z-index: 5;
+    flex:1;
+    min-width:0;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+    z-index:5;
 }
 
-/* =========================================================
-   HEADER
-========================================================= */
+/* HEADER */
 
 .header {
-    height: 70px;
-    min-height: 70px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 0 28px;
-
-    border-bottom: 1px solid var(--border);
-
-    background: rgba(5, 8, 5, 0.72);
-
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    height:70px;
+    min-height:70px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 28px;
+    border-bottom:1px solid var(--border);
+    background:rgba(5,8,5,.72);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
 }
 
 .header-title {
-    font-family: "Cinzel", serif;
-
-    color: var(--cream);
-
-    font-size: 13px;
-
-    letter-spacing: 2.5px;
+    font-family:"Cinzel",serif;
+    color:var(--cream);
+    font-size:13px;
+    letter-spacing:2.5px;
 }
 
 .header-subtitle {
-    margin-top: 3px;
-
-    color: #626a61;
-
-    font-size: 8px;
-
-    letter-spacing: 1.7px;
-
-    text-transform: uppercase;
+    margin-top:3px;
+    color:#626a61;
+    font-size:8px;
+    letter-spacing:1.7px;
+    text-transform:uppercase;
 }
 
 .header-status {
-    display: flex;
-    align-items: center;
-
-    gap: 9px;
-
-    color: #769775;
-
-    font-size: 9px;
-
-    letter-spacing: 1.3px;
-
-    text-transform: uppercase;
+    display:flex;
+    align-items:center;
+    gap:9px;
+    color:#769775;
+    font-size:9px;
+    letter-spacing:1.3px;
+    text-transform:uppercase;
 }
 
-/* =========================================================
-   CHAT
-========================================================= */
+/* CHAT */
 
 .chat {
-    flex: 1;
-
-    min-height: 0;
-
-    overflow-y: auto;
-
-    padding: 35px 20px 30px;
+    flex:1;
+    min-height:0;
+    overflow-y:auto;
+    padding:35px 20px 30px;
 }
 
 .chat::-webkit-scrollbar {
-    width: 7px;
+    width:7px;
 }
 
 .chat::-webkit-scrollbar-track {
-    background: transparent;
+    background:transparent;
 }
 
 .chat::-webkit-scrollbar-thumb {
-    background: rgba(205, 169, 87, 0.14);
-
-    border-radius: 10px;
+    background:rgba(205,169,87,.14);
+    border-radius:10px;
 }
 
 .chat-inner {
-    width: min(920px, 100%);
-
-    margin: 0 auto;
+    width:min(920px,100%);
+    margin:0 auto;
 }
 
-/* =========================================================
-   WELCOME
-========================================================= */
+/* WELCOME */
 
 .welcome {
-    min-height: calc(100vh - 180px);
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    text-align: center;
-
-    padding: 20px;
+    min-height:calc(100vh - 180px);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:20px;
 }
 
 .specimen-image {
-    width: 125px;
-    height: 125px;
-
-    object-fit: cover;
-
-    border-radius: 50%;
-
-    border: 1px solid rgba(205, 169, 87, 0.42);
-
+    width:125px;
+    height:125px;
+    object-fit:cover;
+    border-radius:50%;
+    border:1px solid rgba(205,169,87,.42);
     box-shadow:
-        0 0 0 8px rgba(205, 169, 87, 0.025),
-        0 0 45px rgba(77, 123, 75, 0.2);
-
-    margin-bottom: 25px;
+        0 0 0 8px rgba(205,169,87,.025),
+        0 0 45px rgba(77,123,75,.2);
+    margin-bottom:25px;
 }
 
 .welcome-title {
-    font-family: "Cinzel", serif;
-
-    color: var(--gold-light);
-
-    font-size: clamp(27px, 4vw, 43px);
-
-    letter-spacing: 5px;
-
-    margin: 0;
+    font-family:"Cinzel",serif;
+    color:var(--gold-light);
+    font-size:clamp(27px,4vw,43px);
+    letter-spacing:5px;
+    margin:0;
 }
 
 .welcome-description {
-    max-width: 600px;
-
-    margin: 13px auto 0;
-
-    color: #858c82;
-
-    font-size: 12px;
-
-    line-height: 1.7;
+    max-width:600px;
+    margin:13px auto 0;
+    color:#858c82;
+    font-size:12px;
+    line-height:1.7;
 }
 
 .suggestions {
-    margin-top: 28px;
-
-    width: min(680px, 100%);
-
-    display: grid;
-
-    grid-template-columns: repeat(2, 1fr);
-
-    gap: 9px;
+    margin-top:28px;
+    width:min(680px,100%);
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:9px;
 }
 
 .suggestion {
-    padding: 14px;
-
-    text-align: left;
-
-    border-radius: 11px;
-
-    border: 1px solid var(--border);
-
-    background: rgba(7, 12, 7, 0.62);
-
-    color: #a8aea4;
-
-    cursor: pointer;
-
-    transition:
-        border-color 0.2s ease,
-        background 0.2s ease,
-        transform 0.2s ease;
+    padding:14px;
+    text-align:left;
+    border-radius:11px;
+    border:1px solid var(--border);
+    background:rgba(7,12,7,.62);
+    color:#a8aea4;
+    cursor:pointer;
+    transition:border-color .2s ease,background .2s ease,transform .2s ease;
 }
 
 .suggestion:hover {
-    border-color: rgba(205, 169, 87, 0.35);
-
-    background: rgba(22, 30, 20, 0.75);
-
-    transform: translateY(-2px);
+    border-color:rgba(205,169,87,.35);
+    background:rgba(22,30,20,.75);
+    transform:translateY(-2px);
 }
 
 .suggestion-title {
-    color: var(--cream);
-
-    font-size: 11px;
-
-    font-weight: 600;
+    color:var(--cream);
+    font-size:11px;
+    font-weight:600;
 }
 
 .suggestion-text {
-    margin-top: 4px;
-
-    color: #697067;
-
-    font-size: 9px;
-
-    line-height: 1.4;
+    margin-top:4px;
+    color:#697067;
+    font-size:9px;
+    line-height:1.4;
 }
 
-/* =========================================================
-   MESSAGES
-========================================================= */
+/* MESSAGES */
 
 .message {
-    display: flex;
-
-    margin-bottom: 24px;
-
-    animation: messageIn 0.22s ease;
+    display:flex;
+    margin-bottom:24px;
+    animation:messageIn .22s ease;
 }
 
 @keyframes messageIn {
     from {
-        opacity: 0;
-        transform: translateY(5px);
+        opacity:0;
+        transform:translateY(5px);
     }
-
     to {
-        opacity: 1;
-        transform: translateY(0);
+        opacity:1;
+        transform:translateY(0);
     }
 }
 
 .message.user {
-    justify-content: flex-end;
+    justify-content:flex-end;
 }
 
 .message.assistant {
-    justify-content: flex-start;
+    justify-content:flex-start;
 }
 
 .message-card {
-    max-width: min(760px, 85%);
-
-    padding: 15px 17px;
-
-    border-radius: 14px;
-
-    line-height: 1.65;
-
-    font-size: 13px;
+    max-width:min(760px,85%);
+    padding:15px 17px;
+    border-radius:14px;
+    line-height:1.65;
+    font-size:13px;
 }
 
 .message.user .message-card {
-    background: rgba(48, 72, 48, 0.62);
-
-    border: 1px solid rgba(123, 184, 121, 0.16);
-
-    color: #dce3d9;
-
-    border-bottom-right-radius: 4px;
+    background:rgba(48,72,48,.62);
+    border:1px solid rgba(123,184,121,.16);
+    color:#dce3d9;
+    border-bottom-right-radius:4px;
 }
 
 .message.assistant .message-card {
-    background: rgba(9, 14, 9, 0.82);
-
-    border: 1px solid var(--border);
-
-    color: #d2d6ce;
-
-    border-bottom-left-radius: 4px;
+    background:rgba(9,14,9,.82);
+    border:1px solid var(--border);
+    color:#d2d6ce;
+    border-bottom-left-radius:4px;
 }
 
 .message-label {
-    margin-bottom: 6px;
-
-    color: var(--gold);
-
-    font-size: 8px;
-
-    letter-spacing: 1.5px;
-
-    text-transform: uppercase;
+    margin-bottom:6px;
+    color:var(--gold);
+    font-size:8px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
 }
 
 .message-text {
-    white-space: pre-wrap;
-
-    word-break: break-word;
+    white-space:pre-wrap;
+    word-break:break-word;
 }
 
+/*
+   Generated images are deliberately allowed to use the
+   full available message width.
+*/
 .message-image {
-    display: block;
-
-    max-width: min(600px, 100%);
-
-    width: auto;
-
-    max-height: 650px;
-
-    object-fit: contain;
-
-    margin-top: 11px;
-
-    border-radius: 11px;
-
-    border: 1px solid rgba(205, 169, 87, 0.18);
+    display:block;
+    width:auto;
+    max-width:min(700px,100%);
+    max-height:700px;
+    object-fit:contain;
+    margin-top:12px;
+    border-radius:11px;
+    border:1px solid rgba(205,169,87,.25);
+    background:#030403;
 }
 
-/* =========================================================
-   ATTACHMENTS IN MESSAGE
-========================================================= */
+/* ATTACHMENTS */
 
 .message-attachments {
-    display: grid;
-
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-
-    gap: 7px;
-
-    margin-top: 10px;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:7px;
+    margin-top:10px;
 }
 
 .message-attachments img {
-    width: 100%;
-    height: 150px;
-
-    object-fit: cover;
-
-    border-radius: 9px;
-
-    border: 1px solid rgba(205, 169, 87, 0.15);
+    width:100%;
+    height:150px;
+    object-fit:cover;
+    border-radius:9px;
+    border:1px solid rgba(205,169,87,.15);
 }
 
-/* =========================================================
-   IMAGE SEARCH RESULTS
-========================================================= */
+/* REVERSE SEARCH */
 
 .reverse-results {
-    margin-top: 12px;
+    margin-top:12px;
 }
 
 .reverse-title {
-    color: var(--gold);
-
-    font-family: "Cinzel", serif;
-
-    font-size: 13px;
-
-    margin-bottom: 10px;
+    color:var(--gold);
+    font-family:"Cinzel",serif;
+    font-size:13px;
+    margin-bottom:10px;
 }
 
 .reverse-grid {
-    display: grid;
-
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-
-    gap: 9px;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:9px;
 }
 
 .reverse-result {
-    overflow: hidden;
-
-    border-radius: 10px;
-
-    border: 1px solid var(--border);
-
-    background: rgba(3, 6, 3, 0.8);
+    overflow:hidden;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:rgba(3,6,3,.8);
 }
 
 .reverse-result img {
-    width: 100%;
-    height: 130px;
-
-    object-fit: cover;
-
-    display: block;
+    width:100%;
+    height:130px;
+    object-fit:cover;
+    display:block;
 }
 
 .reverse-result-content {
-    padding: 9px;
+    padding:9px;
 }
 
 .reverse-result-name {
-    color: #d4d8d0;
-
-    font-size: 10px;
-
-    font-weight: 600;
+    color:#d4d8d0;
+    font-size:10px;
+    font-weight:600;
 }
 
 .reverse-result-url {
-    margin-top: 4px;
-
-    color: #667066;
-
-    font-size: 8px;
-
-    word-break: break-all;
+    display:block;
+    margin-top:4px;
+    color:#667066;
+    font-size:8px;
+    word-break:break-all;
 }
 
-/* =========================================================
-   LOADING
-========================================================= */
+/* LOADING */
 
 .loading {
-    display: flex;
-    align-items: center;
-
-    gap: 8px;
-
-    color: #747c72;
-
-    font-size: 11px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:#747c72;
+    font-size:11px;
 }
 
 .loading-dots {
-    display: flex;
-
-    gap: 4px;
+    display:flex;
+    gap:4px;
 }
 
 .loading-dots span {
-    width: 5px;
-    height: 5px;
-
-    border-radius: 50%;
-
-    background: var(--green-light);
-
-    animation: dotPulse 1.1s infinite ease-in-out;
+    width:5px;
+    height:5px;
+    border-radius:50%;
+    background:var(--green-light);
+    animation:dotPulse 1.1s infinite ease-in-out;
 }
 
 .loading-dots span:nth-child(2) {
-    animation-delay: 0.15s;
+    animation-delay:.15s;
 }
 
 .loading-dots span:nth-child(3) {
-    animation-delay: 0.3s;
+    animation-delay:.3s;
 }
 
 @keyframes dotPulse {
-    0%, 80%, 100% {
-        opacity: 0.25;
-        transform: translateY(0);
+    0%,80%,100% {
+        opacity:.25;
+        transform:translateY(0);
     }
-
     40% {
-        opacity: 1;
-        transform: translateY(-3px);
+        opacity:1;
+        transform:translateY(-3px);
     }
 }
 
-/* =========================================================
-   COMPOSER
-========================================================= */
+/* COMPOSER */
 
 .composer-area {
-    padding: 12px 20px 18px;
-
-    background:
-        linear-gradient(
-            to top,
-            rgba(5, 8, 5, 0.98),
-            rgba(5, 8, 5, 0.84),
-            transparent
-        );
+    padding:12px 20px 18px;
+    background:linear-gradient(
+        to top,
+        rgba(5,8,5,.98),
+        rgba(5,8,5,.84),
+        transparent
+    );
 }
 
 .composer {
-    width: min(920px, 100%);
-
-    margin: 0 auto;
-
-    position: relative;
-
-    border: 1px solid var(--border);
-
-    background: rgba(7, 11, 7, 0.91);
-
-    border-radius: 16px;
-
-    box-shadow:
-        0 15px 50px rgba(0, 0, 0, 0.28);
-
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    width:min(920px,100%);
+    margin:0 auto;
+    position:relative;
+    border:1px solid var(--border);
+    background:rgba(7,11,7,.91);
+    border-radius:16px;
+    box-shadow:0 15px 50px rgba(0,0,0,.28);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
 }
 
 .attachment-preview {
-    display: none;
-
-    padding: 10px 11px 0;
-
-    gap: 8px;
-
-    flex-wrap: wrap;
-
-    max-height: 190px;
-
-    overflow-y: auto;
-}
-
-.attachment-preview::-webkit-scrollbar {
-    width: 5px;
-}
-
-.attachment-preview::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.attachment-preview::-webkit-scrollbar-thumb {
-    background: rgba(205, 169, 87, 0.14);
-
-    border-radius: 10px;
+    display:none;
+    padding:10px 11px 0;
+    gap:8px;
+    flex-wrap:wrap;
+    max-height:190px;
+    overflow-y:auto;
 }
 
 .attachment-preview.visible {
-    display: flex;
+    display:flex;
 }
 
 .attachment {
-    position: relative;
-
-    width: 70px;
-    height: 70px;
-
-    flex: 0 0 70px;
+    position:relative;
+    width:70px;
+    height:70px;
+    flex:0 0 70px;
 }
 
 .attachment img {
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-
-    border-radius: 9px;
-
-    border: 1px solid rgba(205, 169, 87, 0.25);
-
-    display: block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:9px;
+    border:1px solid rgba(205,169,87,.25);
+    display:block;
 }
 
 .remove-attachment {
-    position: absolute;
-
-    top: -6px;
-    right: -6px;
-
-    width: 20px;
-    height: 20px;
-
-    border-radius: 50%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: #171d16;
-
-    border: 1px solid rgba(205, 169, 87, 0.35);
-
-    color: #c6c9c1;
-
-    cursor: pointer;
-
-    font-size: 11px;
-
-    transition:
-        background 0.15s ease,
-        color 0.15s ease;
+    position:absolute;
+    top:-6px;
+    right:-6px;
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#171d16;
+    border:1px solid rgba(205,169,87,.35);
+    color:#c6c9c1;
+    cursor:pointer;
+    font-size:11px;
 }
 
 .remove-attachment:hover {
-    background: #34201d;
-
-    color: #e58b82;
+    background:#34201d;
+    color:#e58b82;
 }
 
 .composer-row {
-    display: flex;
-
-    align-items: flex-end;
-
-    gap: 8px;
-
-    padding: 10px;
+    display:flex;
+    align-items:flex-end;
+    gap:8px;
+    padding:10px;
 }
 
 .composer textarea {
-    flex: 1;
-
-    min-width: 0;
-
-    min-height: 45px;
-    max-height: 180px;
-
-    resize: none;
-
-    padding: 12px 10px;
-
-    border: 0;
-
-    outline: none;
-
-    background: transparent;
-
-    color: var(--cream);
-
-    font-size: 13px;
-
-    line-height: 1.5;
+    flex:1;
+    min-width:0;
+    min-height:45px;
+    max-height:180px;
+    resize:none;
+    padding:12px 10px;
+    border:0;
+    outline:none;
+    background:transparent;
+    color:var(--cream);
+    font-size:13px;
+    line-height:1.5;
 }
 
 .composer textarea::placeholder {
-    color: #5d665d;
+    color:#5d665d;
 }
 
 .composer-button {
-    width: 42px;
-    height: 42px;
-
-    flex-shrink: 0;
-
-    border-radius: 10px;
-
-    background: rgba(255,255,255,0.035);
-
-    border: 1px solid rgba(205, 169, 87, 0.12);
-
-    color: #9da49a;
-
-    cursor: pointer;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-size: 15px;
-
-    transition:
-        background 0.18s ease,
-        border-color 0.18s ease,
-        color 0.18s ease,
-        transform 0.18s ease;
+    width:42px;
+    height:42px;
+    flex-shrink:0;
+    border-radius:10px;
+    background:rgba(255,255,255,.035);
+    border:1px solid rgba(205,169,87,.12);
+    color:#9da49a;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:15px;
+    transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease;
 }
 
-.composer-button:hover {
-    background: rgba(205, 169, 87, 0.08);
+.composer-button:hover:not(:disabled) {
+    background:rgba(205,169,87,.08);
+    border-color:rgba(205,169,87,.3);
+    color:var(--gold-light);
+    transform:translateY(-1px);
+}
 
-    border-color: rgba(205, 169, 87, 0.3);
-
-    color: var(--gold-light);
-
-    transform: translateY(-1px);
+.composer-button:disabled,
+.tool-button:disabled {
+    cursor:not-allowed;
+    opacity:.45;
 }
 
 .send-button {
-    background: rgba(72, 112, 70, 0.38);
-
-    color: #b7d2b3;
-
-    border-color: rgba(123, 184, 121, 0.22);
+    background:rgba(72,112,70,.38);
+    color:#b7d2b3;
+    border-color:rgba(123,184,121,.22);
 }
 
-.send-button:hover {
-    background: rgba(80, 125, 77, 0.55);
-
-    color: white;
+.send-button:hover:not(:disabled) {
+    background:rgba(80,125,77,.55);
+    color:white;
 }
 
 .composer-tools {
-    display: flex;
-
-    gap: 6px;
-
-    padding: 0 10px 10px;
-
-    flex-wrap: wrap;
+    display:flex;
+    gap:6px;
+    padding:0 10px 10px;
+    flex-wrap:wrap;
 }
 
 .tool-button {
-    padding: 7px 10px;
-
-    border-radius: 8px;
-
-    background: transparent;
-
-    border: 1px solid rgba(205, 169, 87, 0.09);
-
-    color: #777f75;
-
-    cursor: pointer;
-
-    font-size: 9px;
-
-    letter-spacing: 0.5px;
-
-    transition: all 0.18s ease;
+    padding:7px 10px;
+    border-radius:8px;
+    background:transparent;
+    border:1px solid rgba(205,169,87,.09);
+    color:#777f75;
+    cursor:pointer;
+    font-size:9px;
+    letter-spacing:.5px;
 }
 
-.tool-button:hover {
-    color: var(--gold-light);
-
-    background: rgba(205, 169, 87, 0.06);
-
-    border-color: rgba(205, 169, 87, 0.2);
+.tool-button:hover:not(:disabled) {
+    color:var(--gold-light);
+    background:rgba(205,169,87,.06);
+    border-color:rgba(205,169,87,.2);
 }
 
 .hidden-file {
-    display: none;
+    display:none;
 }
 
 .composer-hint {
-    text-align: center;
-
-    margin-top: 7px;
-
-    color: #454b45;
-
-    font-size: 8px;
-
-    letter-spacing: 0.5px;
+    text-align:center;
+    margin-top:7px;
+    color:#454b45;
+    font-size:8px;
+    letter-spacing:.5px;
 }
 
-/* =========================================================
-   ROACHES
-========================================================= */
+/* ROACHES */
 
 .real-roach {
-    position: fixed;
-
-    width: 250px;
-    height: 250px;
-
-    object-fit: contain;
-
-    opacity: 0.33;
-
-    pointer-events: none;
-
-    z-index: 2;
-
-    filter:
-        grayscale(0.1)
-        brightness(0.85);
-
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-
-    will-change: transform;
-
-    user-select: none;
+    position:fixed;
+    width:250px;
+    height:250px;
+    object-fit:contain;
+    opacity:.33;
+    pointer-events:none;
+    z-index:2;
+    filter:grayscale(.1) brightness(.85);
+    animation-timing-function:linear;
+    animation-iteration-count:infinite;
+    will-change:transform;
+    user-select:none;
 }
 
 .rr1 {
-    left: 7%;
-    top: 18%;
-
-    animation:
-        crawl1 31s linear infinite;
+    left:7%;
+    top:18%;
+    animation:crawl1 31s linear infinite;
 }
 
 .rr2 {
-    left: 74%;
-    top: 28%;
-
-    animation:
-        crawl2 38s linear infinite;
+    left:74%;
+    top:28%;
+    animation:crawl2 38s linear infinite;
 }
 
 .rr3 {
-    left: 28%;
-    top: 75%;
-
-    animation:
-        crawl3 43s linear infinite;
+    left:28%;
+    top:75%;
+    animation:crawl3 43s linear infinite;
 }
 
 .rr4 {
-    left: 86%;
-    top: 72%;
-
-    animation:
-        crawl4 36s linear infinite;
+    left:86%;
+    top:72%;
+    animation:crawl4 36s linear infinite;
 }
 
 .rr5 {
-    left: 46%;
-    top: 12%;
-
-    animation:
-        crawl5 49s linear infinite;
+    left:46%;
+    top:12%;
+    animation:crawl5 49s linear infinite;
 }
 
 .rr6 {
-    left: 12%;
-    top: 60%;
-
-    animation:
-        crawl6 42s linear infinite;
+    left:12%;
+    top:60%;
+    animation:crawl6 42s linear infinite;
 }
 
 .rr7 {
-    left: 63%;
-    top: 86%;
-
-    animation:
-        crawl7 35s linear infinite;
+    left:63%;
+    top:86%;
+    animation:crawl7 35s linear infinite;
 }
 
 .rr8 {
-    left: 92%;
-    top: 43%;
-
-    animation:
-        crawl8 47s linear infinite;
+    left:92%;
+    top:43%;
+    animation:crawl8 47s linear infinite;
 }
 
 @keyframes crawl1 {
-    0% {
-        transform: translate(0, 0) rotate(0deg);
-    }
-
-    25% {
-        transform: translate(90px, 35px) rotate(25deg);
-    }
-
-    50% {
-        transform: translate(160px, -25px) rotate(80deg);
-    }
-
-    75% {
-        transform: translate(50px, 100px) rotate(150deg);
-    }
-
-    100% {
-        transform: translate(0, 0) rotate(360deg);
-    }
+    0%{transform:translate(0,0) rotate(0deg)}
+    25%{transform:translate(90px,35px) rotate(25deg)}
+    50%{transform:translate(160px,-25px) rotate(80deg)}
+    75%{transform:translate(50px,100px) rotate(150deg)}
+    100%{transform:translate(0,0) rotate(360deg)}
 }
 
 @keyframes crawl2 {
-    0% {
-        transform: translate(0, 0) rotate(10deg);
-    }
-
-    50% {
-        transform: translate(-160px, 90px) rotate(180deg);
-    }
-
-    100% {
-        transform: translate(0, 0) rotate(370deg);
-    }
+    0%{transform:translate(0,0) rotate(10deg)}
+    50%{transform:translate(-160px,90px) rotate(180deg)}
+    100%{transform:translate(0,0) rotate(370deg)}
 }
 
 @keyframes crawl3 {
-    0% {
-        transform: translate(0, 0) rotate(0deg);
-    }
-
-    50% {
-        transform: translate(140px, -100px) rotate(220deg);
-    }
-
-    100% {
-        transform: translate(0, 0) rotate(360deg);
-    }
+    0%{transform:translate(0,0) rotate(0deg)}
+    50%{transform:translate(140px,-100px) rotate(220deg)}
+    100%{transform:translate(0,0) rotate(360deg)}
 }
 
 @keyframes crawl4 {
-    0% {
-        transform: translate(0, 0) rotate(0deg);
-    }
-
-    40% {
-        transform: translate(-120px, -50px) rotate(130deg);
-    }
-
-    75% {
-        transform: translate(-40px, -140px) rotate(240deg);
-    }
-
-    100% {
-        transform: translate(0, 0) rotate(360deg);
-    }
+    0%{transform:translate(0,0) rotate(0deg)}
+    40%{transform:translate(-120px,-50px) rotate(130deg)}
+    75%{transform:translate(-40px,-140px) rotate(240deg)}
+    100%{transform:translate(0,0) rotate(360deg)}
 }
 
 @keyframes crawl5 {
-    0% {
-        transform: translate(0, 0) rotate(0deg);
-    }
-
-    50% {
-        transform: translate(120px, 120px) rotate(180deg);
-    }
-
-    100% {
-        transform: translate(0, 0) rotate(360deg);
-    }
+    0%{transform:translate(0,0) rotate(0deg)}
+    50%{transform:translate(120px,120px) rotate(180deg)}
+    100%{transform:translate(0,0) rotate(360deg)}
 }
 
 @keyframes crawl6 {
-    0% {
-        transform: translate(0, 0) rotate(0deg);
-    }
-
-    50% {
-        transform: translate(100px, -90px) rotate(160deg);
-    }
-
-    100% {
-        transform: translate(0, 0) rotate(360deg);
-    }
+    0%{transform:translate(0,0) rotate(0deg)}
+    50%{transform:translate(100px,-90px) rotate(160deg)}
+    100%{transform:translate(0,0) rotate(360deg)}
 }
 
 @keyframes crawl7 {
-    0% {
-        transform: translate(0, 0) rotate(0deg);
-    }
-
-    50% {
-        transform: translate(-140px, -70px) rotate(190deg);
-    }
-
-    100% {
-        transform: translate(0, 0) rotate(360deg);
-    }
+    0%{transform:translate(0,0) rotate(0deg)}
+    50%{transform:translate(-140px,-70px) rotate(190deg)}
+    100%{transform:translate(0,0) rotate(360deg)}
 }
 
 @keyframes crawl8 {
-    0% {
-        transform: translate(0, 0) rotate(0deg);
-    }
-
-    50% {
-        transform: translate(-100px, 70px) rotate(180deg);
-    }
-
-    100% {
-        transform: translate(0, 0) rotate(360deg);
-    }
+    0%{transform:translate(0,0) rotate(0deg)}
+    50%{transform:translate(-100px,70px) rotate(180deg)}
+    100%{transform:translate(0,0) rotate(360deg)}
 }
 
-/* =========================================================
-   IMAGE MODE
-========================================================= */
+/* IMAGE MODE */
 
 .image-mode-banner {
-    display: none;
-
-    width: min(920px, 100%);
-
-    margin: 0 auto 8px;
-
-    padding: 9px 12px;
-
-    border-radius: 9px;
-
-    border: 1px solid rgba(205, 169, 87, 0.16);
-
-    background: rgba(205, 169, 87, 0.045);
-
-    color: #a89c7b;
-
-    font-size: 9px;
+    display:none;
+    width:min(920px,100%);
+    margin:0 auto 8px;
+    padding:9px 12px;
+    border-radius:9px;
+    border:1px solid rgba(205,169,87,.16);
+    background:rgba(205,169,87,.045);
+    color:#a89c7b;
+    font-size:9px;
 }
 
 .image-mode-banner.active {
-    display: block;
+    display:block;
 }
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
+/* RESPONSIVE */
 
-@media (max-width: 760px) {
-
+@media(max-width:760px) {
     .real-roach {
-        width: 250px;
-        height: 250px;
+        width:250px;
+        height:250px;
     }
 
     .sidebar {
-        width: 62px;
-        min-width: 62px;
+        width:62px;
+        min-width:62px;
     }
 
     .brand {
-        padding: 20px 8px;
-
-        text-align: center;
+        padding:20px 8px;
+        text-align:center;
     }
 
     .brand-title {
-        font-size: 10px;
-
-        letter-spacing: 1px;
+        font-size:10px;
+        letter-spacing:1px;
     }
 
     .brand-subtitle,
@@ -1328,88 +904,80 @@ button {
     .sidebar-label,
     .side-button span,
     .system-box {
-        display: none;
+        display:none;
     }
 
     .sidebar-content {
-        padding: 10px 7px;
+        padding:10px 7px;
     }
 
     .side-button {
-        justify-content: center;
-
-        padding: 10px 6px;
+        justify-content:center;
+        padding:10px 6px;
     }
 
     .side-icon {
-        width: 32px;
-        height: 32px;
+        width:32px;
+        height:32px;
     }
 
     .header {
-        padding: 0 15px;
+        padding:0 15px;
     }
 
     .header-title {
-        font-size: 10px;
+        font-size:10px;
     }
 
     .header-status {
-        font-size: 8px;
+        font-size:8px;
     }
 
     .chat {
-        padding: 20px 10px;
+        padding:20px 10px;
     }
 
     .message-card {
-        max-width: 92%;
+        max-width:92%;
     }
 
     .suggestions {
-        grid-template-columns: 1fr;
+        grid-template-columns:1fr;
     }
 
     .welcome {
-        min-height: calc(100vh - 170px);
+        min-height:calc(100vh - 170px);
     }
 
     .welcome-title {
-        font-size: 25px;
-
-        letter-spacing: 3px;
+        font-size:25px;
+        letter-spacing:3px;
     }
 
     .specimen-image {
-        width: 100px;
-        height: 100px;
+        width:100px;
+        height:100px;
     }
 
     .composer-area {
-        padding-left: 9px;
-        padding-right: 9px;
-    }
-
-    .tool-button {
-        font-size: 8px;
+        padding-left:9px;
+        padding-right:9px;
     }
 
     .reverse-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns:1fr;
     }
 
     .attachment-preview {
-        max-height: 150px;
+        max-height:150px;
     }
 
     .attachment {
-        width: 60px;
-        height: 60px;
-
-        flex-basis: 60px;
+        width:60px;
+        height:60px;
+        flex-basis:60px;
     }
 }
-
 </style>
 
 </head>
@@ -1417,8 +985,6 @@ button {
 <body>
 
 <div class="background-overlay"></div>
-
-<!-- Decorative roaches -->
 
 <img class="real-roach rr1" src="/assets/model.png" alt="">
 <img class="real-roach rr2" src="/assets/model.png" alt="">
@@ -1431,279 +997,253 @@ button {
 
 <div class="app">
 
-```
 <aside class="sidebar">
 
-    <div class="brand">
+```
+<div class="brand">
+    <div class="brand-title">DALBAYOB</div>
+    <div class="brand-subtitle">Intelligence System</div>
 
-        <div class="brand-title">
-            DALBAYOB
-        </div>
-
-        <div class="brand-subtitle">
-            Intelligence System
-        </div>
-
-        <div class="online">
-            <span class="online-dot"></span>
-            System Online
-        </div>
-
+    <div class="online">
+        <span class="online-dot"></span>
+        System Online
     </div>
+</div>
 
-    <div class="sidebar-content">
+<div class="sidebar-content">
 
-        <div class="sidebar-label">
-            Workspace
+    <div class="sidebar-label">Workspace</div>
+
+    <button class="side-button active" id="chatButton" type="button">
+        <span class="side-icon">◈</span>
+        <span>Chat</span>
+    </button>
+
+    <button class="side-button" id="newChatButton" type="button">
+        <span class="side-icon">＋</span>
+        <span>New Chat</span>
+    </button>
+
+    <button class="side-button" id="imageButton" type="button">
+        <span class="side-icon">◇</span>
+        <span>Image Generation</span>
+    </button>
+
+    <button class="side-button" id="reverseButton" type="button">
+        <span class="side-icon">⌕</span>
+        <span>Reverse Search</span>
+    </button>
+
+</div>
+
+<div class="sidebar-footer">
+    <div class="system-box">
+        <div class="system-title">Dalbayob Core</div>
+        <div class="system-text">
+            Multimodal AI interface.
+            Text, images and visual analysis.
         </div>
-
-        <button class="side-button active" id="chatButton" type="button">
-            <span class="side-icon">◈</span>
-            <span>Chat</span>
-        </button>
-
-        <button class="side-button" id="newChatButton" type="button">
-            <span class="side-icon">＋</span>
-            <span>New Chat</span>
-        </button>
-
-        <button class="side-button" id="imageButton" type="button">
-            <span class="side-icon">◇</span>
-            <span>Image Generation</span>
-        </button>
-
-        <button class="side-button" id="reverseButton" type="button">
-            <span class="side-icon">⌕</span>
-            <span>Reverse Search</span>
-        </button>
-
     </div>
-
-    <div class="sidebar-footer">
-
-        <div class="system-box">
-
-            <div class="system-title">
-                Dalbayob Core
-            </div>
-
-            <div class="system-text">
-                Multimodal AI interface.
-                Text, images and visual analysis.
-            </div>
-
-        </div>
-
-    </div>
+</div>
+```
 
 </aside>
 
 <main class="main">
 
-    <header class="header">
+<header class="header">
 
-        <div>
+```
+<div>
+    <div class="header-title">DALBAYOB AI</div>
+    <div class="header-subtitle">
+        Intelligence / Visual Processing / Generation
+    </div>
+</div>
 
-            <div class="header-title">
-                DALBAYOB AI
-            </div>
+<div class="header-status">
+    <span class="online-dot"></span>
+    Operational
+</div>
+```
 
-            <div class="header-subtitle">
-                Intelligence / Visual Processing / Generation
-            </div>
+</header>
 
-        </div>
+<div class="chat" id="chat">
 
-        <div class="header-status">
+```
+<div class="chat-inner" id="chatInner">
 
-            <span class="online-dot"></span>
+    <section class="welcome" id="welcome">
 
-            Operational
+        <img
+            class="specimen-image"
+            src="https://avatars.fastly.steamstatic.com/b76a2e69616ae68a574fdc638ab82fdcc3f94161_full.jpg"
+            alt="Dalbayob"
+        >
 
-        </div>
+        <h1 class="welcome-title">DALBAYOB</h1>
 
-    </header>
+        <p class="welcome-description">
+            A multimodal AI interface for conversation,
+            image generation, image analysis and visual search.
+        </p>
 
-    <div class="chat" id="chat">
+        <div class="suggestions">
 
-        <div class="chat-inner" id="chatInner">
-
-            <section class="welcome" id="welcome">
-
-                <img
-                    class="specimen-image"
-                    src="https://avatars.fastly.steamstatic.com/b76a2e69616ae68a574fdc638ab82fdcc3f94161_full.jpg"
-                    alt="Dalbayob"
-                >
-
-                <h1 class="welcome-title">
-                    DALBAYOB
-                </h1>
-
-                <p class="welcome-description">
-                    A multimodal AI interface for conversation,
-                    image generation, image analysis and visual search.
-                </p>
-
-                <div class="suggestions">
-
-                    <button
-                        class="suggestion"
-                        onclick="useSuggestion('What can you do?')"
-                        type="button"
-                    >
-                        <div class="suggestion-title">
-                            What can you do?
-                        </div>
-
-                        <div class="suggestion-text">
-                            Explore Dalbayob's capabilities.
-                        </div>
-                    </button>
-
-                    <button
-                        class="suggestion"
-                        onclick="useSuggestion('Explain something complicated to me in a simple way.')"
-                        type="button"
-                    >
-                        <div class="suggestion-title">
-                            Explain something complicated
-                        </div>
-
-                        <div class="suggestion-text">
-                            Turn technical nonsense into something understandable.
-                        </div>
-                    </button>
-
-                    <button
-                        class="suggestion"
-                        onclick="useSuggestion('Give me a creative idea.')"
-                        type="button"
-                    >
-                        <div class="suggestion-title">
-                            Give me a creative idea
-                        </div>
-
-                        <div class="suggestion-text">
-                            Let the machine cook.
-                        </div>
-                    </button>
-
-                    <button
-                        class="suggestion"
-                        onclick="useSuggestion('Summon a roach.')"
-                        type="button"
-                    >
-                        <div class="suggestion-title">
-                            Summon a roach
-                        </div>
-
-                        <div class="suggestion-text">
-                            This is probably a terrible idea.
-                        </div>
-                    </button>
-
+            <button
+                class="suggestion"
+                onclick="useSuggestion('What can you do?')"
+                type="button"
+            >
+                <div class="suggestion-title">What can you do?</div>
+                <div class="suggestion-text">
+                    Explore Dalbayob's capabilities.
                 </div>
+            </button>
 
-            </section>
+            <button
+                class="suggestion"
+                onclick="useSuggestion('Explain something complicated to me in a simple way.')"
+                type="button"
+            >
+                <div class="suggestion-title">
+                    Explain something complicated
+                </div>
+                <div class="suggestion-text">
+                    Turn technical nonsense into something understandable.
+                </div>
+            </button>
 
-        </div>
+            <button
+                class="suggestion"
+                onclick="useSuggestion('Give me a creative idea.')"
+                type="button"
+            >
+                <div class="suggestion-title">
+                    Give me a creative idea
+                </div>
+                <div class="suggestion-text">
+                    Let the machine cook.
+                </div>
+            </button>
 
-    </div>
-
-    <div class="image-mode-banner" id="imageModeBanner">
-        Image generation mode active. Describe the image you want.
-    </div>
-
-    <div class="composer-area">
-
-        <div class="composer">
-
-            <div
-                class="attachment-preview"
-                id="attachmentPreview"
-            ></div>
-
-            <div class="composer-row">
-
-                <button
-                    class="composer-button"
-                    id="attachButton"
-                    title="Attach images"
-                    type="button"
-                >
-                    ＋
-                </button>
-
-                <textarea
-                    id="input"
-                    rows="1"
-                    placeholder="Message Dalbayob..."
-                    autocomplete="off"
-                    spellcheck="true"
-                ></textarea>
-
-                <button
-                    class="composer-button send-button"
-                    id="sendButton"
-                    title="Send"
-                    type="button"
-                >
-                    ➤
-                </button>
-
-            </div>
-
-            <div class="composer-tools">
-
-                <button
-                    class="tool-button"
-                    id="generateButton"
-                    type="button"
-                >
-                    ✦ Generate Image
-                </button>
-
-                <button
-                    class="tool-button"
-                    id="searchImageButton"
-                    type="button"
-                >
-                    ⌕ Reverse Search
-                </button>
-
-                <button
-                    class="tool-button"
-                    id="clearImagesButton"
-                    type="button"
-                >
-                    × Clear Images
-                </button>
-
-            </div>
+            <button
+                class="suggestion"
+                onclick="useSuggestion('Summon a roach.')"
+                type="button"
+            >
+                <div class="suggestion-title">
+                    Summon a roach
+                </div>
+                <div class="suggestion-text">
+                    This is probably a terrible idea.
+                </div>
+            </button>
 
         </div>
+    </section>
 
-        <div class="composer-hint">
-            Enter to send · Shift + Enter for new line · Ctrl + V to paste images
-        </div>
-
-    </div>
-
-    <input
-        class="hidden-file"
-        id="imageInput"
-        type="file"
-        accept="image/*"
-        multiple
-    >
-
-</main>
+</div>
 ```
 
 </div>
 
+<div class="image-mode-banner" id="imageModeBanner">
+    Image generation mode active. Describe the image you want.
+</div>
+
+<div class="composer-area">
+
+```
+<div class="composer">
+
+    <div
+        class="attachment-preview"
+        id="attachmentPreview"
+    ></div>
+
+    <div class="composer-row">
+
+        <button
+            class="composer-button"
+            id="attachButton"
+            title="Attach images"
+            type="button"
+        >
+            ＋
+        </button>
+
+        <textarea
+            id="input"
+            rows="1"
+            placeholder="Message Dalbayob..."
+            autocomplete="off"
+            spellcheck="true"
+        ></textarea>
+
+        <button
+            class="composer-button send-button"
+            id="sendButton"
+            title="Send"
+            type="button"
+        >
+            ➤
+        </button>
+
+    </div>
+
+    <div class="composer-tools">
+
+        <button
+            class="tool-button"
+            id="generateButton"
+            type="button"
+        >
+            ✦ Generate Image
+        </button>
+
+        <button
+            class="tool-button"
+            id="searchImageButton"
+            type="button"
+        >
+            ⌕ Reverse Search
+        </button>
+
+        <button
+            class="tool-button"
+            id="clearImagesButton"
+            type="button"
+        >
+            × Clear Images
+        </button>
+
+    </div>
+
+</div>
+
+<div class="composer-hint">
+    Enter to send · Shift + Enter for new line · Ctrl + V to paste images
+</div>
+```
+
+</div>
+
+<input
+class="hidden-file"
+id="imageInput"
+type="file"
+accept="image/*"
+multiple
+
+>
+
+</main>
+</div>
+
 <script>
+"use strict";
 
 let conversationHistory = [];
 let currentImage = null;
@@ -1713,7 +1253,6 @@ let isBusy = false;
 
 const chat = document.getElementById("chat");
 const chatInner = document.getElementById("chatInner");
-const welcome = document.getElementById("welcome");
 const input = document.getElementById("input");
 const sendButton = document.getElementById("sendButton");
 const attachButton = document.getElementById("attachButton");
@@ -1728,149 +1267,94 @@ const imageButton = document.getElementById("imageButton");
 const reverseButton = document.getElementById("reverseButton");
 const imageModeBanner = document.getElementById("imageModeBanner");
 
-function escapeHtml(value) {
-
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-}
-
 function safeUrl(url) {
-
-    if (!url) {
-        return "";
-    }
+    if (!url) return "";
 
     try {
-
-        const parsed = new URL(
-            url,
-            window.location.origin
-        );
+        const parsed = new URL(String(url), window.location.origin);
 
         if (
             parsed.protocol === "http:" ||
-            parsed.protocol === "https:"
+            parsed.protocol === "https:" ||
+            parsed.protocol === "data:"
         ) {
             return parsed.href;
         }
-
     } catch (error) {
-
-        return "";
-
+        console.error("Invalid image URL:", url, error);
     }
 
     return "";
-
 }
 
 function scrollToBottom() {
-
     requestAnimationFrame(() => {
-
-        chat.scrollTop =
-            chat.scrollHeight;
-
+        chat.scrollTop = chat.scrollHeight;
     });
-
 }
 
 function autoResize() {
-
     input.style.height = "auto";
-
-    input.style.height =
-        Math.min(
-            input.scrollHeight,
-            180
-        ) + "px";
-
+    input.style.height = Math.min(input.scrollHeight, 180) + "px";
 }
 
 function setBusy(state) {
-
     isBusy = state;
 
     sendButton.disabled = state;
     generateButton.disabled = state;
     searchImageButton.disabled = state;
 
-    sendButton.style.opacity =
-        state ? "0.45" : "1";
-
+    sendButton.style.opacity = state ? ".45" : "1";
 }
 
 function hideWelcome() {
+    const welcome = document.getElementById("welcome");
 
     if (welcome) {
         welcome.style.display = "none";
     }
-
 }
 
 function showWelcome() {
+    const welcome = document.getElementById("welcome");
 
     if (welcome) {
         welcome.style.display = "flex";
     }
-
 }
 
-function handleImageUpload(event) {
-
-    const files =
-        Array.from(
-            event.target.files || []
-        );
-
-    if (!files.length) {
-        return;
+function updateInputPlaceholder() {
+    if (attachedImages.length > 1) {
+        input.placeholder =
+            "Ask Dalbayob about these " +
+            attachedImages.length +
+            " images...";
+    } else if (attachedImages.length === 1) {
+        input.placeholder =
+            "Ask Dalbayob about this image...";
+    } else if (imageMode) {
+        input.placeholder =
+            "Describe the image you want...";
+    } else {
+        input.placeholder =
+            "Message Dalbayob...";
     }
-
-    addImageFiles(files);
-
-    imageInput.value = "";
-
 }
 
-function addImageFiles(files) {
-
-    const validFiles =
-        files.filter(
-            file =>
-                file &&
-                file.type &&
-                file.type.startsWith("image/")
-        );
-
-    if (!validFiles.length) {
-        return;
-    }
-
-    validFiles.forEach(file => {
-        readImageFile(file);
-    });
-
-}
+/* IMAGE ATTACHMENTS */
 
 function readImageFile(file) {
+    if (!file || !file.type.startsWith("image/")) {
+        return;
+    }
 
-    const reader =
-        new FileReader();
+    const reader = new FileReader();
 
-    reader.onload = function(event) {
+    reader.onload = event => {
+        const result = event.target?.result;
 
-        const result =
-            event.target?.result;
-
-        if (!result) {
-            return;
-        }
+        if (!result) return;
 
         attachedImages.push(result);
 
@@ -1878,372 +1362,242 @@ function readImageFile(file) {
         updateInputPlaceholder();
 
         input.focus();
-
     };
 
-    reader.onerror = function() {
-
-        console.error(
-            "Could not read image:",
-            file.name
-        );
-
+    reader.onerror = () => {
+        console.error("Could not read image:", file.name);
     };
 
     reader.readAsDataURL(file);
+}
 
+function addImageFiles(files) {
+    files
+        .filter(file =>
+            file &&
+            file.type &&
+            file.type.startsWith("image/")
+        )
+        .forEach(readImageFile);
+}
+
+function handleImageUpload(event) {
+    const files = Array.from(event.target.files || []);
+
+    if (!files.length) return;
+
+    addImageFiles(files);
+
+    imageInput.value = "";
 }
 
 function renderAttachmentPreview() {
-
     attachmentPreview.innerHTML = "";
 
     if (!attachedImages.length) {
-
-        attachmentPreview.classList.remove(
-            "visible"
-        );
-
+        attachmentPreview.classList.remove("visible");
         return;
-
     }
 
-    attachmentPreview.classList.add(
-        "visible"
-    );
+    attachmentPreview.classList.add("visible");
 
-    attachedImages.forEach(
-        (image, index) => {
+    attachedImages.forEach((image, index) => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "attachment";
 
-            const wrapper =
-                document.createElement("div");
+        const img = document.createElement("img");
+        img.src = image;
+        img.alt = "Attachment " + (index + 1);
 
-            wrapper.className = "attachment";
-            wrapper.title = "Image " + (index + 1);
+        const remove = document.createElement("button");
+        remove.className = "remove-attachment";
+        remove.type = "button";
+        remove.textContent = "×";
+        remove.title = "Remove image";
 
-            const img =
-                document.createElement("img");
+        remove.addEventListener("click", () => {
+            attachedImages.splice(index, 1);
+            renderAttachmentPreview();
+            updateInputPlaceholder();
+        });
 
-            img.src = image;
-            img.alt = "Attachment " + (index + 1);
-            img.loading = "lazy";
-
-            const remove =
-                document.createElement("button");
-
-            remove.className =
-                "remove-attachment";
-
-            remove.type = "button";
-            remove.textContent = "×";
-
-            remove.title =
-                "Remove image " + (index + 1);
-
-            remove.addEventListener(
-                "click",
-                function() {
-
-                    attachedImages.splice(
-                        index,
-                        1
-                    );
-
-                    renderAttachmentPreview();
-                    updateInputPlaceholder();
-
-                }
-            );
-
-            wrapper.appendChild(img);
-            wrapper.appendChild(remove);
-
-            attachmentPreview.appendChild(
-                wrapper
-            );
-
-        }
-    );
-
-}
-
-function updateInputPlaceholder() {
-
-    if (attachedImages.length > 1) {
-
-        input.placeholder =
-            "Ask Dalbayob about these " +
-            attachedImages.length +
-            " images...";
-
-    } else if (attachedImages.length === 1) {
-
-        input.placeholder =
-            "Ask Dalbayob about this image...";
-
-    } else if (imageMode) {
-
-        input.placeholder =
-            "Describe the image you want...";
-
-    } else {
-
-        input.placeholder =
-            "Message Dalbayob...";
-
-    }
-
+        wrapper.appendChild(img);
+        wrapper.appendChild(remove);
+        attachmentPreview.appendChild(wrapper);
+    });
 }
 
 function clearAttachedImages() {
-
     attachedImages = [];
 
     renderAttachmentPreview();
     updateInputPlaceholder();
 
     input.focus();
-
 }
 
-document.addEventListener(
-    "paste",
-    function(event) {
+/* PASTE */
 
-        const items =
-            Array.from(
-                event.clipboardData?.items || []
-            );
+document.addEventListener("paste", event => {
+    const items = Array.from(
+        event.clipboardData?.items || []
+    );
 
-        const imageItems =
-            items.filter(
-                item =>
-                    item.kind === "file" &&
-                    item.type.startsWith("image/")
-            );
-
-        if (!imageItems.length) {
-            return;
-        }
-
-        imageItems.forEach(item => {
-
-            const file =
-                item.getAsFile();
+    items
+        .filter(item =>
+            item.kind === "file" &&
+            item.type.startsWith("image/")
+        )
+        .forEach(item => {
+            const file = item.getAsFile();
 
             if (file) {
                 readImageFile(file);
             }
-
         });
+});
 
-    }
-);
+/* MESSAGE RENDERING */
 
-attachButton.addEventListener(
-    "click",
-    function() {
-        imageInput.click();
-    }
-);
-
-imageInput.addEventListener(
-    "change",
-    handleImageUpload
-);
-
-function addUserMessage(
-    text,
-    images = []
-) {
-
+function addUserMessage(text, images = []) {
     hideWelcome();
 
-    const message =
-        document.createElement("div");
+    const message = document.createElement("div");
+    message.className = "message user";
 
-    message.className =
-        "message user";
+    const card = document.createElement("div");
+    card.className = "message-card";
 
-    const card =
-        document.createElement("div");
-
-    card.className =
-        "message-card";
-
-    const label =
-        document.createElement("div");
-
-    label.className =
-        "message-label";
-
-    label.textContent =
-        "You";
+    const label = document.createElement("div");
+    label.className = "message-label";
+    label.textContent = "You";
 
     card.appendChild(label);
 
     if (text) {
-
-        const textElement =
-            document.createElement("div");
-
-        textElement.className =
-            "message-text";
-
-        textElement.textContent =
-            text;
-
-        card.appendChild(
-            textElement
-        );
-
+        const textElement = document.createElement("div");
+        textElement.className = "message-text";
+        textElement.textContent = text;
+        card.appendChild(textElement);
     }
 
     if (images.length) {
+        const grid = document.createElement("div");
+        grid.className = "message-attachments";
 
-        const imageGrid =
-            document.createElement("div");
+        images.forEach((image, index) => {
+            const img = document.createElement("img");
 
-        imageGrid.className =
-            "message-attachments";
+            img.src = image;
+            img.alt = "Attached image " + (index + 1);
 
-        images.forEach(
-            (image, index) => {
+            grid.appendChild(img);
+        });
 
-                const img =
-                    document.createElement("img");
-
-                img.src = image;
-                img.alt =
-                    "Attached image " +
-                    (index + 1);
-
-                img.loading = "lazy";
-
-                imageGrid.appendChild(img);
-
-            }
-        );
-
-        card.appendChild(
-            imageGrid
-        );
-
+        card.appendChild(grid);
     }
 
     message.appendChild(card);
     chatInner.appendChild(message);
 
     scrollToBottom();
-
 }
 
-function addAssistantMessage(
-    text,
-    image = null
-) {
-
+function addAssistantMessage(text, image = null) {
     hideWelcome();
 
-    const message =
-        document.createElement("div");
+    const message = document.createElement("div");
+    message.className = "message assistant";
 
-    message.className =
-        "message assistant";
+    const card = document.createElement("div");
+    card.className = "message-card";
 
-    const card =
-        document.createElement("div");
-
-    card.className =
-        "message-card";
-
-    const label =
-        document.createElement("div");
-
-    label.className =
-        "message-label";
-
-    label.textContent =
-        "Dalbayob";
+    const label = document.createElement("div");
+    label.className = "message-label";
+    label.textContent = "Dalbayob";
 
     card.appendChild(label);
 
     if (text) {
-
-        const textElement =
-            document.createElement("div");
-
-        textElement.className =
-            "message-text";
-
-        textElement.textContent =
-            text;
-
-        card.appendChild(
-            textElement
-        );
-
+        const textElement = document.createElement("div");
+        textElement.className = "message-text";
+        textElement.textContent = text;
+        card.appendChild(textElement);
     }
 
     if (image) {
+        const imageUrl = safeUrl(image);
 
-        const safeImage =
-            safeUrl(image);
+        if (imageUrl) {
+            const img = document.createElement("img");
 
-        if (safeImage) {
+            img.className = "message-image";
+            img.src = imageUrl;
+            img.alt = "Generated image";
 
-            const img =
-                document.createElement("img");
+            /*
+             * If the URL itself fails, tell us visibly instead
+             * of silently showing a successful generation.
+             */
+            img.onerror = () => {
+                console.error(
+                    "Generated image failed to load:",
+                    imageUrl
+                );
 
-            img.className =
-                "message-image";
+                img.style.display = "none";
 
-            img.src =
-                safeImage;
+                const error = document.createElement("div");
+                error.className = "message-text";
+                error.style.color = "#c65d5d";
+                error.style.marginTop = "10px";
+                error.textContent =
+                    "The image was generated, but the browser could not load the image URL.";
 
-            img.alt =
-                "Generated image";
+                card.appendChild(error);
+            };
 
-            img.loading =
-                "lazy";
+            img.onload = () => {
+                scrollToBottom();
+            };
 
             card.appendChild(img);
+        } else {
+            const error = document.createElement("div");
 
+            error.className = "message-text";
+            error.style.color = "#c65d5d";
+            error.style.marginTop = "10px";
+            error.textContent =
+                "The image server returned an invalid image URL.";
+
+            card.appendChild(error);
+
+            console.error(
+                "Invalid image returned by /api/image:",
+                image
+            );
         }
-
     }
 
     message.appendChild(card);
     chatInner.appendChild(message);
 
     scrollToBottom();
-
 }
 
 function addLoadingMessage() {
-
     hideWelcome();
 
-    const message =
-        document.createElement("div");
+    const message = document.createElement("div");
+    message.className = "message assistant";
+    message.id = "loadingMessage";
 
-    message.className =
-        "message assistant";
+    const card = document.createElement("div");
+    card.className = "message-card";
 
-    message.id =
-        "loadingMessage";
-
-    const card =
-        document.createElement("div");
-
-    card.className =
-        "message-card";
-
-    const loading =
-        document.createElement("div");
-
-    loading.className =
-        "loading";
+    const loading = document.createElement("div");
+    loading.className = "loading";
 
     loading.innerHTML = `
         <span>Processing</span>
@@ -2256,42 +1610,26 @@ function addLoadingMessage() {
 
     card.appendChild(loading);
     message.appendChild(card);
-
     chatInner.appendChild(message);
 
     scrollToBottom();
-
 }
 
 function removeLoadingMessage() {
-
-    const loading =
-        document.getElementById(
-            "loadingMessage"
-        );
-
-    if (loading) {
-        loading.remove();
-    }
-
+    document
+        .getElementById("loadingMessage")
+        ?.remove();
 }
 
+/* CHAT */
+
 async function sendMessage() {
+    if (isBusy) return;
 
-    if (isBusy) {
-        return;
-    }
+    const actualMessage = input.value.trim();
+    const imagesForThisMessage = [...attachedImages];
 
-    const actualMessage =
-        input.value.trim();
-
-    const imagesForThisMessage =
-        [...attachedImages];
-
-    if (
-        !actualMessage &&
-        !imagesForThisMessage.length
-    ) {
+    if (!actualMessage && !imagesForThisMessage.length) {
         return;
     }
 
@@ -2299,13 +1637,11 @@ async function sendMessage() {
     hideWelcome();
 
     addUserMessage(
-        actualMessage ||
-        "Analyze these images.",
+        actualMessage || "Analyze these images.",
         imagesForThisMessage
     );
 
     input.value = "";
-
     autoResize();
 
     attachedImages = [];
@@ -2316,72 +1652,37 @@ async function sendMessage() {
     addLoadingMessage();
 
     try {
+        const response = await fetch("/api/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                message: actualMessage,
+                history: conversationHistory,
+                images: imagesForThisMessage,
+                image: imagesForThisMessage[0] || null
+            })
+        });
 
-        const payload = {
-
-            message:
-                actualMessage,
-
-            history:
-                conversationHistory,
-
-            images:
-                imagesForThisMessage,
-
-            image:
-                imagesForThisMessage[0] ||
-                null
-
-        };
-
-        console.log(
-            "Sending images to /api/chat:",
-            imagesForThisMessage.length
-        );
-
-        const response =
-            await fetch(
-                "/api/chat",
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify(payload)
-                }
-            );
-
-        const raw =
-            await response.text();
+        const raw = await response.text();
 
         let data;
 
         try {
-
-            data =
-                JSON.parse(raw);
-
-        } catch (parseError) {
-
+            data = JSON.parse(raw);
+        } catch {
             throw new Error(
-                raw ||
-                "The chat server returned invalid data."
+                raw || "The chat server returned invalid data."
             );
-
         }
 
         if (!response.ok) {
-
             throw new Error(
                 data.error ||
                 data.message ||
                 "Chat request failed."
             );
-
         }
 
         removeLoadingMessage();
@@ -2396,17 +1697,13 @@ async function sendMessage() {
         const returnedImage =
             data.image ||
             data.imageUrl ||
+            data.url ||
             null;
 
-        if (
-            !reply &&
-            !returnedImage
-        ) {
-
+        if (!reply && !returnedImage) {
             throw new Error(
                 "The AI returned an empty response."
             );
-
         }
 
         addAssistantMessage(
@@ -2415,66 +1712,44 @@ async function sendMessage() {
         );
 
         conversationHistory.push({
-
             role: "user",
-
             content:
                 actualMessage ||
                 "Analyze the attached images.",
-
-            images:
-                imagesForThisMessage
-
+            images: imagesForThisMessage
         });
 
         conversationHistory.push({
-
             role: "assistant",
-
-            content:
-                reply
-
+            content: reply
         });
 
         if (returnedImage) {
-
-            currentImage =
-                returnedImage;
-
+            currentImage = returnedImage;
         }
 
     } catch (error) {
-
         removeLoadingMessage();
 
-        console.error(
-            "Chat error:",
-            error
-        );
+        console.error("Chat error:", error);
 
         addAssistantMessage(
-            "I couldn't process that request.\n\n" +
-            "Error: " +
+            "I couldn't process that request.\n\nError: " +
             error.message
         );
 
     } finally {
-
         setBusy(false);
         input.focus();
-
     }
-
 }
 
+/* IMAGE GENERATION */
+
 async function generateImage() {
+    if (isBusy) return;
 
-    if (isBusy) {
-        return;
-    }
-
-    const prompt =
-        input.value.trim();
+    const prompt = input.value.trim();
 
     const sourceImage =
         attachedImages[0] ||
@@ -2482,7 +1757,6 @@ async function generateImage() {
         null;
 
     if (!prompt) {
-
         input.focus();
 
         input.placeholder =
@@ -2491,14 +1765,12 @@ async function generateImage() {
                 : "Describe the image you want...";
 
         return;
-
     }
 
     setBusy(true);
     hideWelcome();
 
-    const imagesForMessage =
-        [...attachedImages];
+    const imagesForMessage = [...attachedImages];
 
     addUserMessage(
         prompt,
@@ -2506,7 +1778,6 @@ async function generateImage() {
     );
 
     input.value = "";
-
     autoResize();
 
     attachedImages = [];
@@ -2517,56 +1788,48 @@ async function generateImage() {
     addLoadingMessage();
 
     try {
+        console.log("Sending image generation request...");
 
-        const response =
-            await fetch(
-                "/api/image",
-                {
-                    method: "POST",
+        const response = await fetch("/api/image", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                prompt: prompt,
+                image: sourceImage
+            })
+        });
 
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
+        const raw = await response.text();
 
-                    body:
-                        JSON.stringify({
-                            prompt:
-                                prompt,
+        console.log(
+            "Image API status:",
+            response.status
+        );
 
-                            image:
-                                sourceImage
-                        })
-                }
-            );
-
-        const raw =
-            await response.text();
+        console.log(
+            "Image API response:",
+            raw
+        );
 
         let data;
 
         try {
-
-            data =
-                JSON.parse(raw);
-
-        } catch (parseError) {
-
+            data = JSON.parse(raw);
+        } catch {
             throw new Error(
                 raw ||
                 "Image server returned invalid data."
             );
-
         }
 
         if (!response.ok) {
-
             throw new Error(
                 data.error ||
                 data.message ||
                 "Image generation failed."
             );
-
         }
 
         const image =
@@ -2576,15 +1839,17 @@ async function generateImage() {
             null;
 
         if (!image) {
-
             throw new Error(
                 "The image server returned no image."
             );
-
         }
 
-        currentImage =
-            image;
+        console.log(
+            "Generated image URL:",
+            image
+        );
+
+        currentImage = image;
 
         removeLoadingMessage();
 
@@ -2594,25 +1859,16 @@ async function generateImage() {
         );
 
         conversationHistory.push({
-
             role: "user",
-
-            content:
-                prompt
-
+            content: prompt
         });
 
         conversationHistory.push({
-
             role: "assistant",
-
-            content:
-                "Generated an image."
-
+            content: "Generated an image."
         });
 
     } catch (error) {
-
         removeLoadingMessage();
 
         console.error(
@@ -2621,38 +1877,31 @@ async function generateImage() {
         );
 
         addAssistantMessage(
-            "I couldn't generate the image.\n\n" +
-            "Error: " +
+            "I couldn't generate the image.\n\nError: " +
             error.message
         );
 
     } finally {
-
         setBusy(false);
         input.focus();
-
     }
-
 }
 
-async function reverseImageSearch() {
+/* REVERSE IMAGE SEARCH */
 
-    if (isBusy) {
-        return;
-    }
+async function reverseImageSearch() {
+    if (isBusy) return;
 
     const image =
         attachedImages[0] ||
         currentImage;
 
     if (!image) {
-
         addAssistantMessage(
             "Please attach an image first, or generate an image before using reverse search."
         );
 
         return;
-
     }
 
     setBusy(true);
@@ -2666,63 +1915,45 @@ async function reverseImageSearch() {
     addLoadingMessage();
 
     try {
+        const response = await fetch(
+            "/api/reverse-search",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    image: image
+                })
+            }
+        );
 
-        const response =
-            await fetch(
-                "/api/reverse-search",
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({
-                            image:
-                                image
-                        })
-                }
-            );
-
-        const raw =
-            await response.text();
+        const raw = await response.text();
 
         let data;
 
         try {
-
-            data =
-                JSON.parse(raw);
-
-        } catch (parseError) {
-
+            data = JSON.parse(raw);
+        } catch {
             throw new Error(
                 raw ||
                 "Reverse search returned invalid data."
             );
-
         }
 
         if (!response.ok) {
-
             throw new Error(
                 data.error ||
                 data.message ||
                 "Reverse search failed."
             );
-
         }
 
         removeLoadingMessage();
 
-        renderReverseSearchResults(
-            data
-        );
+        renderReverseSearchResults(data);
 
     } catch (error) {
-
         removeLoadingMessage();
 
         console.error(
@@ -2730,33 +1961,17 @@ async function reverseImageSearch() {
             error
         );
 
-        renderReverseSearchError(
+        addAssistantMessage(
+            "Reverse image search failed.\n\n" +
             error.message
         );
 
     } finally {
-
         setBusy(false);
-
     }
-
 }
 
-function renderReverseSearchError(
-    message
-) {
-
-    addAssistantMessage(
-        "Reverse image search failed.\n\n" +
-        message
-    );
-
-}
-
-function renderReverseSearchResults(
-    data
-) {
-
+function renderReverseSearchResults(data) {
     const results =
         Array.isArray(data.results)
             ? data.results
@@ -2765,260 +1980,164 @@ function renderReverseSearchResults(
                 : [];
 
     if (!results.length) {
-
         addAssistantMessage(
             data.message ||
             "The reverse image search returned no results."
         );
 
         return;
-
     }
 
-    const message =
-        document.createElement("div");
+    const message = document.createElement("div");
+    message.className = "message assistant";
 
-    message.className =
-        "message assistant";
+    const card = document.createElement("div");
+    card.className = "message-card";
 
-    const card =
-        document.createElement("div");
-
-    card.className =
-        "message-card";
-
-    const label =
-        document.createElement("div");
-
-    label.className =
-        "message-label";
-
-    label.textContent =
-        "Dalbayob";
+    const label = document.createElement("div");
+    label.className = "message-label";
+    label.textContent = "Dalbayob";
 
     card.appendChild(label);
 
-    const title =
-        document.createElement("div");
-
-    title.className =
-        "reverse-title";
-
-    title.textContent =
-        "Reverse Image Search";
+    const title = document.createElement("div");
+    title.className = "reverse-title";
+    title.textContent = "Reverse Image Search";
 
     card.appendChild(title);
 
-    const grid =
-        document.createElement("div");
+    const grid = document.createElement("div");
+    grid.className = "reverse-grid";
 
-    grid.className =
-        "reverse-grid";
+    results.slice(0,12).forEach(result => {
+        const url = safeUrl(
+            result.url ||
+            result.link ||
+            result.source ||
+            ""
+        );
 
-    results
-        .slice(0, 12)
-        .forEach(result => {
+        const imageUrl = safeUrl(
+            result.image ||
+            result.thumbnail ||
+            result.imageUrl ||
+            result.thumbnailUrl ||
+            ""
+        );
 
-            const url =
-                safeUrl(
-                    result.url ||
-                    result.link ||
-                    result.source ||
-                    ""
-                );
+        const item = document.createElement("div");
+        item.className = "reverse-result";
 
-            const imageUrl =
-                safeUrl(
-                    result.image ||
-                    result.thumbnail ||
-                    result.imageUrl ||
-                    result.thumbnailUrl ||
-                    ""
-                );
+        if (imageUrl) {
+            const img = document.createElement("img");
 
-            const item =
-                document.createElement("div");
-
-            item.className =
-                "reverse-result";
-
-            if (imageUrl) {
-
-                const img =
-                    document.createElement("img");
-
-                img.src =
-                    imageUrl;
-
-                img.alt =
-                    result.title ||
-                    "Search result";
-
-                img.loading =
-                    "lazy";
-
-                img.onerror =
-                    function() {
-                        this.style.display =
-                            "none";
-                    };
-
-                item.appendChild(img);
-
-            }
-
-            const content =
-                document.createElement("div");
-
-            content.className =
-                "reverse-result-content";
-
-            const name =
-                document.createElement("div");
-
-            name.className =
-                "reverse-result-name";
-
-            name.textContent =
+            img.src = imageUrl;
+            img.alt =
                 result.title ||
-                result.name ||
-                "Image result";
+                "Search result";
 
-            content.appendChild(name);
+            img.loading = "lazy";
 
-            if (url) {
+            img.onerror = () => {
+                img.style.display = "none";
+            };
 
-                const link =
-                    document.createElement("a");
+            item.appendChild(img);
+        }
 
-                link.className =
-                    "reverse-result-url";
+        const content = document.createElement("div");
+        content.className = "reverse-result-content";
 
-                link.href =
-                    url;
+        const name = document.createElement("div");
+        name.className = "reverse-result-name";
+        name.textContent =
+            result.title ||
+            result.name ||
+            "Image result";
 
-                link.target =
-                    "_blank";
+        content.appendChild(name);
 
-                link.rel =
-                    "noopener noreferrer";
+        if (url) {
+            const link = document.createElement("a");
 
-                link.textContent =
-                    url;
+            link.className = "reverse-result-url";
+            link.href = url;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.textContent = url;
 
-                content.appendChild(link);
+            content.appendChild(link);
+        }
 
-            }
-
-            item.appendChild(content);
-            grid.appendChild(item);
-
-        });
+        item.appendChild(content);
+        grid.appendChild(item);
+    });
 
     card.appendChild(grid);
     message.appendChild(card);
-
     chatInner.appendChild(message);
 
     scrollToBottom();
-
 }
 
-function setImageMode(enabled) {
+/* IMAGE MODE */
 
-    imageMode =
-        enabled;
+function setImageMode(enabled) {
+    imageMode = enabled;
 
     if (enabled) {
-
-        imageModeBanner.classList.add(
-            "active"
-        );
-
-        imageButton.classList.add(
-            "active"
-        );
-
-        chatButton.classList.remove(
-            "active"
-        );
-
+        imageModeBanner.classList.add("active");
+        imageButton.classList.add("active");
+        chatButton.classList.remove("active");
     } else {
-
-        imageModeBanner.classList.remove(
-            "active"
-        );
-
-        imageButton.classList.remove(
-            "active"
-        );
-
-        chatButton.classList.add(
-            "active"
-        );
-
+        imageModeBanner.classList.remove("active");
+        imageButton.classList.remove("active");
+        chatButton.classList.add("active");
     }
 
     updateInputPlaceholder();
-
 }
 
 function focusImageMode() {
-
     setImageMode(true);
-
     input.focus();
-
 }
 
 function useSuggestion(text) {
-
-    input.value =
-        text;
-
+    input.value = text;
     autoResize();
-
     input.focus();
-
 }
 
-function newChat() {
+/* NEW CHAT */
 
+function newChat() {
     conversationHistory = [];
     currentImage = null;
     attachedImages = [];
-    imageMode = false;
 
     input.value = "";
 
-    autoResize();
-
     renderAttachmentPreview();
-
     setImageMode(false);
 
     chatInner.innerHTML = "";
-
     chatInner.appendChild(
         createWelcomeElement()
     );
 
+    autoResize();
+    updateInputPlaceholder();
+
     input.focus();
-
     scrollToBottom();
-
 }
 
 function createWelcomeElement() {
+    const section = document.createElement("section");
 
-    const section =
-        document.createElement("section");
-
-    section.className =
-        "welcome";
-
-    section.id =
-        "welcome";
+    section.className = "welcome";
+    section.id = "welcome";
 
     section.innerHTML = `
         <img
@@ -3027,9 +2146,7 @@ function createWelcomeElement() {
             alt="Dalbayob"
         >
 
-        <h1 class="welcome-title">
-            DALBAYOB
-        </h1>
+        <h1 class="welcome-title">DALBAYOB</h1>
 
         <p class="welcome-description">
             A multimodal AI interface for conversation,
@@ -3046,7 +2163,6 @@ function createWelcomeElement() {
                 <div class="suggestion-title">
                     What can you do?
                 </div>
-
                 <div class="suggestion-text">
                     Explore Dalbayob's capabilities.
                 </div>
@@ -3060,7 +2176,6 @@ function createWelcomeElement() {
                 <div class="suggestion-title">
                     Explain something complicated
                 </div>
-
                 <div class="suggestion-text">
                     Turn technical nonsense into something understandable.
                 </div>
@@ -3074,7 +2189,6 @@ function createWelcomeElement() {
                 <div class="suggestion-title">
                     Give me a creative idea
                 </div>
-
                 <div class="suggestion-text">
                     Let the machine cook.
                 </div>
@@ -3088,7 +2202,6 @@ function createWelcomeElement() {
                 <div class="suggestion-title">
                     Summon a roach
                 </div>
-
                 <div class="suggestion-text">
                     This is probably a terrible idea.
                 </div>
@@ -3098,8 +2211,19 @@ function createWelcomeElement() {
     `;
 
     return section;
-
 }
+
+/* EVENTS */
+
+attachButton.addEventListener(
+    "click",
+    () => imageInput.click()
+);
+
+imageInput.addEventListener(
+    "change",
+    handleImageUpload
+);
 
 sendButton.addEventListener(
     "click",
@@ -3138,12 +2262,9 @@ reverseButton.addEventListener(
 
 chatButton.addEventListener(
     "click",
-    function() {
-
+    () => {
         setImageMode(false);
-
         input.focus();
-
     }
 );
 
@@ -3154,26 +2275,22 @@ input.addEventListener(
 
 input.addEventListener(
     "keydown",
-    function(event) {
-
+    event => {
         if (
             event.key === "Enter" &&
             !event.shiftKey
         ) {
-
             event.preventDefault();
-
             sendMessage();
-
         }
-
     }
 );
+
+/* START */
 
 autoResize();
 updateInputPlaceholder();
 input.focus();
-
 </script>
 
 </body>
