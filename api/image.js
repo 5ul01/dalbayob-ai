@@ -7,17 +7,35 @@ export default async function handler(req, res) {
     const { prompt } = req.body || {};
 
     if (!prompt || typeof prompt !== "string") {
-      return res.status(400).json({ error: "No prompt provided" });
+      return res.status(400).json({
+        error: "No prompt provided"
+      });
     }
 
-    // Your current ngrok tunnel -> local ComfyUI
+    // Your existing ComfyUI tunnel
     const comfyUrl = "https://phantom-smudge-voting.ngrok-free.dev";
 
-    // Your exact Z-Image Turbo workflow
+    /*
+     * Z-Image Turbo TEXT-TO-IMAGE workflow.
+     *
+     * This follows the actual generation branch from
+     * the workflow you exported from ComfyUI:
+     *
+     * 57:30 CLIP
+     * 57:29 VAE
+     * 57:28 UNET
+     * 57:27 Prompt
+     * 57:11 Model Sampling
+     * 57:13 Empty Latent
+     * 57:3  KSampler
+     * 57:8  VAE Decode
+     * 9    Save Image
+     */
+
     const workflow = {
       "9": {
         inputs: {
-          filename_prefix: "z-image-turbo",
+          filename_prefix: "dalbayob-z-image",
           images: ["57:8", 0]
         },
         class_type: "SaveImage",
@@ -110,7 +128,7 @@ export default async function handler(req, res) {
         },
         class_type: "ModelSamplingAuraFlow",
         _meta: {
-          title: "ModelSamplingAuraFlow"
+          title: "Model Sampling"
         }
       },
 
@@ -134,7 +152,12 @@ export default async function handler(req, res) {
       }
     };
 
-    // Submit workflow to ComfyUI
+    console.log("Dalbayob: sending image generation request to ComfyUI");
+
+    /*
+     * Queue the workflow
+     */
+
     const promptResponse = await fetch(`${comfyUrl}/prompt`, {
       method: "POST",
       headers: {
@@ -149,6 +172,11 @@ export default async function handler(req, res) {
     if (!promptResponse.ok) {
       const errorText = await promptResponse.text();
 
+      console.error(
+        "ComfyUI rejected workflow:",
+        errorText
+      );
+
       return res.status(502).json({
         error: "ComfyUI rejected the workflow",
         details: errorText
@@ -156,6 +184,11 @@ export default async function handler(req, res) {
     }
 
     const promptResult = await promptResponse.json();
+
+    console.log(
+      "ComfyUI prompt result:",
+      promptResult
+    );
 
     if (!promptResult.prompt_id) {
       return res.status(502).json({
@@ -166,14 +199,18 @@ export default async function handler(req, res) {
 
     const promptId = promptResult.prompt_id;
 
-    // Wait for ComfyUI to finish
-    let history = null;
+    /*
+     * Wait for ComfyUI.
+     */
+
     let output = null;
 
-    const maxAttempts = 120;
+    const maxAttempts = 180;
 
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve =>
+        setTimeout(resolve, 1000)
+      );
 
       const historyResponse = await fetch(
         `${comfyUrl}/history/${promptId}`,
@@ -188,7 +225,7 @@ export default async function handler(req, res) {
         continue;
       }
 
-      history = await historyResponse.json();
+      const history = await historyResponse.json();
 
       if (!history[promptId]) {
         continue;
@@ -196,19 +233,71 @@ export default async function handler(req, res) {
 
       const execution = history[promptId];
 
-      if (execution.status?.status_str === "error") {
+      /*
+       * ComfyUI execution error
+       */
+
+      if (
+        execution.status &&
+        execution.status.status_str === "error"
+      ) {
+        console.error(
+          "ComfyUI execution error:",
+          execution.status
+        );
+
         return res.status(500).json({
           error: "ComfyUI failed while generating the image",
           details: execution.status
         });
       }
 
-      if (execution.status?.completed !== true) {
+      /*
+       * Still processing
+       */
+
+      if (
+        !execution.status ||
+        execution.status.completed !== true
+      ) {
         continue;
       }
 
-      if (execution.outputs?.["9"]?.images?.length) {
+      /*
+       * Get the image saved by node 9.
+       */
+
+      if (
+        execution.outputs &&
+        execution.outputs["9"] &&
+        execution.outputs["9"].images &&
+        execution.outputs["9"].images.length > 0
+      ) {
         output = execution.outputs["9"].images[0];
+        break;
+      }
+
+      /*
+       * If node 9 somehow isn't present, search all
+       * output nodes for an image.
+       */
+
+      if (execution.outputs) {
+        for (const nodeId of Object.keys(execution.outputs)) {
+          const nodeOutput = execution.outputs[nodeId];
+
+          if (
+            nodeOutput &&
+            Array.isArray(nodeOutput.images) &&
+            nodeOutput.images.length > 0
+          ) {
+            output = nodeOutput.images[0];
+            break;
+          }
+        }
+      }
+
+      if (output) {
         break;
       }
     }
@@ -220,13 +309,14 @@ export default async function handler(req, res) {
       });
     }
 
+    /*
+     * Retrieve the actual image from ComfyUI.
+     */
+
     const filename = output.filename;
     const subfolder = output.subfolder || "";
     const type = output.type || "output";
 
-    // Fetch the actual PNG through the tunnel.
-    // Returning the image itself avoids making the user's browser
-    // communicate directly with ngrok.
     const imageParams = new URLSearchParams({
       filename,
       subfolder,
@@ -245,17 +335,36 @@ export default async function handler(req, res) {
     if (!imageResponse.ok) {
       const errorText = await imageResponse.text();
 
+      console.error(
+        "Could not retrieve ComfyUI image:",
+        errorText
+      );
+
       return res.status(502).json({
         error: "Could not retrieve generated image from ComfyUI",
         details: errorText
       });
     }
 
-    const imageBuffer = Buffer.from(await imageResponse.arrayBuffer());
+    /*
+     * Convert image to a data URL so the browser doesn't
+     * have to communicate directly with your ngrok tunnel.
+     */
 
-    const imageBase64 = imageBuffer.toString("base64");
+    const imageBuffer = Buffer.from(
+      await imageResponse.arrayBuffer()
+    );
 
-    const imageDataUrl = `data:image/png;base64,${imageBase64}`;
+    const imageBase64 =
+      imageBuffer.toString("base64");
+
+    const imageDataUrl =
+      `data:image/png;base64,${imageBase64}`;
+
+    console.log(
+      "Dalbayob: image generation completed:",
+      filename
+    );
 
     return res.status(200).json({
       image: imageDataUrl,
@@ -264,7 +373,10 @@ export default async function handler(req, res) {
     });
 
   } catch (error) {
-    console.error("ComfyUI image generation error:", error);
+    console.error(
+      "ComfyUI image generation error:",
+      error
+    );
 
     return res.status(500).json({
       error: "Image generation failed",
