@@ -5,8 +5,33 @@ export default async function handler(req, res) {
     });
   }
 
+  const comfyUrl = "https://phantom-smudge-voting.ngrok-free.dev";
+
   try {
-    const { prompt, image } = req.body || {};
+    const body = req.body || {};
+
+    /*
+     * Accept several possible frontend field names so this endpoint
+     * is easy to connect to the existing Dalbayob frontend.
+     */
+    const image =
+      body.image ||
+      body.imageData ||
+      body.file ||
+      (Array.isArray(body.images) ? body.images[0] : null);
+
+    const prompt =
+      body.prompt ||
+      body.message ||
+      body.instruction ||
+      body.editPrompt ||
+      "";
+
+    if (!image || typeof image !== "string") {
+      return res.status(400).json({
+        error: "No image provided"
+      });
+    }
 
     if (!prompt || typeof prompt !== "string") {
       return res.status(400).json({
@@ -14,27 +39,29 @@ export default async function handler(req, res) {
       });
     }
 
-    if (!image || typeof image !== "string") {
-      return res.status(400).json({
-        error: "No source image provided"
-      });
-    }
-
-    // Your existing ComfyUI tunnel.
-    const comfyUrl =
-      "https://phantom-smudge-voting.ngrok-free.dev";
-
     /*
-     * =========================================================
-     * 1. PREPARE SOURCE IMAGE
-     * =========================================================
+     * ------------------------------------------------------------
+     * 1. Convert the incoming image into binary data
+     * ------------------------------------------------------------
+     *
+     * The frontend can send:
+     *
+     * data:image/png;base64,AAAA...
+     *
+     * or:
+     *
+     * data:image/jpeg;base64,AAAA...
+     *
+     * or plain base64.
      */
 
-    let imageBlob;
+    let imageBuffer;
+    let mimeType = "image/png";
+    let extension = "png";
 
     if (image.startsWith("data:")) {
       const match = image.match(
-        /^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/
+        /^data:([^;]+);base64,(.+)$/
       );
 
       if (!match) {
@@ -43,74 +70,66 @@ export default async function handler(req, res) {
         });
       }
 
-      const mimeType = match[1];
+      mimeType = match[1];
       const base64Data = match[2];
 
-      imageBlob = new Blob(
-        [
-          Buffer.from(base64Data, "base64")
-        ],
-        {
-          type: mimeType
-        }
-      );
-    } else {
-      const sourceResponse = await fetch(image);
-
-      if (!sourceResponse.ok) {
-        return res.status(400).json({
-          error: "Could not download source image"
-        });
+      if (mimeType === "image/jpeg" || mimeType === "image/jpg") {
+        extension = "jpg";
+      } else if (mimeType === "image/webp") {
+        extension = "webp";
+      } else if (mimeType === "image/png") {
+        extension = "png";
+      } else {
+        extension = "png";
       }
 
-      const buffer = Buffer.from(
-        await sourceResponse.arrayBuffer()
-      );
+      imageBuffer = Buffer.from(base64Data, "base64");
+    } else {
+      /*
+       * If the frontend supplied plain base64, accept it too.
+       */
+      try {
+        imageBuffer = Buffer.from(image, "base64");
+      } catch {
+        return res.status(400).json({
+          error: "Invalid base64 image"
+        });
+      }
+    }
 
-      imageBlob = new Blob(
-        [buffer],
-        {
-          type:
-            sourceResponse.headers.get(
-              "content-type"
-            ) || "image/png"
-        }
-      );
+    if (!imageBuffer || imageBuffer.length === 0) {
+      return res.status(400).json({
+        error: "Image data is empty"
+      });
     }
 
     /*
-     * Determine a safe filename.
+     * ------------------------------------------------------------
+     * 2. Upload the image to ComfyUI
+     * ------------------------------------------------------------
      */
 
-    let extension = "png";
+    const filename =
+      `dalbayob_edit_${Date.now()}.${extension}`;
 
-    if (imageBlob.type === "image/jpeg") {
-      extension = "jpg";
-    } else if (imageBlob.type === "image/webp") {
-      extension = "webp";
-    }
+    const formData = new FormData();
 
-    const uploadName =
-      `dalbayob-edit-${Date.now()}.${extension}`;
+    const blob = new Blob(
+      [imageBuffer],
+      { type: mimeType }
+    );
 
-    /*
-     * =========================================================
-     * 2. UPLOAD IMAGE TO COMFYUI
-     * =========================================================
-     */
-
-    const form = new FormData();
-
-    form.append(
+    formData.append(
       "image",
-      imageBlob,
-      uploadName
+      blob,
+      filename
     );
 
-    form.append(
-      "overwrite",
-      "true"
-    );
+    /*
+     * ComfyUI can overwrite an existing filename. We use a unique
+     * filename anyway, so this is safe.
+     */
+    formData.append("overwrite", "true");
 
     const uploadResponse = await fetch(
       `${comfyUrl}/upload/image`,
@@ -119,375 +138,489 @@ export default async function handler(req, res) {
         headers: {
           "ngrok-skip-browser-warning": "true"
         },
-        body: form
+        body: formData
       }
     );
 
-    const uploadText =
-      await uploadResponse.text();
-
     if (!uploadResponse.ok) {
+      const errorText = await uploadResponse.text();
+
       console.error(
         "ComfyUI image upload failed:",
-        uploadText
+        errorText
       );
 
       return res.status(502).json({
-        error:
-          "ComfyUI rejected the source image upload",
-        details:
-          uploadText
+        error: "Could not upload image to ComfyUI",
+        details: errorText
       });
     }
 
-    let uploadResult;
-
-    try {
-      uploadResult =
-        JSON.parse(uploadText);
-    } catch {
-      return res.status(502).json({
-        error:
-          "ComfyUI returned invalid upload data",
-        details:
-          uploadText
-      });
-    }
-
-    const uploadedFilename =
-      uploadResult.name;
-
-    if (!uploadedFilename) {
-      return res.status(502).json({
-        error:
-          "ComfyUI did not return an uploaded filename",
-        details:
-          uploadResult
-      });
-    }
-
-    console.log(
-      "Dalbayob: uploaded edit image:",
-      uploadedFilename
-    );
+    const uploadResult = await uploadResponse.json();
 
     /*
-     * =========================================================
-     * 3. BUILD THE ACTUAL Z-IMAGE OMNI EDIT WORKFLOW
-     * =========================================================
+     * ComfyUI normally returns:
      *
-     * This follows the workflow you exported from ComfyUI.
-     *
-     * 63 = LoadImage
-     * 64 = VAEEncode
-     * 66 = VAE
-     * 67 = TextEncodeZImageOmni
-     * 68 = KSampler
-     * 69 = VAEDecode
-     * 70 = Z-Image Turbo model
-     * 71 = Qwen CLIP
-     * 9  = SaveImage
-     *
-     * The important difference from the old backend is that
-     * node 67 is TextEncodeZImageOmni, not CLIPTextEncode.
+     * {
+     *   name: "...",
+     *   subfolder: "",
+     *   type: "input"
+     * }
+     */
+
+    const comfyFilename =
+      uploadResult.name || filename;
+
+    /*
+     * ------------------------------------------------------------
+     * 3. Build the EXACT working Qwen Image Edit workflow
+     * ------------------------------------------------------------
      */
 
     const workflow = {
-      "9": {
+      "78": {
         inputs: {
-          filename_prefix:
-            "dalbayob-edit",
+          image: comfyFilename
+        },
+        class_type: "LoadImage",
+        _meta: {
+          title: "Load Image"
+        }
+      },
+
+      "469": {
+        inputs: {
+          filename_prefix: "Qwen_Image_2509",
+          format: "png",
+          "format.bit_depth": "8-bit",
+          "format.input_color_space": "sRGB",
           images: [
-            "69",
+            "433:8",
             0
           ]
         },
-        class_type:
-          "SaveImage",
+        class_type: "SaveImageAdvanced",
         _meta: {
-          title:
-            "Save Image"
+          title: "Save Image (Advanced)"
         }
       },
 
-      "63": {
+      "433:75": {
         inputs: {
-          image:
-            uploadedFilename
+          strength: 1,
+          pre_cfg: false,
+          model: [
+            "433:66",
+            0
+          ]
         },
-        class_type:
-          "LoadImage",
+        class_type: "CFGNorm",
         _meta: {
-          title:
-            "Load Image"
+          title: "CFGNorm"
         }
       },
 
-      "64": {
+      "433:39": {
         inputs: {
-          pixels: [
-            "63",
+          vae_name: "qwen_image_vae.safetensors"
+        },
+        class_type: "VAELoader",
+        _meta: {
+          title: "Load VAE"
+        }
+      },
+
+      "433:38": {
+        inputs: {
+          clip_name:
+            "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+          type: "qwen_image",
+          device: "default"
+        },
+        class_type: "CLIPLoader",
+        _meta: {
+          title: "Load CLIP"
+        }
+      },
+
+      "433:37": {
+        inputs: {
+          unet_name:
+            "qwen_image_edit_2509_fp8_e4m3fn.safetensors",
+          weight_dtype: "default"
+        },
+        class_type: "UNETLoader",
+        _meta: {
+          title: "Load Diffusion Model"
+        }
+      },
+
+      /*
+       * THIS is the actual editing prompt.
+       *
+       * Your ComfyUI test had:
+       * "make background black"
+       *
+       * We replace that with the instruction sent
+       * from Dalbayob AI.
+       */
+      "433:110": {
+        inputs: {
+          prompt: "",
+          clip: [
+            "433:38",
             0
           ],
           vae: [
-            "66",
+            "433:39",
+            0
+          ],
+          image1: [
+            "433:117",
             0
           ]
         },
-        class_type:
-          "VAEEncode",
+        class_type: "TextEncodeQwenImageEditPlus",
         _meta: {
-          title:
-            "VAE Encode"
+          title: "TextEncodeQwenImageEditPlus"
         }
       },
 
-      "66": {
+      "433:66": {
         inputs: {
-          vae_name:
-            "ae.safetensors"
+          shift: 3,
+          model: [
+            "433:440",
+            0
+          ]
         },
-        class_type:
-          "VAELoader",
+        class_type: "ModelSamplingAuraFlow",
         _meta: {
-          title:
-            "Load VAE"
+          title: "ModelSamplingAuraFlow"
         }
       },
 
-      "67": {
+      "433:111": {
         inputs: {
-          prompt:
-            prompt,
-
-          auto_resize_images:
-            true,
+          /*
+           * Dynamic user instruction.
+           */
+          prompt: prompt,
 
           clip: [
-            "71",
+            "433:38",
+            0
+          ],
+
+          vae: [
+            "433:39",
             0
           ],
 
           image1: [
-            "63",
+            "433:117",
             0
           ]
         },
-
-        class_type:
-          "TextEncodeZImageOmni",
-
+        class_type: "TextEncodeQwenImageEditPlus",
         _meta: {
-          title:
-            "TextEncodeZImageOmni"
+          title: "TextEncodeQwenImageEditPlus"
         }
       },
 
-      "68": {
+      "433:88": {
         inputs: {
-          seed:
-            Math.floor(
-              Math.random() *
-              999999999999999
-            ),
+          pixels: [
+            "433:117",
+            0
+          ],
+          vae: [
+            "433:39",
+            0
+          ]
+        },
+        class_type: "VAEEncode",
+        _meta: {
+          title: "VAE Encode"
+        }
+      },
 
-          steps:
-            8,
+      "433:8": {
+        inputs: {
+          samples: [
+            "433:3",
+            0
+          ],
+          vae: [
+            "433:39",
+            0
+          ]
+        },
+        class_type: "VAEDecode",
+        _meta: {
+          title: "VAE Decode"
+        }
+      },
 
-          cfg:
-            1,
+      "433:89": {
+        inputs: {
+          lora_name:
+            "Qwen-Image-Edit-2509-Lightning-4steps-V1.0-bf16.safetensors",
+          strength_model: 1,
+          model: [
+            "433:37",
+            0
+          ]
+        },
+        class_type: "LoraLoaderModelOnly",
+        _meta: {
+          title: "Load LoRA"
+        }
+      },
 
-          sampler_name:
-            "res_multistep",
+      "433:117": {
+        inputs: {
+          image: [
+            "78",
+            0
+          ]
+        },
+        class_type: "FluxKontextImageScale",
+        _meta: {
+          title: "FluxKontextImageScale"
+        }
+      },
 
-          scheduler:
-            "simple",
+      "433:3": {
+        inputs: {
+          seed: Math.floor(
+            Math.random() * 999999999999999
+          ),
 
-          /*
-           * 0.45 gives the model more freedom to make
-           * the requested modification while still
-           * retaining the source image.
-           */
-          denoise:
-            0.45,
+          steps: [
+            "433:441",
+            0
+          ],
+
+          cfg: [
+            "433:442",
+            0
+          ],
+
+          sampler_name: "euler",
+          scheduler: "simple",
+          denoise: 1,
 
           model: [
-            "70",
+            "433:75",
             0
           ],
 
           positive: [
-            "67",
+            "433:111",
+            0
+          ],
+
+          negative: [
+            "433:110",
             0
           ],
 
           latent_image: [
-            "64",
+            "433:88",
             0
           ]
         },
 
-        class_type:
-          "KSampler",
+        class_type: "KSampler",
 
         _meta: {
-          title:
-            "KSampler"
+          title: "KSampler"
         }
       },
 
-      "69": {
+      "433:436": {
         inputs: {
-          samples: [
-            "68",
+          value: 4
+        },
+        class_type: "PrimitiveInt",
+        _meta: {
+          title: "Stpes"
+        }
+      },
+
+      "433:437": {
+        inputs: {
+          value: 1
+        },
+        class_type: "PrimitiveFloat",
+        _meta: {
+          title: "CFG"
+        }
+      },
+
+      "433:438": {
+        inputs: {
+          value: 20
+        },
+        class_type: "PrimitiveInt",
+        _meta: {
+          title: "Steps"
+        }
+      },
+
+      "433:439": {
+        inputs: {
+          value: 4
+        },
+        class_type: "PrimitiveFloat",
+        _meta: {
+          title: "CFG"
+        }
+      },
+
+      "433:440": {
+        inputs: {
+          switch: [
+            "433:443",
             0
           ],
 
-          vae: [
-            "66",
+          on_false: [
+            "433:37",
+            0
+          ],
+
+          on_true: [
+            "433:89",
             0
           ]
         },
 
-        class_type:
-          "VAEDecode",
+        class_type: "ComfySwitchNode",
 
         _meta: {
-          title:
-            "VAE Decode"
+          title: "Switch (Model)"
         }
       },
 
-      "70": {
+      "433:441": {
         inputs: {
-          unet_name:
-            "z_image_turbo_bf16.safetensors",
+          switch: [
+            "433:443",
+            0
+          ],
 
-          weight_dtype:
-            "default"
+          on_false: [
+            "433:438",
+            0
+          ],
+
+          on_true: [
+            "433:436",
+            0
+          ]
         },
 
-        class_type:
-          "UNETLoader",
+        class_type: "ComfySwitchNode",
 
         _meta: {
-          title:
-            "Load Diffusion Model"
+          title: "Switch (Steps)"
         }
       },
 
-      "71": {
+      "433:442": {
         inputs: {
-          clip_name:
-            "qwen_3_4b.safetensors",
+          switch: [
+            "433:443",
+            0
+          ],
 
-          type:
-            "stable_diffusion",
+          on_false: [
+            "433:439",
+            0
+          ],
 
-          device:
-            "default"
+          on_true: [
+            "433:437",
+            0
+          ]
         },
 
-        class_type:
-          "CLIPLoader",
+        class_type: "ComfySwitchNode",
 
         _meta: {
-          title:
-            "Load CLIP"
+          title: "Switch (CFG)"
+        }
+      },
+
+      "433:443": {
+        inputs: {
+          value: true
+        },
+
+        class_type: "PrimitiveBoolean",
+
+        _meta: {
+          title: "Enable Lightning LoRA"
         }
       }
     };
 
     /*
-     * =========================================================
-     * 4. SEND WORKFLOW TO COMFYUI
-     * =========================================================
+     * ------------------------------------------------------------
+     * 4. Queue the workflow
+     * ------------------------------------------------------------
      */
 
-    console.log(
-      "Dalbayob: sending Z-Image Omni edit workflow"
+    const promptResponse = await fetch(
+      `${comfyUrl}/prompt`,
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+          "ngrok-skip-browser-warning": "true"
+        },
+
+        body: JSON.stringify({
+          prompt: workflow
+        })
+      }
     );
 
-    const promptResponse =
-      await fetch(
-        `${comfyUrl}/prompt`,
-        {
-          method:
-            "POST",
-
-          headers: {
-            "Content-Type":
-              "application/json",
-
-            "ngrok-skip-browser-warning":
-              "true"
-          },
-
-          body:
-            JSON.stringify({
-              prompt:
-                workflow
-            })
-        }
-      );
-
-    const promptText =
-      await promptResponse.text();
-
     if (!promptResponse.ok) {
+      const errorText =
+        await promptResponse.text();
+
       console.error(
         "ComfyUI rejected edit workflow:",
-        promptText
+        errorText
       );
 
       return res.status(502).json({
-        error:
-          "ComfyUI rejected the edit workflow",
-
-        details:
-          promptText
+        error: "ComfyUI rejected the editing workflow",
+        details: errorText
       });
     }
 
-    let promptResult;
-
-    try {
-      promptResult =
-        JSON.parse(
-          promptText
-        );
-    } catch {
-      return res.status(502).json({
-        error:
-          "ComfyUI returned invalid workflow data",
-
-        details:
-          promptText
-      });
-    }
+    const promptResult =
+      await promptResponse.json();
 
     if (!promptResult.prompt_id) {
       return res.status(502).json({
-        error:
-          "ComfyUI did not return a prompt ID",
-
-        details:
-          promptResult
+        error: "ComfyUI did not return a prompt ID",
+        details: promptResult
       });
     }
 
     const promptId =
       promptResult.prompt_id;
 
-    console.log(
-      "Dalbayob edit prompt ID:",
-      promptId
-    );
-
     /*
-     * =========================================================
-     * 5. WAIT FOR COMFYUI
-     * =========================================================
+     * ------------------------------------------------------------
+     * 5. Wait for ComfyUI to finish
+     * ------------------------------------------------------------
      */
 
     let output = null;
@@ -500,11 +633,7 @@ export default async function handler(req, res) {
       attempt++
     ) {
       await new Promise(
-        resolve =>
-          setTimeout(
-            resolve,
-            1000
-          )
+        resolve => setTimeout(resolve, 1000)
       );
 
       const historyResponse =
@@ -512,8 +641,7 @@ export default async function handler(req, res) {
           `${comfyUrl}/history/${promptId}`,
           {
             headers: {
-              "ngrok-skip-browser-warning":
-                "true"
+              "ngrok-skip-browser-warning": "true"
             }
           }
         );
@@ -535,7 +663,6 @@ export default async function handler(req, res) {
       /*
        * ComfyUI execution error.
        */
-
       if (
         execution.status?.status_str ===
         "error"
@@ -548,72 +675,42 @@ export default async function handler(req, res) {
         return res.status(500).json({
           error:
             "ComfyUI failed while editing the image",
-
-          details:
-            execution.status
+          details: execution.status,
+          prompt_id: promptId
         });
       }
 
       /*
-       * Still running.
+       * Not finished yet.
        */
-
       if (
-        execution.status?.completed !==
-        true
+        execution.status?.completed !== true
       ) {
         continue;
       }
 
       /*
-       * Node 9 is our SaveImage node.
+       * Save Image Advanced node is 469.
        */
-
       if (
-        execution.outputs?.["9"]?.images
-          ?.length
+        execution.outputs?.["469"]?.images?.length
       ) {
         output =
-          execution.outputs[
-            "9"
-          ].images[0];
+          execution.outputs["469"].images[0];
 
         break;
       }
 
       /*
-       * Fallback:
-       * search all output nodes for an image.
+       * Fallback in case the output node is represented
+       * differently by ComfyUI.
        */
+      if (
+        execution.outputs?.["433:8"]?.images?.length
+      ) {
+        output =
+          execution.outputs["433:8"].images[0];
 
-      if (execution.outputs) {
-        for (
-          const nodeId of Object.keys(
-            execution.outputs
-          )
-        ) {
-          const nodeOutput =
-            execution.outputs[
-              nodeId
-            ];
-
-          if (
-            nodeOutput &&
-            Array.isArray(
-              nodeOutput.images
-            ) &&
-            nodeOutput.images.length >
-              0
-          ) {
-            output =
-              nodeOutput.images[0];
-
-            break;
-          }
-        }
-      }
-
-      if (output) {
         break;
       }
     }
@@ -622,32 +719,30 @@ export default async function handler(req, res) {
       return res.status(504).json({
         error:
           "ComfyUI timed out before returning the edited image",
-
-        prompt_id:
-          promptId
+        prompt_id: promptId
       });
     }
 
     /*
-     * =========================================================
-     * 6. DOWNLOAD THE EDITED IMAGE
-     * =========================================================
+     * ------------------------------------------------------------
+     * 6. Download the generated image from ComfyUI
+     * ------------------------------------------------------------
      */
 
-    const filename =
+    const outputFilename =
       output.filename;
 
-    const subfolder =
+    const outputSubfolder =
       output.subfolder || "";
 
-    const type =
+    const outputType =
       output.type || "output";
 
     const imageParams =
       new URLSearchParams({
-        filename,
-        subfolder,
-        type
+        filename: outputFilename,
+        subfolder: outputSubfolder,
+        type: outputType
       });
 
     const imageResponse =
@@ -655,8 +750,7 @@ export default async function handler(req, res) {
         `${comfyUrl}/view?${imageParams.toString()}`,
         {
           headers: {
-            "ngrok-skip-browser-warning":
-              "true"
+            "ngrok-skip-browser-warning": "true"
           }
         }
       );
@@ -673,58 +767,49 @@ export default async function handler(req, res) {
       return res.status(502).json({
         error:
           "Could not retrieve edited image from ComfyUI",
-
-        details:
-          errorText
+        details: errorText
       });
     }
 
-    const imageBuffer =
+    /*
+     * ------------------------------------------------------------
+     * 7. Convert the result to a data URL
+     * ------------------------------------------------------------
+     */
+
+    const imageBufferResult =
       Buffer.from(
         await imageResponse.arrayBuffer()
       );
 
     const imageBase64 =
-      imageBuffer.toString(
-        "base64"
-      );
+      imageBufferResult.toString("base64");
 
     const imageDataUrl =
       `data:image/png;base64,${imageBase64}`;
 
-    console.log(
-      "Dalbayob: image edit completed:",
-      filename
-    );
-
     /*
-     * =========================================================
-     * 7. RETURN IMAGE TO DALBAYOB
-     * =========================================================
+     * ------------------------------------------------------------
+     * 8. Return the edited image
+     * ------------------------------------------------------------
      */
 
     return res.status(200).json({
-      image:
-        imageDataUrl,
-
-      filename,
-
-      prompt_id:
-        promptId
+      image: imageDataUrl,
+      filename: outputFilename,
+      prompt_id: promptId,
+      prompt
     });
 
   } catch (error) {
     console.error(
-      "Dalbayob image editing error:",
+      "Dalbayob Qwen Image Edit error:",
       error
     );
 
     return res.status(500).json({
-      error:
-        "Image editing failed",
-
-      details:
-        error.message
+      error: "Image editing failed",
+      details: error?.message || String(error)
     });
   }
 }
