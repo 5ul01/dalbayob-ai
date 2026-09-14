@@ -1100,6 +1100,59 @@ body::after {
    COMPOSER
 ========================================================= */
 
+/* =========================================================
+   MULTI IMAGE ATTACHMENTS
+========================================================= */
+.attachment-preview {
+    overflow: hidden;
+}
+
+#attachmentPreviewImages {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    max-width: min(720px, 100%);
+}
+
+.attachment-thumb {
+    position: relative;
+    width: 92px;
+    height: 92px;
+    flex: 0 0 auto;
+    border: 1px solid rgba(205,169,87,.45);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #090d08;
+}
+
+.attachment-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.attachment-thumb-remove {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 23px;
+    height: 23px;
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 50%;
+    background: rgba(0,0,0,.78);
+    color: var(--cream);
+    cursor: pointer;
+    line-height: 19px;
+    padding: 0;
+}
+
+.attachment-thumb-remove:hover {
+    background: rgba(205,169,87,.9);
+    color: #050604;
+}
+
 .composer-area {
     position: absolute;
 
@@ -1586,10 +1639,13 @@ textarea::placeholder {
         id="attachmentPreview">
 
 
+        <div id="attachmentPreviewImages"></div>
+
         <img
             id="attachmentPreviewImage"
             src=""
             alt="Attached image"
+            style="display:none"
         >
 
 
@@ -1600,7 +1656,7 @@ textarea::placeholder {
             </div>
 
             <div class="attachment-sub">
-                Dalbayob can analyze this image or edit it when you choose.
+                Dalbayob can analyze these images or edit one when you choose.
             </div>
 
         </div>
@@ -1627,6 +1683,7 @@ textarea::placeholder {
             id="imageInput"
             type="file"
             accept="image/*"
+            multiple
             onchange="handleImageUpload(event)"
         >
 
@@ -1721,6 +1778,9 @@ const attachmentPreview =
 const attachmentPreviewImage =
     document.getElementById("attachmentPreviewImage");
 
+const attachmentPreviewImages =
+    document.getElementById("attachmentPreviewImages");
+
 
 /* =========================================================
    MEMORY
@@ -1736,6 +1796,7 @@ let conversationHistory = [];
 let currentImage = null;
 
 let attachedImage = null;
+let attachedImages = [];
 
 
 /* =========================================================
@@ -1805,13 +1866,10 @@ document.addEventListener("paste", event => {
             item.getAsFile();
 
         if (!file)
-            return;
+            continue;
 
-
+        event.preventDefault();
         readImageFile(file);
-
-
-        break;
 
     }
 
@@ -1823,49 +1881,67 @@ document.addEventListener("paste", event => {
 ========================================================= */
 
 function readImageFile(file) {
-
-    if (!file.type.startsWith("image/")) {
-
-        alert(
-            "Please select an image."
-        );
-
+    if (!file || !file.type.startsWith("image/")) {
+        alert("Please select an image.");
         return;
-
     }
 
-
-    const reader =
-        new FileReader();
-
+    const reader = new FileReader();
 
     reader.onload = () => {
-
-        attachedImage =
-            reader.result;
-
-
-        attachmentPreviewImage.src =
-            attachedImage;
-
-
-        attachmentPreview.classList.add(
-            "visible"
-        );
-
-
-        input.placeholder =
-            "Ask Dalbayob about this image...";
-
-
+        const image = reader.result;
+        attachedImages.push(image);
+        attachedImage = attachedImages[0] || null;
+        renderAttachmentPreview();
+        input.placeholder = "Ask Dalbayob about these images...";
         input.focus();
-
     };
 
-
     reader.readAsDataURL(file);
-
 }
+
+function renderAttachmentPreview() {
+    if (!attachmentPreview) return;
+
+    if (attachmentPreviewImages) {
+        attachmentPreviewImages.innerHTML = "";
+        attachedImages.forEach((src, index) => {
+            const wrap = document.createElement("div");
+            wrap.className = "attachment-thumb";
+
+            const img = document.createElement("img");
+            img.src = src;
+            img.alt = "Attached image " + (index + 1);
+
+            const remove = document.createElement("button");
+            remove.type = "button";
+            remove.className = "attachment-thumb-remove";
+            remove.title = "Remove image";
+            remove.textContent = "×";
+            remove.onclick = () => removeAttachment(index);
+
+            wrap.appendChild(img);
+            wrap.appendChild(remove);
+            attachmentPreviewImages.appendChild(wrap);
+        });
+    } else if (attachmentPreviewImage) {
+        attachmentPreviewImage.src = attachedImages[0] || "";
+    }
+
+    attachmentPreview.classList.toggle("visible", attachedImages.length > 0);
+}
+
+function removeAttachment(index) {
+    attachedImages.splice(index, 1);
+    attachedImage = attachedImages[0] || null;
+    renderAttachmentPreview();
+
+    if (!attachedImages.length) {
+        imageInput.value = "";
+        input.placeholder = "Speak to Dalbayob...";
+    }
+}
+
 
 
 /* =========================================================
@@ -2010,6 +2086,100 @@ function addImageMessage(
 
 
 /* =========================================================
+   ADD MULTI IMAGE MESSAGE
+========================================================= */
+
+function addImagesMessage(
+    images,
+    text
+) {
+
+    const welcome =
+        document.getElementById(
+            "welcome"
+        );
+
+    if (welcome) {
+        welcome.remove();
+    }
+
+    const row =
+        document.createElement("div");
+
+    row.className =
+        "message-row user";
+
+    const message =
+        document.createElement("div");
+
+    message.className =
+        "message user";
+
+    if (text) {
+        const textNode =
+            document.createElement("div");
+
+        textNode.textContent =
+            text;
+
+        message.appendChild(
+            textNode
+        );
+    }
+
+    const imageGrid =
+        document.createElement("div");
+
+    imageGrid.style.display = "grid";
+    imageGrid.style.gridTemplateColumns =
+        images.length === 1
+            ? "minmax(0, 1fr)"
+            : "repeat(2, minmax(0, 1fr))";
+    imageGrid.style.gap = "8px";
+    imageGrid.style.marginTop = text ? "8px" : "0";
+
+    images.forEach((image, index) => {
+        const imageElement =
+            document.createElement("img");
+
+        imageElement.src = image;
+        imageElement.alt =
+            "Uploaded image " + (index + 1);
+        imageElement.className =
+            "chat-image-preview";
+        imageElement.loading = "lazy";
+        imageElement.style.margin = "0";
+        imageElement.style.width = "100%";
+        imageElement.style.maxWidth = "100%";
+        imageElement.style.display = "block";
+
+        imageGrid.appendChild(
+            imageElement
+        );
+    });
+
+    message.appendChild(
+        imageGrid
+    );
+
+    row.appendChild(
+        message
+    );
+
+    chatInner.appendChild(
+        row
+    );
+
+    requestAnimationFrame(() => {
+        chat.scrollTop =
+            chat.scrollHeight;
+    });
+
+    return message;
+}
+
+
+/* =========================================================
    IMAGE UPLOAD
 ========================================================= */
 
@@ -2022,13 +2192,15 @@ function openImagePicker() {
 
 function handleImageUpload(event) {
 
-    const file =
-        event.target.files?.[0];
+    const files =
+        Array.from(event.target.files || []);
 
-    if (!file)
+    if (!files.length)
         return;
 
-    readImageFile(file);
+    for (const file of files) {
+        readImageFile(file);
+    }
 
 }
 
@@ -2038,20 +2210,13 @@ function handleImageUpload(event) {
 ========================================================= */
 
 function clearAttachment() {
-
     attachedImage = null;
-
+    attachedImages = [];
     imageInput.value = "";
-
-    attachmentPreviewImage.src = "";
-
-    attachmentPreview.classList.remove(
-        "visible"
-    );
-
-    input.placeholder =
-        "Speak to Dalbayob...";
-
+    if (attachmentPreviewImage) attachmentPreviewImage.src = "";
+    if (attachmentPreviewImages) attachmentPreviewImages.innerHTML = "";
+    attachmentPreview.classList.remove("visible");
+    input.placeholder = "Speak to Dalbayob...";
 }
 
 
@@ -2065,13 +2230,16 @@ async function sendMessage() {
         input.value.trim();
 
 
+    const imagesForThisMessage =
+        attachedImages.length ? [...attachedImages] : [];
+
     const imageForThisMessage =
-        attachedImage || null;
+        imagesForThisMessage[0] || null;
 
 
     if (
         !text &&
-        !imageForThisMessage
+        !imagesForThisMessage.length
     ) {
         return;
     }
@@ -2082,10 +2250,10 @@ async function sendMessage() {
         "Analyze this image and tell me what you see.";
 
 
-    if (imageForThisMessage) {
+    if (imagesForThisMessage.length) {
 
-        addImageMessage(
-            imageForThisMessage,
+        addImagesMessage(
+            imagesForThisMessage,
             text
         );
 
@@ -2100,10 +2268,17 @@ async function sendMessage() {
 
 
     attachedImage = null;
+    attachedImages = [];
 
     imageInput.value = "";
 
-    attachmentPreviewImage.src = "";
+    if (attachmentPreviewImage) {
+        attachmentPreviewImage.src = "";
+    }
+
+    if (attachmentPreviewImages) {
+        attachmentPreviewImages.innerHTML = "";
+    }
 
     attachmentPreview.classList.remove(
         "visible"
@@ -2148,7 +2323,9 @@ async function sendMessage() {
                             conversationHistory,
 
                         image:
-                            imageForThisMessage
+                            imageForThisMessage,
+                        images:
+                            imagesForThisMessage
 
                     })
                 }
@@ -2178,8 +2355,8 @@ async function sendMessage() {
             role: "user",
 
             content:
-                imageForThisMessage
-                    ? "[Image attached] " +
+                imagesForThisMessage.length
+                    ? "[" + imagesForThisMessage.length + " image(s) attached] " +
                       actualMessage
                     : actualMessage
 
@@ -2439,10 +2616,17 @@ function newChat() {
     currentImage = null;
 
     attachedImage = null;
+    attachedImages = [];
 
     imageInput.value = "";
 
-    attachmentPreviewImage.src = "";
+    if (attachmentPreviewImage) {
+        attachmentPreviewImage.src = "";
+    }
+
+    if (attachmentPreviewImages) {
+        attachmentPreviewImages.innerHTML = "";
+    }
 
     attachmentPreview.classList.remove(
         "visible"
